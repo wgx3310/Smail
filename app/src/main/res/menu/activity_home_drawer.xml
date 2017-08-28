@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/navigation_group_primary"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home_icon_white_24dp"
+            android:title="@string/navigation_home" />
+
+        <item
+            android:id="@+id/nav_design"
+            android:icon="@drawable/design_icon_white_24dp"
+            android:title="@string/navigation_design" />
+
+    </group>
+
+    <!-- Set an id on this group to show a divider. -->
+    <group android:id="@+id/navigation_group_secondary" >
+
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/settings_icon_white_24dp"
+            android:title="@string/navigation_settings" />
+
+        <item
+            android:id="@+id/nav_feedback"
+            android:icon="@drawable/feedback_icon_white_24dp"
+            android:title="@string/navigation_feedback" />
+    </group>
+
+</menu>

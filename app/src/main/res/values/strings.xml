@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Smail</string>
+
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_home">首页</string>
+    <string name="navigation_design">设计</string>
+    <string name="navigation_book">读书</string>
+    <string name="navigation_movie">电影</string>
+    <string name="navigation_music">音乐</string>
+    <string name="navigation_settings">设置</string>
+    <string name="navigation_feedback">反馈</string>
+
+    <string name="home_title_broadcast">友邻广播</string>
+    <string name="home_title_discover">浏览发现</string>
+    <string name="home_title_topic">话题广场</string>
+    <string name="home_title_online">线上活动</string>
+</resources>

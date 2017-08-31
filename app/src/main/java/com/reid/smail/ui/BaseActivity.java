@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
 
+    protected final String TAG = this.getClass().getSimpleName();
+
     protected Handler mHandler = new Handler(Looper.getMainLooper());
 
     public Handler getMainHandler(){

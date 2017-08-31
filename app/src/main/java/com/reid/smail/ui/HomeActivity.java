@@ -12,7 +12,10 @@ import android.view.MenuItem;
 
 import com.reid.smail.R;
 import com.reid.smail.content.Constant;
+import com.reid.smail.fragment.HomeFragment;
+import com.reid.smail.fragment.RecyclerFragment;
 import com.reid.smail.model.Shot;
+import com.reid.smail.model.span.TabSpan;
 import com.reid.smail.net.NetService;
 import com.reid.smail.net.api.ShotApi;
 
@@ -50,7 +53,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         mNavView.setCheckedItem(R.id.nav_home);
         mNavView.setNavigationItemSelectedListener(this);
 
-        doTestAction();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_layout, new HomeFragment()).commitAllowingStateLoss();
+//        doTestAction();
     }
 
     private void doTestAction() {
@@ -64,14 +68,15 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                         List<Shot> body = response.body();
                         if (body != null){
                             Log.e("TAG" ,"body : " + body);
+
                         }else {
-                            Log.e("TAG", "body is null");
+                            Log.e(TAG, "body is null");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<Shot>> call, Throwable t) {
-                        Log.e("TAG", "get body fail " + t.getMessage());
+                        Log.e(TAG, "get body fail " + t.getMessage());
                     }
                 });
             }

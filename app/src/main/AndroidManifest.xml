@@ -29,9 +29,12 @@
         <activity
             android:name=".ui.HomeActivity"
             android:label="@string/label_home"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.UserActivity"
+            android:theme="@style/TranslucentTheme" />
 
-        <activity android:name=".ui.UserActivity"
+        <activity android:name=".ui.DetailActivity"
             android:theme="@style/TranslucentTheme"/>
     </application>
 

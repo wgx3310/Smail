@@ -6,6 +6,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -23,12 +24,6 @@ public interface ShotApi {
      *
      * @return List<Shot>
      */
-//    fun getShots(@NotNull access_token: String,
-//                 list: String?,
-//                 timeframe: String?,
-//                 sort: String?,
-//                 page: Int?,
-//                 subscriber: NetSubscriber<MutableList<Shot>>): Subscription
     @GET("shots")
     Call<List<Shot>> getShots(@Query("access_token") String accessToken,
                               @Query("list") String list,
@@ -36,4 +31,16 @@ public interface ShotApi {
                               @Query("sort") String sort,
                               @Query("page") int page);
 
+    /**
+     * 获取一个用户的shot
+     * @param user 用户类型   user是自己   users是其它用户
+     * @param id 用户id   如果是自己的  给null
+     * @param accessToken
+     * @param page 页码
+     */
+    @GET("{user}/{id}/shots")
+    Call<List<Shot>> getUserShots(@Path("user") String user,
+                                  @Path("id") long id,
+                                  @Query("access_token") String accessToken,
+                                  @Query("page") int page);
 }

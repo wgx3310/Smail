@@ -45,4 +45,5 @@
     <color name="google_yellow">#fabc05</color>
     <color name="google_green">#34a853</color>
     <color name="google_blue">#4286f5</color>
+    <color name="caption">#54000000</color>
 </resources>

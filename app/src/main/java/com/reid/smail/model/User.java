@@ -43,6 +43,7 @@ public class User implements Parcelable {
     public final int followers_count;
     public final int followings_count;
     public final int likes_count;
+    public final int likes_received_count;
     public final int projects_count;
     public final int shots_count;
     public final int teams_count;
@@ -70,6 +71,7 @@ public class User implements Parcelable {
                 int followers_count,
                 int followings_count,
                 int likes_count,
+                int likes_received_count,
                 int projects_count,
                 int shots_count,
                 int teams_count,
@@ -96,6 +98,7 @@ public class User implements Parcelable {
         this.followers_count = followers_count;
         this.followings_count = followings_count;
         this.likes_count = likes_count;
+        this.likes_received_count = likes_received_count;
         this.projects_count = projects_count;
         this.shots_count = shots_count;
         this.teams_count = teams_count;
@@ -125,6 +128,7 @@ public class User implements Parcelable {
         followers_count = in.readInt();
         followings_count = in.readInt();
         likes_count = in.readInt();
+        likes_received_count = in.readInt();
         projects_count = in.readInt();
         shots_count = in.readInt();
         teams_count = in.readInt();
@@ -161,6 +165,7 @@ public class User implements Parcelable {
         private int followers_count = 0;
         private int followings_count = 0;
         private int likes_count = 0;
+        private int likes_received_count = 0;
         private int projects_count = 0;
         private int shots_count = 0;
         private int teams_count = 0;
@@ -233,6 +238,11 @@ public class User implements Parcelable {
 
         public Builder setLikesCount(int likes_count) {
             this.likes_count = likes_count;
+            return this;
+        }
+
+        public Builder setLikeRecevierCount(int likes_received_count){
+            this.likes_received_count = likes_received_count;
             return this;
         }
 
@@ -319,6 +329,7 @@ public class User implements Parcelable {
                     followers_count,
                     followings_count,
                     likes_count,
+                    likes_received_count,
                     projects_count,
                     shots_count,
                     teams_count,
@@ -357,6 +368,7 @@ public class User implements Parcelable {
         dest.writeInt(followers_count);
         dest.writeInt(followings_count);
         dest.writeInt(likes_count);
+        dest.writeInt(likes_received_count);
         dest.writeInt(projects_count);
         dest.writeInt(shots_count);
         dest.writeInt(teams_count);

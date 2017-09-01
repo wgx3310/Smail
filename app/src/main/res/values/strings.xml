@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">笑看天下</string>
     <string name="label_home">首页</string>
+    <string name="label_user">用户</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -17,6 +18,14 @@
     <string name="home_title_topic">话题广场</string>
     <string name="home_title_online">线上活动</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="follow">Follow</string>
+    <string name="shots">Shots</string>
+    <string name="buckets">Buckets</string>
+    <string name="comments">Comments</string>
+    <string name="followers">Followers</string>
+    <string name="followings">Followings</string>
+    <string name="get_liked">Get liked</string>
+    <string name="projects">Projects</string>
+    <string name="teams">Teams</string>
+    <string name="likes">Likes</string>
 </resources>

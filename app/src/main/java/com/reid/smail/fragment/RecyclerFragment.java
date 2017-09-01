@@ -117,12 +117,7 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
                         mRefreshLayout.setRefreshing(false);
                         List<Shot> body = response.body();
                         if (body != null){
-                            if (curPage == 1){
-                                mAdapter.setData(body);
-                            }else {
-                                mAdapter.appendData(body);
-                            }
-                            Toast.makeText(getContext(), "get data success", Toast.LENGTH_SHORT).show();
+                            mAdapter.setData(body, curPage > 1);
                         }else {
                             Log.e(TAG, "body is null");
                             Toast.makeText(getContext(), "get data is null", Toast.LENGTH_SHORT).show();

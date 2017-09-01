@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Smail</string>
-
+    <string name="app_name">笑看天下</string>
+    <string name="label_home">首页</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

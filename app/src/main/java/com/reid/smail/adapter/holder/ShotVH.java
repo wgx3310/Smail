@@ -16,14 +16,14 @@ import com.reid.smail.model.Shot;
 
 public class ShotVH extends ShotViewHolder implements View.OnClickListener {
 
-    private ImageView mAvator;
+    private ImageView mAvatar;
     private ImageView mPostImg;
     private TextView mTitle;
     private TextView mAuthor;
 
     public ShotVH(View itemView) {
         super(itemView);
-        mAvator = itemView.findViewById(R.id.avatar);
+        mAvatar = itemView.findViewById(R.id.avatar);
         mPostImg = itemView.findViewById(R.id.post_img);
         mTitle = itemView.findViewById(R.id.title);
         mAuthor = itemView.findViewById(R.id.author);
@@ -41,11 +41,11 @@ public class ShotVH extends ShotViewHolder implements View.OnClickListener {
         }
 
         if (shot.user!= null && !TextUtils.isEmpty(shot.user.avatar_url)){
-            Glide.with(itemView.getContext()).load(shot.user.avatar_url).into(mAvator);
+            Glide.with(itemView.getContext()).load(shot.user.avatar_url).into(mAvatar);
         }
 
         mAuthor.setOnClickListener(this);
-        mAvator.setOnClickListener(this);
+        mAvatar.setOnClickListener(this);
 
         String postUrl = null;
         if (shot.images != null && shot.images.normal != null){

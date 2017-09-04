@@ -1,23 +1,21 @@
 package com.reid.smail.holder;
 
-import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.reid.smail.R;
 import com.reid.smail.model.Shot;
-import com.reid.smail.ui.UserActivity;
+import com.reid.smail.util.IntentUtils;
 
 /**
  * Created by reid on 2017/8/30.
  */
 
-public class RecyclerShotVH extends ShotViewHolder implements View.OnClickListener {
+public class RecyclerShotVH extends BaseVH<Shot> implements View.OnClickListener {
 
     private ImageView mAvatar;
     private ImageView mPostImg;
@@ -58,7 +56,7 @@ public class RecyclerShotVH extends ShotViewHolder implements View.OnClickListen
             postUrl = shot.images.teaser;
         }
         if (postUrl != null){
-            Glide.with(context).load(postUrl).placeholder(R.drawable.loading).into(mPostImg);
+            Glide.with(context).load(postUrl).asBitmap().placeholder(R.drawable.loading).into(mPostImg);
         }
 
         mTopLayout.setOnClickListener(this);
@@ -69,21 +67,18 @@ public class RecyclerShotVH extends ShotViewHolder implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.top_layout:
-                goUser();
+                if (mData != null && mData.user != null){
+                    IntentUtils.goUser(context, mData.user);
+                }
                 break;
             case R.id.post_img:
-                Toast.makeText(view.getContext(), "click post", Toast.LENGTH_SHORT).show();
+                if (mData != null){
+                    IntentUtils.goDetail(context, mData);
+                }
                 break;
             default:
                 break;
         }
     }
 
-    private void goUser() {
-        Intent intent = new Intent(context, UserActivity.class);
-        if (mShot != null && mShot.user != null){
-            intent.putExtra("user", mShot.user);
-        }
-        context.startActivity(intent);
-    }
 }

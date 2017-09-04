@@ -105,7 +105,7 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
 
         ShotApi shotApi = NetService.get().getShotApi();
         if (shotApi != null){
-            String sort = mSpan != null?mSpan.title:"sort";
+            String sort = mSpan != null?mSpan.sort:"sort";
             Call<List<Shot>> call = shotApi.getShots(Constant.ACCESS_TOKEN, null, null, sort, curPage);
             if (call != null){
                 isLoading = true;

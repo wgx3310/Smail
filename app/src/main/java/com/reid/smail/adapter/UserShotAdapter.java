@@ -7,15 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reid.smail.R;
-import com.reid.smail.holder.ShotViewHolder;
+import com.reid.smail.holder.BaseVH;
 import com.reid.smail.holder.UserContentVH;
 import com.reid.smail.holder.UserShotVH;
+import com.reid.smail.model.Shot;
 
 /**
  * Created by reid on 2017/9/1.
  */
 
-public class UserShotAdapter extends ShotAdapter {
+public class UserShotAdapter extends BaseAdapter<Shot> {
 
     private static final int TYPE_CONTENT = 0;
     private static final int TYPE_SHOT = 1;
@@ -26,9 +27,9 @@ public class UserShotAdapter extends ShotAdapter {
     }
 
     @Override
-    public ShotViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseVH onCreateViewHolder(ViewGroup parent, int viewType) {
         View container = null;
-        ShotViewHolder holder = null;
+        BaseVH holder = null;
         switch (viewType){
             case TYPE_CONTENT:
                 container = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_content, parent, false);

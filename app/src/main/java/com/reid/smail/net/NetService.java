@@ -1,6 +1,7 @@
 package com.reid.smail.net;
 
 import com.reid.smail.SmailApp;
+import com.reid.smail.net.api.AccountApi;
 import com.reid.smail.net.api.ShotApi;
 import com.reid.smail.util.Utils;
 
@@ -24,6 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetService {
 
     private static final String BASE_URL = "https://api.dribbble.com/v1/";
+    private static final String WEBSITE_URL = "https://dribbble.com/";
 
     public static NetService get(){
         return Internal.instance;
@@ -36,6 +38,7 @@ public class NetService {
     private NetService() {}
 
     private ShotApi shotApi;
+    private AccountApi websiteApi;
     private OkHttpClient httpClient;
 
     public ShotApi getShotApi(){
@@ -53,6 +56,21 @@ public class NetService {
                 .build().create(ShotApi.class);
     }
 
+    public AccountApi getWebsiteApi(){
+        if (websiteApi == null){
+            createWebsiteApi();
+        }
+
+        return websiteApi;
+    }
+
+    private void createWebsiteApi(){
+        websiteApi = new Retrofit.Builder()
+                .client(getHttpClient())
+                .baseUrl(WEBSITE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(AccountApi.class);
+    }
 
     private OkHttpClient getHttpClient(){
         if (httpClient != null){

@@ -29,7 +29,16 @@
         <activity
             android:name=".ui.HomeActivity"
             android:label="@string/label_home"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:scheme="smail" android:host="app" android:pathPrefix="/home"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.UserActivity"
             android:theme="@style/TranslucentTheme" />

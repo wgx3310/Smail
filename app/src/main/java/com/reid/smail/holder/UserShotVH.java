@@ -7,12 +7,13 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.reid.smail.R;
 import com.reid.smail.model.Shot;
+import com.reid.smail.util.IntentUtils;
 
 /**
  * Created by reid on 2017/9/1.
  */
 
-public class UserShotVH extends ShotViewHolder {
+public class UserShotVH extends BaseVH<Shot> {
 
     private ImageView mImg;
     public UserShotVH(View itemView) {
@@ -24,9 +25,16 @@ public class UserShotVH extends ShotViewHolder {
     public void bindData(Shot shot) {
         super.bindData(shot);
 
-        if (mShot != null && mShot.images != null && !TextUtils.isEmpty(mShot.images.teaser)){
-            Glide.with(context).load(mShot.images.teaser).into(mImg);
+        if (mData != null && mData.images != null && !TextUtils.isEmpty(mData.images.teaser)){
+            Glide.with(context).load(mData.images.teaser).centerCrop().into(mImg);
         }
+
+        mImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                IntentUtils.goDetail(context, mData);
+            }
+        });
     }
 
 }

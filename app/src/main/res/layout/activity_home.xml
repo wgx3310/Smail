@@ -8,30 +8,6 @@
     tools:context="com.reid.smail.ui.HomeActivity"
     tools:openDrawer="start">
 
-    <!--<android.support.design.widget.CoordinatorLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-        <!--<android.support.design.widget.AppBarLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:elevation="0dp"-->
-            <!--android:theme="@style/AppTheme.AppBarOverlay">-->
-
-            <!--<android.support.v7.widget.Toolbar-->
-                <!--android:id="@+id/toolbar"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="?attr/actionBarSize"-->
-                <!--app:elevation="0dp"-->
-                <!--app:layout_scrollFlags="scroll|enterAlways"-->
-                <!--app:popupTheme="@style/AppTheme.PopupOverlay"/>-->
-        <!--</android.support.design.widget.AppBarLayout>-->
-
-        <!--<FrameLayout-->
-            <!--android:id="@+id/content_layout"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"/>-->
-    <!--</android.support.design.widget.CoordinatorLayout>-->
     <include layout="@layout/layout_tool_bar"/>
 
     <android.support.design.widget.NavigationView
@@ -40,6 +16,5 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/activity_home_nav_header"
         app:menu="@menu/activity_home_drawer"/>
 </android.support.v4.widget.DrawerLayout>

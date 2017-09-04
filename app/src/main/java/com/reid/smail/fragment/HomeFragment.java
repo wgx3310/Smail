@@ -59,11 +59,13 @@ public class HomeFragment extends BaseFragment {
         mAdapter = new HomePagerAdapter(getChildFragmentManager());
         List<TabSpan> spans = new ArrayList<>();
         TabSpan sortSpan = new TabSpan();
-        sortSpan.title = "sort";
+        sortSpan.title = "popular";
+        sortSpan.sort = "sort";
         sortSpan.id = String.valueOf(1);
         spans.add(sortSpan);
         TabSpan recentSpan = new TabSpan();
         recentSpan.title = "recent";
+        recentSpan.sort = "recent";
         recentSpan.id = String.valueOf(2);
         spans.add(recentSpan);
         mAdapter.setData(spans);

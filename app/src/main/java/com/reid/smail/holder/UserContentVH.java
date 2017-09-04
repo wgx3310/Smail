@@ -1,15 +1,18 @@
 package com.reid.smail.holder;
 
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.reid.smail.R;
+import com.reid.smail.model.Shot;
 
 /**
  * Created by reid on 2017/9/1.
  */
 
-public class UserContentVH extends ShotViewHolder {
+public class UserContentVH extends BaseVH<Shot> {
 
     private TextView mBioText;
 
@@ -20,6 +23,7 @@ public class UserContentVH extends ShotViewHolder {
     }
 
     public void setBioText(String bioText){
-        mBioText.setText(bioText);
+        if (TextUtils.isEmpty(bioText)) return;
+        mBioText.setText(Html.fromHtml(bioText));
     }
 }

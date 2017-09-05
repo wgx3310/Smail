@@ -30,21 +30,29 @@
             android:name=".ui.HomeActivity"
             android:label="@string/label_home"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <data android:scheme="smail" android:host="app" android:pathPrefix="/home"/>
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="app"
+                    android:pathPrefix="/home"
+                    android:scheme="smail" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.UserActivity"
             android:theme="@style/TranslucentTheme" />
+        <activity
+            android:name=".ui.DetailActivity"
+            android:theme="@style/TranslucentTheme" />
 
-        <activity android:name=".ui.DetailActivity"
-            android:theme="@style/TranslucentTheme"/>
+        <activity android:name=".ui.SettingsActivity"
+            android:label="@string/label_settings"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

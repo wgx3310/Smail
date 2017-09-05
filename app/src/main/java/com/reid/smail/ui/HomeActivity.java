@@ -83,6 +83,12 @@ public class HomeActivity extends BaseActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_settings:
+                Intent settingIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingIntent);
+                break;
+        }
 
         if (mDrawerLayout != null){
             mDrawerLayout.closeDrawer(GravityCompat.START);

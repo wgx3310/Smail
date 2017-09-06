@@ -7,11 +7,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.reid.smail.R;
 import com.reid.smail.model.Comment;
 import com.reid.smail.util.DateUtils;
-import com.reid.smail.view.CircleCrop;
+import com.reid.smail.view.glide.GlideApp;
 
 /**
  * Created by reid on 2017/9/1.
@@ -43,7 +42,7 @@ public class DetailCommentVH extends BaseVH<Comment> {
         if (mData == null) return;
 
         if (mData.user != null) {
-            Glide.with(context).load(mData.user.avatar_url).bitmapTransform(new CircleCrop(context)).into(mAvatar);
+            GlideApp.with(context).load(mData.user.avatar_url).circleCrop().into(mAvatar);
             mName.setText(mData.user.name);
         }
 

@@ -7,12 +7,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.reid.smail.R;
 import com.reid.smail.model.Comment;
 import com.reid.smail.model.Shot;
 import com.reid.smail.util.IntentUtils;
-import com.reid.smail.view.CircleCrop;
+import com.reid.smail.view.glide.GlideApp;
 
 /**
  * Created by reid on 2017/9/1.
@@ -84,7 +83,7 @@ public class DetailHeaderVH extends BaseVH<Comment> implements View.OnClickListe
         }
 
         if (mShot.user != null && !TextUtils.isEmpty(mShot.user.avatar_url)){
-            Glide.with(context).load(mShot.user.avatar_url).bitmapTransform(new CircleCrop(context)).into(mAvatar);
+            GlideApp.with(context).load(mShot.user.avatar_url).circleCrop().into(mAvatar);
         }
 
         mLikeCount.setText(String.valueOf(mShot.likes_count));

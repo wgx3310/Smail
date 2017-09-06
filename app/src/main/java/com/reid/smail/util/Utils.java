@@ -1,6 +1,7 @@
 package com.reid.smail.util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -8,10 +9,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.reid.smail.SmailApp;
+import com.reid.smail.view.glide.GlideApp;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,19 +39,21 @@ public class Utils {
     }
 
     public static void downloadImage(final Context context, String url, final String path){
-        Toast.makeText(context, "开始下载", Toast.LENGTH_SHORT).show();
-        Glide.with(context).load(url).asBitmap().toBytes().into(new SimpleTarget<byte[]>() {
-            @Override
-            public void onResourceReady(byte[] resource, GlideAnimation<? super byte[]> glideAnimation) {
-                save2File(context, resource, path);
-            }
+//        Toast.makeText(context, "开始下载", Toast.LENGTH_SHORT).show();
+//        Glide.with(context).asBitmap().load(url).toBytes().into(new SimpleTarget<byte[]>() {
+//            @Override
+//            public void onResourceReady(byte[] resource, GlideAnimation<? super byte[]> glideAnimation) {
+//                save2File(context, resource, path);
+//            }
+//
+//            @Override
+//            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+//                super.onLoadFailed(e, errorDrawable);
+//                Toast.makeText(context, "下载失败，请重试", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
-            @Override
-            public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                super.onLoadFailed(e, errorDrawable);
-                Toast.makeText(context, "下载失败，请重试", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        GlideApp.with(context).load(url).
     }
 
     public static void save2File(Context context, byte[] bytes, String path) {

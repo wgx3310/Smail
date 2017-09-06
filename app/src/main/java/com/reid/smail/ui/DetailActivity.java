@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.reid.smail.R;
 import com.reid.smail.adapter.DetailAdapter;
 import com.reid.smail.content.Constant;
@@ -25,6 +24,7 @@ import com.reid.smail.net.NetService;
 import com.reid.smail.net.api.ShotApi;
 import com.reid.smail.util.IntentUtils;
 import com.reid.smail.util.Utils;
+import com.reid.smail.view.glide.GlideApp;
 
 import java.io.File;
 import java.util.List;
@@ -109,7 +109,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         if (mShot.images != null){
             String postUrl = mShot.images.hidpi != null? mShot.images.hidpi:mShot.images.normal;
             if (!TextUtils.isEmpty(postUrl)){
-                Glide.with(this).load(postUrl).thumbnail(0.1f).placeholder(R.drawable.loading).into(mPoster);
+                GlideApp.with(this).load(postUrl).thumbnail(0.1f).placeholder(R.drawable.loading).into(mPoster);
             }
         }
 

@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.reid.smail.R;
 import com.reid.smail.adapter.UserShotAdapter;
 import com.reid.smail.content.Constant;
@@ -23,7 +22,7 @@ import com.reid.smail.model.Shot;
 import com.reid.smail.model.User;
 import com.reid.smail.net.NetService;
 import com.reid.smail.net.api.ShotApi;
-import com.reid.smail.view.CircleCrop;
+import com.reid.smail.view.glide.GlideApp;
 
 import java.util.List;
 
@@ -165,7 +164,7 @@ public class UserActivity extends BaseActivity {
     private void bindData() {
         if (mUser == null) return;
 
-        Glide.with(this).load(mUser.avatar_url).bitmapTransform(new CircleCrop(this)).into(mAvatar);
+        GlideApp.with(this).load(mUser.avatar_url).circleCrop().into(mAvatar);
         if (!TextUtils.isEmpty(mUser.location)){
             mLocation.setText(mUser.location);
         }

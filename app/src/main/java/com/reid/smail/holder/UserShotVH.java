@@ -4,10 +4,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.reid.smail.R;
 import com.reid.smail.model.Shot;
 import com.reid.smail.util.IntentUtils;
+import com.reid.smail.view.glide.GlideApp;
 
 /**
  * Created by reid on 2017/9/1.
@@ -26,7 +26,7 @@ public class UserShotVH extends BaseVH<Shot> {
         super.bindData(shot);
 
         if (mData != null && mData.images != null && !TextUtils.isEmpty(mData.images.teaser)){
-            Glide.with(context).load(mData.images.teaser).centerCrop().into(mImg);
+            GlideApp.with(context).load(mData.images.teaser).centerCrop().into(mImg);
         }
 
         mImg.setOnClickListener(new View.OnClickListener() {

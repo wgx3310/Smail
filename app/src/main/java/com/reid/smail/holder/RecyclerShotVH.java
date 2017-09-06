@@ -6,11 +6,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.reid.smail.R;
 import com.reid.smail.model.Shot;
 import com.reid.smail.util.IntentUtils;
-import com.reid.smail.view.CircleCrop;
+import com.reid.smail.view.glide.GlideApp;
 
 /**
  * Created by reid on 2017/8/30.
@@ -46,7 +45,7 @@ public class RecyclerShotVH extends BaseVH<Shot> implements View.OnClickListener
         }
 
         if (shot.user!= null && !TextUtils.isEmpty(shot.user.avatar_url)){
-            Glide.with(context).load(shot.user.avatar_url).bitmapTransform(new CircleCrop(context)).into(mAvatar);
+            GlideApp.with(context).load(shot.user.avatar_url).circleCrop().into(mAvatar);
         }
 
         String postUrl = null;
@@ -57,7 +56,7 @@ public class RecyclerShotVH extends BaseVH<Shot> implements View.OnClickListener
             postUrl = shot.images.teaser;
         }
         if (postUrl != null){
-            Glide.with(context).load(postUrl).asBitmap().placeholder(R.drawable.loading).into(mPostImg);
+            GlideApp.with(context).asBitmap().load(postUrl).placeholder(R.drawable.loading).into(mPostImg);
         }
 
         mTopLayout.setOnClickListener(this);

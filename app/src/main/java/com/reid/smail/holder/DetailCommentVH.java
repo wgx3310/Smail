@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.reid.smail.R;
 import com.reid.smail.model.Comment;
 import com.reid.smail.util.DateUtils;
+import com.reid.smail.view.CircleCrop;
 
 /**
  * Created by reid on 2017/9/1.
@@ -42,7 +43,7 @@ public class DetailCommentVH extends BaseVH<Comment> {
         if (mData == null) return;
 
         if (mData.user != null) {
-            Glide.with(context).load(mData.user.avatar_url).into(mAvatar);
+            Glide.with(context).load(mData.user.avatar_url).bitmapTransform(new CircleCrop(context)).into(mAvatar);
             mName.setText(mData.user.name);
         }
 

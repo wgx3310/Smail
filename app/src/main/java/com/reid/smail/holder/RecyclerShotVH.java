@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.reid.smail.R;
 import com.reid.smail.model.Shot;
 import com.reid.smail.util.IntentUtils;
+import com.reid.smail.view.CircleCrop;
 
 /**
  * Created by reid on 2017/8/30.
@@ -45,7 +46,7 @@ public class RecyclerShotVH extends BaseVH<Shot> implements View.OnClickListener
         }
 
         if (shot.user!= null && !TextUtils.isEmpty(shot.user.avatar_url)){
-            Glide.with(context).load(shot.user.avatar_url).into(mAvatar);
+            Glide.with(context).load(shot.user.avatar_url).bitmapTransform(new CircleCrop(context)).into(mAvatar);
         }
 
         String postUrl = null;

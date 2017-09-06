@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -24,6 +23,7 @@ import com.reid.smail.model.Shot;
 import com.reid.smail.model.User;
 import com.reid.smail.net.NetService;
 import com.reid.smail.net.api.ShotApi;
+import com.reid.smail.view.CircleCrop;
 
 import java.util.List;
 
@@ -165,7 +165,7 @@ public class UserActivity extends BaseActivity {
     private void bindData() {
         if (mUser == null) return;
 
-        Glide.with(this).load(mUser.avatar_url).into(mAvatar);
+        Glide.with(this).load(mUser.avatar_url).bitmapTransform(new CircleCrop(this)).into(mAvatar);
         if (!TextUtils.isEmpty(mUser.location)){
             mLocation.setText(mUser.location);
         }

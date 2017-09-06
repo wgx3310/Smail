@@ -19,6 +19,7 @@ import com.reid.smail.R;
 import com.reid.smail.content.AccountManager;
 import com.reid.smail.fragment.HomeFragment;
 import com.reid.smail.model.User;
+import com.reid.smail.view.CircleCrop;
 
 public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -132,7 +133,7 @@ public class HomeActivity extends BaseActivity
         if (user == null || isDestroyed() || isFinishing()) return;
 
         if (!TextUtils.isEmpty(user.avatar_url)){
-            Glide.with(this).load(user.avatar_url).into(mAvatar);
+            Glide.with(this).load(user.avatar_url).bitmapTransform(new CircleCrop(this)).into(mAvatar);
         }
 
         mName.setText(user.name);
@@ -141,7 +142,7 @@ public class HomeActivity extends BaseActivity
 
     @Override
     public void onLogout() {
-        Glide.with(this).load(R.mipmap.ic_launcher_round).into(mAvatar);
+        Glide.with(this).load(R.mipmap.ic_launcher_round).bitmapTransform(new CircleCrop(this)).into(mAvatar);
         mName.setText(R.string.click_to_login);
         mLogout.setVisibility(View.GONE);
     }

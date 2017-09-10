@@ -4,6 +4,12 @@ import android.app.Application;
 import android.content.Context;
 
 import com.liulishuo.filedownloader.FileDownloader;
+import com.liulishuo.filedownloader.connection.FileDownloadConnection;
+import com.liulishuo.filedownloader.services.DownloadMgrInitialParams;
+import com.liulishuo.filedownloader.util.FileDownloadHelper;
+import com.reid.smail.io.offline.OkHttpConnection;
+
+import java.io.IOException;
 
 /**
  * Created by reid on 2017/8/22.
@@ -21,6 +27,7 @@ public class SmailApp extends Application {
         super.onCreate();
         sContext = getApplicationContext();
 
-        FileDownloader.setupOnApplicationOnCreate(this);
+        DownloadMgrInitialParams.InitCustomMaker initCustomMaker = FileDownloader.setupOnApplicationOnCreate(this);
+        initCustomMaker.connectionCreator(new OkHttpConnection.Creator());
     }
 }

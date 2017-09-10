@@ -22,12 +22,12 @@ import com.reid.smail.R;
 import com.reid.smail.adapter.DetailAdapter;
 import com.reid.smail.content.Constant;
 import com.reid.smail.content.FavoriteManager;
+import com.reid.smail.io.offline.Downloader;
 import com.reid.smail.model.shot.Comment;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.net.NetService;
 import com.reid.smail.net.api.ShotApi;
 import com.reid.smail.util.IntentUtils;
-import com.reid.smail.util.Utils;
 import com.reid.smail.view.glide.GlideApp;
 
 import java.io.File;
@@ -254,7 +254,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             String url = mShot.images.hidpi != null?mShot.images.hidpi:mShot.images.normal;
             File images = getExternalFilesDir("images");
             String path = new File(images, mShot.title +"." + url.substring(url.lastIndexOf(".")+1)).getAbsolutePath();
-            Utils.downloadImage(this, url, path);
+            Downloader.download(this, url, path);
         }
     }
 

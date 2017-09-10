@@ -65,20 +65,80 @@ public interface ShotApi {
                                         @Query("page") int page,
                                         @Query("per_page") int perPage);
 
+    /**
+     * 获取登录用户信息
+     * @param accessToken 登录用户的token
+     * @return
+     */
     @GET("user")
     Call<User> getUserInfo(@Query("access_token") String accessToken);
 
 
+    /**
+     *喜欢一个shot
+     * @param id 这条shot的ID
+     * @param accessToken 登录用户的token
+     * @return
+     */
     @FormUrlEncoded
     @POST("shots/{id}/like")
     Call<Item> likeShot(@Path("id") long id,
                         @Field("access_token") String accessToken);
 
+    /**
+     * 取消喜欢一个shot
+     * @param id 这条shot的ID
+     * @param accessToken 登录用户的token
+     * @return
+     */
     @DELETE("shots/{id}/like")
     Call<Item> unlikeShot(@Path("id") long id,
                           @Query("access_token") String accessToken);
 
+    /**
+     * 检查是否喜欢一个shot
+     * @param id 这条shot的ID
+     * @param accessToken 登录用户的token
+     * @return
+     */
     @GET("shots/{id}/like")
-    Call<Item> check(@Path("id") long id,
-                     @Query("access_token") String accessToken);
+    Call<Item> checkShotLiked(@Path("id") long id,
+                              @Query("access_token") String accessToken);
+
+    /**
+     * 喜欢一个comment
+     * @param shotId comment所属shot id
+     * @param commentId 该comment的id
+     * @param accessToken 登录用户的token
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("shots/{shot}/comments/{id}/like")
+    Call<Item> likeComment(@Path("shot") long shotId,
+                           @Path("id") long commentId,
+                           @Field("access_token") String accessToken);
+
+    /**
+     * 取消喜欢一个comment
+     * @param shotId comment所属shot id
+     * @param commentId 该comment的id
+     * @param accessToken 登录用户的token
+     * @return
+     */
+    @DELETE("shots/{shot}/comments/{id}/like")
+    Call<Item> unlikeComment(@Path("shot") long shotId,
+                             @Path("id") long commentId,
+                             @Query("access_token") String accessToken);
+
+    /**
+     * 检查是否喜欢一个comment
+     * @param shotId comment所属shot id
+     * @param commentId 该comment的id
+     * @param accessToken 登录用户的token
+     * @return
+     */
+    @GET("shots/{shot}/comments/{id}/like")
+    Call<Item> checkCommentLiked(@Path("shot") long shotId,
+                                 @Path("id") long commentId,
+                                 @Query("access_token") String accessToken);
 }

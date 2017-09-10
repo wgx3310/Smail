@@ -30,6 +30,7 @@ public class Comment implements Parcelable{
     public String likes_url;
     public String created_at;
     public String updated_at;
+    public boolean liked;
     public User user;
 
     public Comment(Parcel in){
@@ -39,6 +40,7 @@ public class Comment implements Parcelable{
         likes_url = in.readString();
         created_at = in.readString();
         updated_at = in.readString();
+        liked = in.readInt()==1?true:false;
         user = (User) in.readValue(User.class.getClassLoader());
     }
 
@@ -55,6 +57,7 @@ public class Comment implements Parcelable{
         parcel.writeString(likes_url);
         parcel.writeString(created_at);
         parcel.writeString(updated_at);
+        parcel.writeInt(liked?1:0);
         parcel.writeValue(user);
     }
 
@@ -80,6 +83,7 @@ public class Comment implements Parcelable{
                 ", likeUrl='" + likes_url + '\'' +
                 ", createAt='" + created_at + '\'' +
                 ", updateAt='" + updated_at + '\'' +
+                ", liked=" + liked +
                 ", user=" + user +
                 '}';
     }

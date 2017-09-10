@@ -43,7 +43,7 @@ public class Item {
     }
 
     /**
-     * Equals check based on the id field
+     * Equals checkShotLiked based on the id field
      */
     @Override
     public boolean equals(Object o) {

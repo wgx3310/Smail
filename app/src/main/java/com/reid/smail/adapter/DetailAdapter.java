@@ -37,7 +37,7 @@ public class DetailAdapter extends BaseAdapter<Comment> {
                 break;
             case TYPE_DETAIL_COMMENT:
                 container = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_detail_comment, parent, false);
-                holder = new DetailCommentVH(container);
+                holder = new DetailCommentVH(container, mShot);
                 break;
         }
         return holder;

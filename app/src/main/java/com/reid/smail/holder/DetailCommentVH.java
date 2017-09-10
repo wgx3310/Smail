@@ -8,7 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.reid.smail.R;
+import com.reid.smail.content.CommentManager;
 import com.reid.smail.model.shot.Comment;
+import com.reid.smail.model.shot.Shot;
 import com.reid.smail.util.DateUtils;
 import com.reid.smail.view.glide.GlideApp;
 
@@ -16,22 +18,27 @@ import com.reid.smail.view.glide.GlideApp;
  * Created by reid on 2017/9/1.
  */
 
-public class DetailCommentVH extends BaseVH<Comment> {
+public class DetailCommentVH extends BaseVH<Comment> implements CommentManager.OnCommentListener {
+
+    private Shot mShot;
 
     private ImageView mAvatar;
     private TextView mName;
     private TextView mComment;
     private TextView mTime;
     private ButtonBarLayout mLikeBtn;
+    private ImageView mLikeImg;
     private TextView mLikeCount;
 
-    public DetailCommentVH(View itemView) {
+    public DetailCommentVH(View itemView, Shot shot) {
         super(itemView);
+        mShot = shot;
         mAvatar = itemView.findViewById(R.id.avatar);
         mName = itemView.findViewById(R.id.name);
         mComment = itemView.findViewById(R.id.comment);
         mTime = itemView.findViewById(R.id.time);
         mLikeBtn = itemView.findViewById(R.id.like_btn);
+        mLikeImg = itemView.findViewById(R.id.like_img);
         mLikeCount = itemView.findViewById(R.id.like_count);
     }
 
@@ -57,5 +64,32 @@ public class DetailCommentVH extends BaseVH<Comment> {
         }else {
             mTime.setVisibility(View.GONE);
         }
+
+        mLikeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mData.liked){
+                    CommentManager.unlike(context, mShot.id, mData.id, DetailCommentVH.this);
+                }else {
+                    CommentManager.like(context, mShot.id, mData.id, DetailCommentVH.this);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onSuccess(boolean like) {
+        mData.liked = like;
+        updateLikeState();
+    }
+
+    private void updateLikeState() {
+        mLikeImg.setImageResource(mData.liked?R.drawable.ic_favorite_red_18dp:R.drawable.ic_favorite_black_18dp);
+        mLikeCount.setText(String.valueOf(mData.liked?++mData.likes_count:Math.max(0, --mData.likes_count)));
+    }
+
+    @Override
+    public void onFail() {
+
     }
 }

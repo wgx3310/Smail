@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -253,7 +252,8 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private void clickDownload() {
         if (mShot != null && mShot.images != null){
             String url = mShot.images.hidpi != null?mShot.images.hidpi:mShot.images.normal;
-            String path = Environment.getExternalStorageDirectory() + File.separator + mShot.title +"." + url.substring(url.lastIndexOf(".")+1);
+            File images = getExternalFilesDir("images");
+            String path = new File(images, mShot.title +"." + url.substring(url.lastIndexOf(".")+1)).getAbsolutePath();
             Utils.downloadImage(this, url, path);
         }
     }

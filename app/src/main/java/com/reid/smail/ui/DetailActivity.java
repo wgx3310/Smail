@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.reid.smail.R;
 import com.reid.smail.adapter.DetailAdapter;
-import com.reid.smail.content.AccountManager;
 import com.reid.smail.content.Constant;
 import com.reid.smail.content.FavoriteManager;
 import com.reid.smail.model.shot.Comment;
@@ -137,7 +136,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void loadData(boolean loadMore) {
-        if (isLoading){
+        if (isLoading || mShot == null){
             return;
         }
 
@@ -176,15 +175,20 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.fav_btn:
-                if (mShot == null) return;
-                if (mLiked){
-                    FavoriteManager.unlike(this, mShot.id, onFavListener);
-                }else {
-                    FavoriteManager.like(this, mShot.id, onFavListener);
-                }
-                doFavAnimation();
+                onFavClick();
                 break;
         }
+    }
+
+    private void onFavClick() {
+        if (mShot == null) return;
+
+        if (mLiked){
+            FavoriteManager.unlike(this, mShot.id, onFavListener);
+        }else {
+            FavoriteManager.like(this, mShot.id, onFavListener);
+        }
+        doFavAnimation();
     }
 
     private void doFavAnimation() {
@@ -195,7 +199,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                mFavBtn.setImageResource(mLiked?R.drawable.ic_favorite_black_18dp:R.drawable.ic_favorite_border_light_24dp);
+                updateFavBtnState();
             }
         });
         animator.start();
@@ -205,7 +209,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         @Override
         public void onSuccess(long id, boolean like) {
             mLiked = like;
-            mFavBtn.setImageResource(mLiked?R.drawable.ic_favorite_black_18dp:R.drawable.ic_favorite_border_light_24dp);
+            updateFavBtnState();
         }
 
         @Override
@@ -213,6 +217,11 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             Toast.makeText(DetailActivity.this, "失败，请重试", Toast.LENGTH_SHORT).show();
         }
     };
+
+    private void updateFavBtnState() {
+        if (mFavBtn == null) return;
+        mFavBtn.setImageResource(mLiked? R.drawable.ic_favorite_white_18dp:R.drawable.ic_favorite_border_light_24dp);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -230,7 +239,9 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                 clickDownload();
                 break;
             case R.id.open_in_browser:
-                IntentUtils.goBrowser(this, mShot.html_url);
+                if (mShot != null){
+                    IntentUtils.goBrowser(this, mShot.html_url);
+                }
                 break;
             case R.id.add_bucket:
                 break;
@@ -240,22 +251,26 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     //TODO
     private void clickDownload() {
-        String url = mShot.images.hidpi != null?mShot.images.hidpi:mShot.images.normal;
-        String path = Environment.getExternalStorageDirectory() + File.separator + mShot.title +"." + url.substring(url.lastIndexOf(".")+1);
-        Utils.downloadImage(this, url, path);
+        if (mShot != null && mShot.images != null){
+            String url = mShot.images.hidpi != null?mShot.images.hidpi:mShot.images.normal;
+            String path = Environment.getExternalStorageDirectory() + File.separator + mShot.title +"." + url.substring(url.lastIndexOf(".")+1);
+            Utils.downloadImage(this, url, path);
+        }
     }
 
     private void clickShare() {
-        StringBuilder msg = new StringBuilder();
-        msg.append("我分享了")
-            .append(mShot.user.name)
-            .append("的作品《")
-            .append(mShot.title)
-            .append("》\n")
-            .append(mShot.html_url)
-            .append("\n来自\"")
-            .append(getString(R.string.app_name))
-            .append("\"");
-        IntentUtils.shareTo(this, null, msg.toString());
+        if (mShot != null && mShot.user != null){
+            StringBuilder msg = new StringBuilder();
+            msg.append("我分享了")
+                    .append(mShot.user.name)
+                    .append("的作品《")
+                    .append(mShot.title)
+                    .append("》\n")
+                    .append(mShot.html_url)
+                    .append("\n来自\"")
+                    .append(getString(R.string.app_name))
+                    .append("\"");
+            IntentUtils.shareTo(this, null, msg.toString());
+        }
     }
 }

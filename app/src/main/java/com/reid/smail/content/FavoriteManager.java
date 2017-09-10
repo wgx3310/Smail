@@ -24,8 +24,14 @@ public class FavoriteManager {
                 call.enqueue(new Callback<Item>() {
                     @Override
                     public void onResponse(Call<Item> call, Response<Item> response) {
-                        if (listener != null){
-                            listener.onSuccess(id, false);
+                        if (response.code() == 204){
+                            if (listener != null){
+                                listener.onSuccess(id, false);
+                            }
+                        }else {
+                            if (listener != null){
+                                listener.onFail();
+                            }
                         }
                     }
 

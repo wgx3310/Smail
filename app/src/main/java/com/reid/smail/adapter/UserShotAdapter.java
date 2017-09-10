@@ -11,6 +11,7 @@ import com.reid.smail.holder.BaseVH;
 import com.reid.smail.holder.UserContentVH;
 import com.reid.smail.holder.UserShotVH;
 import com.reid.smail.model.shot.Shot;
+import com.reid.smail.model.shot.User;
 
 /**
  * Created by reid on 2017/9/1.
@@ -21,9 +22,10 @@ public class UserShotAdapter extends BaseAdapter<Shot> {
     private static final int TYPE_CONTENT = 0;
     private static final int TYPE_SHOT = 1;
 
-    private String mBioText;
-    public UserShotAdapter(String bio){
-        mBioText = bio;
+    private User mUser;
+
+    public UserShotAdapter(User user){
+        mUser = user;
     }
 
     @Override
@@ -33,11 +35,11 @@ public class UserShotAdapter extends BaseAdapter<Shot> {
         switch (viewType){
             case TYPE_CONTENT:
                 container = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_content, parent, false);
-                holder = new UserContentVH(container, mBioText);
+                holder = new UserContentVH(container, mUser !=null?mUser.bio:"");
                 break;
             case TYPE_SHOT:
                 container = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_shot, parent, false);
-                holder = new UserShotVH(container);
+                holder = new UserShotVH(container, mUser);
                 break;
         }
         return holder;

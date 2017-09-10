@@ -147,7 +147,7 @@ public class UserActivity extends BaseActivity {
         mRecyclerView = findViewById(R.id.recycler_view);
         mLayoutManager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new UserShotAdapter(mUser.bio);
+        mAdapter = new UserShotAdapter(mUser);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import com.reid.smail.R;
 import com.reid.smail.model.shot.Shot;
+import com.reid.smail.model.shot.User;
 import com.reid.smail.util.IntentUtils;
 import com.reid.smail.view.glide.GlideApp;
 
@@ -16,14 +17,20 @@ import com.reid.smail.view.glide.GlideApp;
 public class UserShotVH extends BaseVH<Shot> {
 
     private ImageView mImg;
-    public UserShotVH(View itemView) {
+    private User mUser;
+    public UserShotVH(View itemView, User user) {
         super(itemView);
         mImg = itemView.findViewById(R.id.shot_img);
+        mUser = user;
     }
 
     @Override
     public void bindData(Shot shot) {
         super.bindData(shot);
+
+        if (mData != null){
+            mData.user = mUser;
+        }
 
         if (mData != null && mData.images != null && !TextUtils.isEmpty(mData.images.teaser)){
             GlideApp.with(context).load(mData.images.teaser).centerCrop().into(mImg);

@@ -6,6 +6,9 @@ import android.text.TextUtils;
 
 import com.reid.smail.SmailApp;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by reid on 2017/9/3.
  */
@@ -22,6 +25,14 @@ public class Prefs {
     public static boolean putString(String key, String value){
         if (!checkKeyValid(key)) return false;
         mEditor.putString(key, value);
+        return mEditor.commit();
+    }
+
+    public static boolean putStringSet(String key, Set<String> value){
+        if (!checkKeyValid(key)) return false;
+        //此处先将原来的值删除掉，否则某些情况下调用putStringSet退出进程不会更新
+        remove(key);
+        mEditor.putStringSet(key, value);
         return mEditor.commit();
     }
 
@@ -52,6 +63,11 @@ public class Prefs {
     public static String getString(String key, String defVal){
         if (!checkKeyValid(key)) return defVal;
         return mPreferences.getString(key, defVal);
+    }
+
+    public static Set<String> getStringSet(String key){
+        if (!checkKeyValid(key)) return null;
+        return mPreferences.getStringSet(key, null);
     }
 
     public static int getInt(String key, int defVal){

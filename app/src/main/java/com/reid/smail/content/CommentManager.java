@@ -1,10 +1,15 @@
 package com.reid.smail.content;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.reid.smail.io.Prefs;
 import com.reid.smail.model.Item;
 import com.reid.smail.net.NetService;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -16,7 +21,7 @@ import retrofit2.Response;
 
 public class CommentManager {
 
-    public static void like(Context context, long shotId, long commentId, final OnCommentListener listener){
+    public static void like(Context context, final long shotId, final long commentId, final OnCommentListener listener){
         if (context == null) return;
 
         if (AccountManager.get().isLogin()){
@@ -26,6 +31,7 @@ public class CommentManager {
                     @Override
                     public void onResponse(Call<Item> call, Response<Item> response) {
                         if (response != null && response.body() != null){
+                            cacheLiked(shotId, commentId, true);
                             if (listener != null){
                                 listener.onSuccess(true);
                             }
@@ -49,7 +55,7 @@ public class CommentManager {
         }
     }
 
-    public static void unlike(Context context, long shotId, long commentId, final OnCommentListener listener){
+    public static void unlike(Context context, final long shotId, final long commentId, final OnCommentListener listener){
         if (context == null) return;
 
         if (AccountManager.get().isLogin()){
@@ -59,6 +65,7 @@ public class CommentManager {
                     @Override
                     public void onResponse(Call<Item> call, Response<Item> response) {
                         if (response.code() == 204){
+                            cacheLiked(shotId, commentId, false);
                             if (listener != null){
                                 listener.onSuccess(false);
                             }
@@ -80,6 +87,12 @@ public class CommentManager {
         }else {
             Toast.makeText(context, "请先登录", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static boolean checkLikedFromCache(long shotId, long commentId){
+        String commentKey = getCommentKey(shotId, commentId);
+        Set<String> likeSet = Prefs.getStringSet(SettingKey.KEY_COMMENT_LIKE);
+        return likeSet != null && !TextUtils.isEmpty(commentKey) && likeSet.contains(commentKey);
     }
 
     //TODO 更新回调状态有问题
@@ -114,6 +127,26 @@ public class CommentManager {
         }else {
             Toast.makeText(context, "请先登录", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private static void cacheLiked(long shotId, long commentId, boolean like) {
+        String commentKey = getCommentKey(shotId, commentId);
+        Set<String> likeSet = Prefs.getStringSet(SettingKey.KEY_COMMENT_LIKE);
+        if (like){
+            if (likeSet == null){
+                likeSet = new HashSet<String>();
+            }
+            likeSet.add(commentKey);
+        }else {
+            if (likeSet != null){
+                likeSet.remove(commentKey);
+            }
+        }
+        Prefs.putStringSet(SettingKey.KEY_COMMENT_LIKE, likeSet);
+    }
+
+    public static String getCommentKey(long shotId, long commentId){
+        return shotId + "-" + commentId;
     }
 
     public interface OnCommentListener{

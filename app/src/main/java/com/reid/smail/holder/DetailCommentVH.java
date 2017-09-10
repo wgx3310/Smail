@@ -3,6 +3,7 @@ package com.reid.smail.holder;
 import android.support.v7.widget.ButtonBarLayout;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,6 +58,11 @@ public class DetailCommentVH extends BaseVH<Comment> implements CommentManager.O
             mComment.setText(Html.fromHtml(mData.body));
         }
 
+        mData.liked = CommentManager.checkLikedFromCache(mShot.id, mData.id);
+        mLikeImg.setImageResource(mData.liked?R.drawable.ic_favorite_red_18dp:R.drawable.ic_favorite_black_18dp);
+        if (mData.liked && mData.likes_count <= 0){
+            mData.likes_count = 1;
+        }
         mLikeCount.setText(String.valueOf(mData.likes_count));
         if (!TextUtils.isEmpty(mData.created_at)){
             mTime.setText(DateUtils.formatDateUseCh(DateUtils.parseISO8601(mData.created_at)));
@@ -85,7 +91,8 @@ public class DetailCommentVH extends BaseVH<Comment> implements CommentManager.O
 
     private void updateLikeState() {
         mLikeImg.setImageResource(mData.liked?R.drawable.ic_favorite_red_18dp:R.drawable.ic_favorite_black_18dp);
-        mLikeCount.setText(String.valueOf(mData.liked?++mData.likes_count:Math.max(0, --mData.likes_count)));
+        mData.likes_count = mData.liked?mData.likes_count+1:Math.max(0, mData.likes_count - 1);
+        mLikeCount.setText(String.valueOf(mData.likes_count));
     }
 
     @Override

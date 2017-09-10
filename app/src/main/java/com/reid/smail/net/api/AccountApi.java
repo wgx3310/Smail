@@ -1,6 +1,6 @@
 package com.reid.smail.net.api;
 
-import com.reid.smail.model.Token;
+import com.reid.smail.model.shot.Token;
 
 import retrofit2.Call;
 import retrofit2.http.Field;

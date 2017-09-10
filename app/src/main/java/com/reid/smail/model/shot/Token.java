@@ -1,4 +1,4 @@
-package com.reid.smail.model;
+package com.reid.smail.model.shot;
 
 import android.os.Parcel;
 import android.os.Parcelable;

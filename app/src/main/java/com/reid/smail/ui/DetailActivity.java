@@ -1,5 +1,8 @@
 package com.reid.smail.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,14 +15,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.reid.smail.R;
 import com.reid.smail.adapter.DetailAdapter;
+import com.reid.smail.content.AccountManager;
 import com.reid.smail.content.Constant;
-import com.reid.smail.model.Comment;
-import com.reid.smail.model.Shot;
+import com.reid.smail.content.FavoriteManager;
+import com.reid.smail.model.shot.Comment;
+import com.reid.smail.model.shot.Shot;
 import com.reid.smail.net.NetService;
 import com.reid.smail.net.api.ShotApi;
 import com.reid.smail.util.IntentUtils;
@@ -46,6 +52,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     private int curPage = 1;
     private boolean isLoading;
+    private boolean mLiked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +63,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
         handleIntent();
         initView();
+        checkShotLiked();
         bindData();
     }
 
@@ -86,6 +94,12 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         initRecyclerView();
     }
 
+    private void checkShotLiked() {
+        if (mShot != null){
+            FavoriteManager.check(this, mShot.id, onFavListener);
+        }
+    }
+
     private void initRecyclerView() {
         mRecyclerView = findViewById(R.id.recycler_view);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -114,6 +128,12 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         }
 
         loadData(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkShotLiked();
     }
 
     private void loadData(boolean loadMore) {
@@ -156,10 +176,43 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.fav_btn:
-                Toast.makeText(this, "click fav button", Toast.LENGTH_SHORT).show();
+                if (mShot == null) return;
+                if (mLiked){
+                    FavoriteManager.unlike(this, mShot.id, onFavListener);
+                }else {
+                    FavoriteManager.like(this, mShot.id, onFavListener);
+                }
+                doFavAnimation();
                 break;
         }
     }
+
+    private void doFavAnimation() {
+        if (mFavBtn == null) return;
+        ObjectAnimator animator = ObjectAnimator.ofFloat(mFavBtn, "scaleY", 0.7f, 1.5f, 1f)
+                .setDuration(1200);
+        animator.setInterpolator(new OvershootInterpolator());
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mFavBtn.setImageResource(mLiked?R.drawable.ic_favorite_black_18dp:R.drawable.ic_favorite_border_light_24dp);
+            }
+        });
+        animator.start();
+    }
+
+    private FavoriteManager.OnFavListener onFavListener = new FavoriteManager.OnFavListener() {
+        @Override
+        public void onSuccess(long id, boolean like) {
+            mLiked = like;
+            mFavBtn.setImageResource(mLiked?R.drawable.ic_favorite_black_18dp:R.drawable.ic_favorite_border_light_24dp);
+        }
+
+        @Override
+        public void onFail() {
+            Toast.makeText(DetailActivity.this, "失败，请重试", Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

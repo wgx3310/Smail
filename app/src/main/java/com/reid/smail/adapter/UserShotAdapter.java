@@ -10,7 +10,7 @@ import com.reid.smail.R;
 import com.reid.smail.holder.BaseVH;
 import com.reid.smail.holder.UserContentVH;
 import com.reid.smail.holder.UserShotVH;
-import com.reid.smail.model.Shot;
+import com.reid.smail.model.shot.Shot;
 
 /**
  * Created by reid on 2017/9/1.

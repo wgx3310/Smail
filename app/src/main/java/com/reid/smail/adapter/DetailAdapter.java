@@ -8,8 +8,8 @@ import com.reid.smail.R;
 import com.reid.smail.holder.BaseVH;
 import com.reid.smail.holder.DetailCommentVH;
 import com.reid.smail.holder.DetailHeaderVH;
-import com.reid.smail.model.Comment;
-import com.reid.smail.model.Shot;
+import com.reid.smail.model.shot.Comment;
+import com.reid.smail.model.shot.Shot;
 
 /**
  * Created by reid on 2017/9/1.

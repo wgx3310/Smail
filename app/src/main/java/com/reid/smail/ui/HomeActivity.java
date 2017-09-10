@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.reid.smail.R;
 import com.reid.smail.content.AccountManager;
 import com.reid.smail.fragment.HomeFragment;
-import com.reid.smail.model.User;
+import com.reid.smail.model.shot.User;
 import com.reid.smail.view.glide.GlideApp;
 
 public class HomeActivity extends BaseActivity

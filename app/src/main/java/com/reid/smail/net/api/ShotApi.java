@@ -1,13 +1,18 @@
 package com.reid.smail.net.api;
 
-import com.reid.smail.model.Comment;
-import com.reid.smail.model.Shot;
-import com.reid.smail.model.User;
+import com.reid.smail.model.Item;
+import com.reid.smail.model.shot.Comment;
+import com.reid.smail.model.shot.Shot;
+import com.reid.smail.model.shot.User;
 
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.DELETE;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -62,4 +67,18 @@ public interface ShotApi {
 
     @GET("user")
     Call<User> getUserInfo(@Query("access_token") String accessToken);
+
+
+    @FormUrlEncoded
+    @POST("shots/{id}/like")
+    Call<Item> likeShot(@Path("id") long id,
+                        @Field("access_token") String accessToken);
+
+    @DELETE("shots/{id}/like")
+    Call<Item> unlikeShot(@Path("id") long id,
+                          @Query("access_token") String accessToken);
+
+    @GET("shots/{id}/like")
+    Call<Item> check(@Path("id") long id,
+                     @Query("access_token") String accessToken);
 }

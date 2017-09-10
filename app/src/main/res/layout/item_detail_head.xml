@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/title"
                 android:text="this is Author"
-                android:textColor="@color/google_blue"
+                android:textColor="@color/blue"
                 android:textSize="16sp" />
 
         </RelativeLayout>

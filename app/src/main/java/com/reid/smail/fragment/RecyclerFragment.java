@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.reid.smail.R;
 import com.reid.smail.adapter.RecyclerAdapter;
 import com.reid.smail.content.Constant;
-import com.reid.smail.model.Shot;
+import com.reid.smail.model.shot.Shot;
 import com.reid.smail.model.span.TabSpan;
 import com.reid.smail.net.NetService;
 import com.reid.smail.net.api.ShotApi;
@@ -72,7 +72,7 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mRefreshLayout = view.findViewById(R.id.refresh_layout);
-        mRefreshLayout.setColorSchemeResources(R.color.google_red, R.color.google_yellow, R.color.google_green, R.color.google_blue);
+        mRefreshLayout.setColorSchemeResources(R.color.red, R.color.yellow, R.color.green, R.color.blue);
         mRefreshLayout.setOnRefreshListener(this);
 
         mRecyclerView = view.findViewById(R.id.recycler_view);

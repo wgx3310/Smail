@@ -8,8 +8,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.reid.smail.R;
-import com.reid.smail.model.Comment;
-import com.reid.smail.model.Shot;
+import com.reid.smail.model.shot.Comment;
+import com.reid.smail.model.shot.Shot;
 import com.reid.smail.util.IntentUtils;
 import com.reid.smail.view.glide.GlideApp;
 

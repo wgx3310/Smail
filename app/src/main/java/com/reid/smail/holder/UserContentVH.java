@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.reid.smail.R;
-import com.reid.smail.model.Shot;
+import com.reid.smail.model.shot.Shot;
 
 /**
  * Created by reid on 2017/9/1.

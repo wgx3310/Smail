@@ -1,4 +1,4 @@
-package com.reid.smail.model;
+package com.reid.smail.model.shot;
 
 import android.content.res.ColorStateList;
 import android.os.Parcel;
@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.text.Spanned;
 import android.text.TextUtils;
+
+import com.reid.smail.model.Item;
 
 import java.util.ArrayList;
 import java.util.Date;

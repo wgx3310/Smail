@@ -19,7 +19,7 @@ package com.reid.smail.model;
 /**
  * Base class for all model types
  */
-public abstract class Item {
+public class Item {
 
     public final long id;
     public final String title;

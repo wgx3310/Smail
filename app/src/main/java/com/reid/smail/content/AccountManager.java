@@ -8,8 +8,8 @@ import android.widget.Toast;
 
 import com.reid.smail.SmailApp;
 import com.reid.smail.io.Prefs;
-import com.reid.smail.model.Token;
-import com.reid.smail.model.User;
+import com.reid.smail.model.shot.Token;
+import com.reid.smail.model.shot.User;
 import com.reid.smail.net.NetService;
 
 import java.util.ArrayList;
@@ -46,6 +46,11 @@ public class AccountManager {
     public void addCallback(AccountCallback callback){
         if (callback == null) return;
         callbacks.add(callback);
+    }
+
+    public String getAccessToken(){
+        if (!isLogin()) return null;
+        return mToken.access_token;
     }
 
     public void login() {

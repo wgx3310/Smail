@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.reid.smail.R;
-import com.reid.smail.model.Comment;
+import com.reid.smail.model.shot.Comment;
 import com.reid.smail.util.DateUtils;
 import com.reid.smail.view.glide.GlideApp;
 

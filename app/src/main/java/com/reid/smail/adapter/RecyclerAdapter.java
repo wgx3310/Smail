@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import com.reid.smail.R;
 import com.reid.smail.holder.RecyclerShotVH;
 import com.reid.smail.holder.BaseVH;
-import com.reid.smail.model.Shot;
+import com.reid.smail.model.shot.Shot;
 
 
 /**

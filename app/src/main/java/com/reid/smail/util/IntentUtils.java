@@ -6,8 +6,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.reid.smail.model.Shot;
-import com.reid.smail.model.User;
+import com.reid.smail.model.shot.Shot;
+import com.reid.smail.model.shot.User;
 import com.reid.smail.ui.DetailActivity;
 import com.reid.smail.ui.UserActivity;
 

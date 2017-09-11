@@ -107,6 +107,7 @@ public class WebActivity extends BaseActivity {
                 }else {
                     Reminder.toast(R.string.login_failed);
                 }
+                mWebView.stopLoading();
                 finish();
                 return true;
             }
@@ -124,5 +125,20 @@ public class WebActivity extends BaseActivity {
             }
         }
         return super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mWebView != null){
+            mWebView.stopLoading();
+            mWebView.clearCache(true);
+            mWebView.clearHistory();
+            mWebView.setWebViewClient(null);
+            mWebView.setWebChromeClient(null);
+            mWebView.freeMemory();
+            mWebView.pauseTimers();
+            mWebView = null;
+        }
+        super.onDestroy();
     }
 }

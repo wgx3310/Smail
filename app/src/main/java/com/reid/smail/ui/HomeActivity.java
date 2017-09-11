@@ -140,4 +140,13 @@ public class HomeActivity extends BaseActivity
         mName.setText(R.string.click_to_login);
         mLogout.setVisibility(View.GONE);
     }
+
+    @Override
+    protected void onDestroy() {
+        if (mAccountManager != null){
+            mAccountManager.removeCallback(this);
+            mAccountManager = null;
+        }
+        super.onDestroy();
+    }
 }

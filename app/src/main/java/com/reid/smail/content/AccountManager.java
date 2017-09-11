@@ -47,6 +47,11 @@ public class AccountManager {
         callbacks.add(callback);
     }
 
+    public void removeCallback(AccountCallback callback){
+        if (callback == null) return;
+        callbacks.remove(callback);
+    }
+
     public String getAccessToken(){
         if (!isLogin()) return null;
         return mToken.access_token;

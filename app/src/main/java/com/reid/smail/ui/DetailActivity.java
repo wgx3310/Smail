@@ -56,12 +56,10 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
         initToolbar();
 
         handleIntent();
         initView();
-        checkShotLiked();
         bindData();
     }
 
@@ -125,6 +123,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             }
         }
 
+        checkShotLiked();
         loadData(false);
     }
 

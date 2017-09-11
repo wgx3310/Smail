@@ -40,7 +40,6 @@ public class HomeActivity extends BaseActivity
         setContentView(R.layout.activity_home);
         mAccountManager = AccountManager.get();
         mAccountManager.addCallback(this);
-        mAccountManager.checkAuthCallback(getIntent());
         initView();
     }
 
@@ -60,12 +59,6 @@ public class HomeActivity extends BaseActivity
         initNavHeaderView();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.content_layout, new HomeFragment()).commitAllowingStateLoss();
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        mAccountManager.checkAuthCallback(intent);
     }
 
     private void initNavHeaderView() {

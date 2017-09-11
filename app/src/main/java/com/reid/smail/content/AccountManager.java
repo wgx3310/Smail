@@ -1,16 +1,17 @@
 package com.reid.smail.content;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.reid.smail.R;
 import com.reid.smail.SmailApp;
 import com.reid.smail.io.Prefs;
 import com.reid.smail.model.shot.Token;
 import com.reid.smail.model.shot.User;
 import com.reid.smail.net.NetService;
+import com.reid.smail.ui.WebActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,50 +55,36 @@ public class AccountManager {
     }
 
     public void login() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(Constant.OAUTH_URL));
+        Intent intent = new Intent(SmailApp.getContext(), WebActivity.class);
+        intent.putExtra(SettingKey.KEY_TITLE, SmailApp.getContext().getString(R.string.login));
+        intent.putExtra(SettingKey.KEY_URL, Constant.OAUTH_URL);
         SmailApp.getContext().startActivity(intent);
     }
 
-    public void checkAuthCallback(Intent intent) {
-        if (intent == null) return;
+    public void acquireAccessToken(String code){
+        if (TextUtils.isEmpty(code)) return;
 
-        if (intent != null && intent.getData() != null
-                && !TextUtils.isEmpty(intent.getScheme())
-                && Constant.SCHEMA.equals(intent.getScheme())
-                && intent.getData() != null) {
-            String state = intent.getData().getQueryParameter("state");
-            if (!Constant.OAUTH_STATE.equals(state)){
-                return;
-            }
-
-            String code = intent.getData().getQueryParameter("code");
-            if (TextUtils.isEmpty(code)){
-                return;
-            }
-
-            Call<Token> call = NetService.get().getWebsiteApi().getToken(Constant.CLIENT_ID, Constant.CLIENT_SECRET, code);
-            if (call != null){
-                call.enqueue(new Callback<Token>() {
-                    @Override
-                    public void onResponse(Call<Token> call, Response<Token> response) {
-                        if (response != null && response.body() != null){
-                            mToken = response.body();
-                            Prefs.putString(SettingKey.SETTING_TOKEN, AppGson.get().toJson(mToken));
-                            updateUserInfo();
-                        }else {
-                            Toast.makeText(SmailApp.getContext(), "登录失败，请重试", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Token> call, Throwable t) {
+        Call<Token> call = NetService.get().getWebsiteApi().getToken(Constant.CLIENT_ID, Constant.CLIENT_SECRET, code);
+        if (call != null){
+            call.enqueue(new Callback<Token>() {
+                @Override
+                public void onResponse(Call<Token> call, Response<Token> response) {
+                    if (response != null && response.body() != null){
+                        mToken = response.body();
+                        Prefs.putString(SettingKey.SETTING_TOKEN, AppGson.get().toJson(mToken));
+                        updateUserInfo();
+                    }else {
                         Toast.makeText(SmailApp.getContext(), "登录失败，请重试", Toast.LENGTH_SHORT).show();
                     }
-                });
-            }else {
-                Toast.makeText(SmailApp.getContext(), "登录失败，请重试", Toast.LENGTH_SHORT).show();
-            }
+                }
+
+                @Override
+                public void onFailure(Call<Token> call, Throwable t) {
+                    Toast.makeText(SmailApp.getContext(), "登录失败，请重试", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else {
+            Toast.makeText(SmailApp.getContext(), "登录失败，请重试", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -10,4 +10,7 @@ public class SettingKey {
     public static final String SETTING_USER = "user";
 
     public static final String KEY_COMMENT_LIKE = "comment_likes";
+
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_URL = "url";
 }

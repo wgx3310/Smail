@@ -42,6 +42,10 @@ public class AccountManager {
         return mToken != null && mUser != null;
     }
 
+    public User getUser(){
+        return mUser;
+    }
+
     public void addCallback(AccountCallback callback){
         if (callback == null) return;
         callbacks.add(callback);

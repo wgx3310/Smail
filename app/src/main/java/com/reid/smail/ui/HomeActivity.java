@@ -18,6 +18,7 @@ import com.reid.smail.R;
 import com.reid.smail.content.AccountManager;
 import com.reid.smail.fragment.HomeFragment;
 import com.reid.smail.model.shot.User;
+import com.reid.smail.util.IntentUtils;
 import com.reid.smail.view.glide.GlideApp;
 
 public class HomeActivity extends BaseActivity
@@ -106,7 +107,7 @@ public class HomeActivity extends BaseActivity
                 if (!mAccountManager .isLogin()){
                     login();
                 } else {
-                    //TODO 去往自己主页
+                    IntentUtils.goUser(this, mAccountManager.getUser());
                 }
                 break;
             case R.id.nav_header_logout:

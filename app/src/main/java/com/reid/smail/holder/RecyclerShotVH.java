@@ -56,7 +56,7 @@ public class RecyclerShotVH extends BaseVH<Shot> implements View.OnClickListener
             postUrl = shot.images.teaser;
         }
         if (postUrl != null){
-            GlideApp.with(context).asBitmap().load(postUrl).placeholder(R.drawable.loading).into(mPostImg);
+            GlideApp.with(context).asBitmap().load(postUrl).placeholder(R.drawable.loading_icon).into(mPostImg);
         }
 
         mTopLayout.setOnClickListener(this);

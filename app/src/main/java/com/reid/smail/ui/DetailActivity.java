@@ -119,7 +119,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         if (mShot.images != null){
             String postUrl = mShot.images.hidpi != null? mShot.images.hidpi:mShot.images.normal;
             if (!TextUtils.isEmpty(postUrl)){
-                GlideApp.with(this).load(postUrl).thumbnail(0.1f).placeholder(R.drawable.loading).into(mPoster);
+                GlideApp.with(this).load(postUrl).thumbnail(0.1f).placeholder(R.drawable.loading_icon).into(mPoster);
             }
         }
 

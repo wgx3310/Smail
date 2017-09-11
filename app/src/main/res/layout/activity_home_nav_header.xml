@@ -16,15 +16,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/nav_header_vertical_spacing"
         android:layout_alignParentBottom="true"
+        android:textSize="18sp"
         android:text="@string/click_to_login" />
 
     <ImageView
         android:id="@+id/nav_header_avatar"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:layout_above="@+id/nav_header_name"
-        app:srcCompat="@drawable/ic_user_placeholder" />
+        app:srcCompat="@drawable/ic_avatar" />
 
     <ImageView
         android:id="@+id/nav_header_logout"

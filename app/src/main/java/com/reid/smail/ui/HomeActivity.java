@@ -136,7 +136,7 @@ public class HomeActivity extends BaseActivity
     public void onLogout() {
         if (isDestroyed() || isFinishing()) return;
 
-        GlideApp.with(this).load(R.drawable.ic_user_placeholder).circleCrop().into(mAvatar);
+        GlideApp.with(this).load(R.drawable.ic_avatar).circleCrop().into(mAvatar);
         mName.setText(R.string.click_to_login);
         mLogout.setVisibility(View.GONE);
     }

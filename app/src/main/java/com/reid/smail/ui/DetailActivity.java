@@ -10,18 +10,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.reid.smail.R;
 import com.reid.smail.adapter.DetailAdapter;
 import com.reid.smail.content.Constant;
 import com.reid.smail.content.FavoriteManager;
+import com.reid.smail.content.Reminder;
+import com.reid.smail.content.SettingKey;
 import com.reid.smail.io.offline.Downloader;
 import com.reid.smail.model.shot.Comment;
 import com.reid.smail.model.shot.Shot;
@@ -78,7 +78,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private void handleIntent() {
         Intent intent = getIntent();
         if (intent != null){
-            mShot = intent.getParcelableExtra("shot");
+            mShot = intent.getParcelableExtra(SettingKey.KEY_SHOT);
         }
     }
 
@@ -153,16 +153,14 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                         if (body != null){
                             mAdapter.setData(body, curPage > 1);
                         }else {
-                            Log.e(TAG, "body is null");
-                            Toast.makeText(DetailActivity.this, "get data is null", Toast.LENGTH_SHORT).show();
+                            Reminder.toast(R.string.empty_data);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<Comment>> call, Throwable t) {
                         isLoading = false;
-                        Log.e(TAG, "get body fail " + t.getMessage());
-                        Toast.makeText(DetailActivity.this, "get data fail", Toast.LENGTH_SHORT).show();
+                        Reminder.toast(R.string.load_data_failed);
                     }
                 });
             }
@@ -212,7 +210,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
         @Override
         public void onFail() {
-            Toast.makeText(DetailActivity.this, "失败，请重试", Toast.LENGTH_SHORT).show();
+            Reminder.toast(R.string.fav_failed);
         }
     };
 

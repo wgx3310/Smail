@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -13,11 +12,11 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.reid.smail.R;
 import com.reid.smail.content.AccountManager;
 import com.reid.smail.content.Constant;
+import com.reid.smail.content.Reminder;
 import com.reid.smail.content.SettingKey;
 
 public class WebActivity extends BaseActivity {
@@ -99,7 +98,6 @@ public class WebActivity extends BaseActivity {
     private WebViewClient mViewClient = new WebViewClient(){
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            Log.e("WGX", "shouldOverrideUrlLoading " + request.getUrl());
             Uri uri = request.getUrl();
             if (Constant.SCHEMA.equals(uri.getScheme())){
                 String code = uri.getQueryParameter("code");
@@ -107,7 +105,7 @@ public class WebActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(code) && Constant.OAUTH_STATE.equals(state)){
                     AccountManager.get().acquireAccessToken(code);
                 }else {
-                    Toast.makeText(WebActivity.this, "登录失败，请重试", Toast.LENGTH_SHORT).show();
+                    Reminder.toast(R.string.login_failed);
                 }
                 finish();
                 return true;

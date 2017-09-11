@@ -10,11 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.reid.smail.R;
 import com.reid.smail.adapter.RecyclerAdapter;
 import com.reid.smail.content.Constant;
+import com.reid.smail.content.Reminder;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.model.span.TabSpan;
 import com.reid.smail.net.NetService;
@@ -120,7 +120,7 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
                             mAdapter.setData(body, curPage > 1);
                         }else {
                             Log.e(TAG, "body is null");
-                            Toast.makeText(getContext(), "get data is null", Toast.LENGTH_SHORT).show();
+                            Reminder.toast(R.string.empty_data);
                         }
                     }
 
@@ -130,7 +130,7 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
                         mProgressBar.setVisibility(View.GONE);
                         mRefreshLayout.setRefreshing(false);
                         Log.e(TAG, "get body fail " + t.getMessage());
-                        Toast.makeText(getContext(), "get data fail", Toast.LENGTH_SHORT).show();
+                        Reminder.toast(R.string.load_data_failed);
                     }
                 });
             }

@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.reid.smail.R;
 import com.reid.smail.adapter.UserShotAdapter;
 import com.reid.smail.content.Constant;
+import com.reid.smail.content.Reminder;
+import com.reid.smail.content.SettingKey;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.model.shot.User;
 import com.reid.smail.net.NetService;
@@ -90,7 +92,7 @@ public class UserActivity extends BaseActivity {
     private void handleIntent() {
         Intent intent = getIntent();
         if (intent != null){
-            mUser = intent.getParcelableExtra("user");
+            mUser = intent.getParcelableExtra(SettingKey.KEY_USER);
         }
     }
 
@@ -216,16 +218,14 @@ public class UserActivity extends BaseActivity {
                         if (body != null){
                             mAdapter.setData(body, curPage > 1);
                         }else {
-                            Log.e(TAG, "body is null");
-                            Toast.makeText(UserActivity.this, "get data is null", Toast.LENGTH_SHORT).show();
+                            Reminder.toast(R.string.empty_data);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<Shot>> call, Throwable t) {
                         isLoading = false;
-                        Log.e(TAG, "get body fail " + t.getMessage());
-                        Toast.makeText(UserActivity.this, "get data fail", Toast.LENGTH_SHORT).show();
+                        Reminder.toast(R.string.load_data_failed);
                     }
                 });
             }

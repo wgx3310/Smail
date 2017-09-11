@@ -47,4 +47,5 @@
     <color name="blue">#4286f5</color>
     <color name="caption">#54000000</color>
     <color name="icon">#6B6B76</color>
+    <color name="ic_launcher_background">#3DA0FF</color>
 </resources>

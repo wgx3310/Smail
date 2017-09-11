@@ -2,8 +2,6 @@ package com.reid.smail.content;
 
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.reid.smail.R;
 import com.reid.smail.SmailApp;
@@ -74,17 +72,17 @@ public class AccountManager {
                         Prefs.putString(SettingKey.SETTING_TOKEN, AppGson.get().toJson(mToken));
                         updateUserInfo();
                     }else {
-                        Toast.makeText(SmailApp.getContext(), "登录失败，请重试", Toast.LENGTH_SHORT).show();
+                        Reminder.toast(R.string.login_failed);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Token> call, Throwable t) {
-                    Toast.makeText(SmailApp.getContext(), "登录失败，请重试", Toast.LENGTH_SHORT).show();
+                    Reminder.toast(R.string.login_failed);
                 }
             });
         }else {
-            Toast.makeText(SmailApp.getContext(), "登录失败，请重试", Toast.LENGTH_SHORT).show();
+            Reminder.toast(R.string.login_failed);
         }
     }
 
@@ -106,15 +104,14 @@ public class AccountManager {
                         if (response != null && response.body() != null){
                             mUser = response.body();
                             Prefs.putString(SettingKey.SETTING_USER, AppGson.get().toJson(mUser));
-                            Toast.makeText(SmailApp.getContext(), "登录成功", Toast.LENGTH_SHORT).show();
+                            Reminder.toast(R.string.login_success);
                             notifyLogin(mUser);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
-                        Log.e(TAG, "getUserInfo fail: " + t.getMessage());
-                        Toast.makeText(SmailApp.getContext(), "登录失败，请重试", Toast.LENGTH_SHORT).show();
+                        Reminder.toast(R.string.login_failed);
                     }
                 });
             }
@@ -142,7 +139,7 @@ public class AccountManager {
         mUser = null;
         Prefs.remove(SettingKey.SETTING_TOKEN);
         Prefs.remove(SettingKey.SETTING_USER);
-        Toast.makeText(SmailApp.getContext(), "登出成功", Toast.LENGTH_SHORT).show();
+        Reminder.toast(R.string.logout_success);
         notifyLogout();
     }
 

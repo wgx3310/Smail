@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.reid.smail.R;
 import com.reid.smail.io.Prefs;
 import com.reid.smail.model.Item;
 import com.reid.smail.net.NetService;
@@ -51,7 +52,7 @@ public class CommentManager {
                 });
             }
         }else {
-            Toast.makeText(context, "请先登录", Toast.LENGTH_SHORT).show();
+            Reminder.toast(R.string.not_logged);
         }
     }
 
@@ -85,7 +86,7 @@ public class CommentManager {
                 });
             }
         }else {
-            Toast.makeText(context, "请先登录", Toast.LENGTH_SHORT).show();
+            Reminder.toast(R.string.not_logged);
         }
     }
 
@@ -125,7 +126,7 @@ public class CommentManager {
                 });
             }
         }else {
-            Toast.makeText(context, "请先登录", Toast.LENGTH_SHORT).show();
+            Reminder.toast(R.string.not_logged);
         }
     }
 

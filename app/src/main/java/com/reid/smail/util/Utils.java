@@ -1,6 +1,8 @@
 package com.reid.smail.util;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -27,4 +29,29 @@ public class Utils {
         return false;
     }
 
+    public static String appVerName(){
+        PackageManager packageManager = SmailApp.getContext().getPackageManager();
+        try {
+            PackageInfo packageInfo = packageManager.getPackageInfo(SmailApp.getContext().getPackageName(), 0);
+            if (packageInfo != null){
+                return packageInfo.versionName;
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static int appVerCode(){
+        PackageManager packageManager = SmailApp.getContext().getPackageManager();
+        try {
+            PackageInfo packageInfo = packageManager.getPackageInfo(SmailApp.getContext().getPackageName(), 0);
+            if (packageInfo != null){
+                return packageInfo.versionCode;
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }

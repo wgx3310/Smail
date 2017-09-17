@@ -18,6 +18,7 @@ import android.widget.ImageView;
 
 import com.reid.smail.R;
 import com.reid.smail.adapter.DetailAdapter;
+import com.reid.smail.content.AccountManager;
 import com.reid.smail.content.Constant;
 import com.reid.smail.content.FavoriteManager;
 import com.reid.smail.content.Reminder;
@@ -123,14 +124,19 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             }
         }
 
-        checkShotLiked();
+        if (AccountManager.get().isLogin()){
+            checkShotLiked();
+        }
+
         loadData(false);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        checkShotLiked();
+        if (AccountManager.get().isLogin()){
+            checkShotLiked();
+        }
     }
 
     private void loadData(boolean loadMore) {
@@ -245,7 +251,6 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         return true;
     }
 
-    //TODO
     private void clickDownload() {
         if (mShot != null && mShot.images != null){
             String url = mShot.images.hidpi != null?mShot.images.hidpi:mShot.images.normal;

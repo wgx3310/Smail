@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,10 +18,14 @@ import android.widget.TextView;
 
 import com.reid.smail.R;
 import com.reid.smail.content.AccountManager;
+import com.reid.smail.fragment.BaseFragment;
+import com.reid.smail.fragment.BucketsFragment;
 import com.reid.smail.fragment.HomeFragment;
 import com.reid.smail.model.shot.User;
 import com.reid.smail.util.IntentUtils;
 import com.reid.smail.view.glide.GlideApp;
+
+import java.util.List;
 
 public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -34,6 +40,11 @@ public class HomeActivity extends BaseActivity
     private ImageView mLogout;
 
     private AccountManager mAccountManager;
+
+    private HomeFragment mHomeFragment;
+    private BucketsFragment mBucketsFragment;
+
+    private int mCurNavId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +70,26 @@ public class HomeActivity extends BaseActivity
         mNavView.setNavigationItemSelectedListener(this);
         initNavHeaderView();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_layout, new HomeFragment()).commitAllowingStateLoss();
+        showFragment();
+    }
+
+    private void showFragment() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.fragment_enter,
+                R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit);
+        BaseFragment desFragment = getNavFragmentById();
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        if (fragments != null && fragments.size() > 0){
+            for (Fragment f : fragments){
+                if (desFragment != f){
+                    transaction.hide(f);
+                }
+            }
+        }
+        if (!desFragment.isAdded()){
+            transaction.add(R.id.content_layout, desFragment);
+        }
+        transaction.show(desFragment).commitAllowingStateLoss();
     }
 
     private void initNavHeaderView() {
@@ -82,12 +112,44 @@ public class HomeActivity extends BaseActivity
                 Intent settingIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingIntent);
                 break;
+            case R.id.nav_home:
+            case R.id.nav_buckets:
+                int oldNavId = mCurNavId;
+                mCurNavId = item.getItemId();
+                if (mCurNavId != oldNavId){
+                    showFragment();
+                }
+                break;
+            default:
+                showFragment();
+                break;
         }
 
         if (mDrawerLayout != null){
             mDrawerLayout.closeDrawer(GravityCompat.START);
         }
         return true;
+    }
+
+    private BaseFragment getNavFragmentById(){
+        switch (mCurNavId){
+            case R.id.nav_home:
+                if (mHomeFragment == null){
+                    mHomeFragment = new HomeFragment();
+                }
+                return mHomeFragment;
+            case R.id.nav_buckets:
+                if (mBucketsFragment == null){
+                    mBucketsFragment = new BucketsFragment();
+                }
+                return mBucketsFragment;
+            default:
+                if (mHomeFragment == null){
+                    mHomeFragment = new HomeFragment();
+                }
+                mCurNavId = R.id.nav_home;
+                return mHomeFragment;
+        }
     }
 
     @Override

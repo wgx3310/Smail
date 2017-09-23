@@ -442,10 +442,10 @@ public final class Logger {
         private Config() {
             if (sDefaultDir != null) return;
             if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-                    && Tools.getContext().getExternalCacheDir() != null)
-                sDefaultDir = Tools.getContext().getExternalCacheDir() + FILE_SEP + "log" + FILE_SEP;
+                    && AppCompat.getContext().getExternalCacheDir() != null)
+                sDefaultDir = AppCompat.getContext().getExternalCacheDir() + FILE_SEP + "log" + FILE_SEP;
             else {
-                sDefaultDir = Tools.getContext().getCacheDir() + FILE_SEP + "log" + FILE_SEP;
+                sDefaultDir = AppCompat.getContext().getCacheDir() + FILE_SEP + "log" + FILE_SEP;
             }
         }
 

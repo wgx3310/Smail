@@ -37,7 +37,7 @@ public final class LocationHelper {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isGpsEnabled() {
-        LocationManager lm = (LocationManager) Tools.getContext().getSystemService(LOCATION_SERVICE);
+        LocationManager lm = (LocationManager) AppCompat.getContext().getSystemService(LOCATION_SERVICE);
         return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
@@ -47,7 +47,7 @@ public final class LocationHelper {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isLocationEnabled() {
-        LocationManager lm = (LocationManager) Tools.getContext().getSystemService(LOCATION_SERVICE);
+        LocationManager lm = (LocationManager) AppCompat.getContext().getSystemService(LOCATION_SERVICE);
         return lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER) || lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
@@ -57,7 +57,7 @@ public final class LocationHelper {
     public static void openGpsSettings() {
         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Tools.getContext().startActivity(intent);
+        AppCompat.getContext().startActivity(intent);
     }
 
     /**
@@ -90,7 +90,7 @@ public final class LocationHelper {
      * @return {@link Address}
      */
     public static Address getAddress(double latitude, double longitude) {
-        Geocoder geocoder = new Geocoder(Tools.getContext(), Locale.getDefault());
+        Geocoder geocoder = new Geocoder(AppCompat.getContext(), Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
             if (addresses.size() > 0) return addresses.get(0);

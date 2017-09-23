@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.reid.smail.R;
-import com.reid.smail.SmailApp;
 import com.reid.smail.io.Prefs;
 import com.reid.smail.model.shot.Token;
 import com.reid.smail.model.shot.User;
@@ -17,6 +16,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import smail.util.AppCompat;
 
 /**
  * Created by reid on 2017/9/2.
@@ -62,10 +62,10 @@ public class AccountManager {
     }
 
     public void login() {
-        Intent intent = new Intent(SmailApp.getContext(), WebActivity.class);
-        intent.putExtra(SettingKey.KEY_TITLE, SmailApp.getContext().getString(R.string.login));
+        Intent intent = new Intent(AppCompat.getContext(), WebActivity.class);
+        intent.putExtra(SettingKey.KEY_TITLE, AppCompat.getContext().getString(R.string.login));
         intent.putExtra(SettingKey.KEY_URL, Constant.OAUTH_URL);
-        SmailApp.getContext().startActivity(intent);
+        AppCompat.getContext().startActivity(intent);
     }
 
     public void acquireAccessToken(String code){

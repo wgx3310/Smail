@@ -84,9 +84,9 @@ public final class AppHelper {
                                            @NonNull final String className) {
         Intent intent = new Intent();
         intent.setClassName(packageName, className);
-        return !(Tools.getContext().getPackageManager().resolveActivity(intent, 0) == null ||
-                intent.resolveActivity(Tools.getContext().getPackageManager()) == null ||
-                Tools.getContext().getPackageManager().queryIntentActivities(intent, 0).size() == 0);
+        return !(AppCompat.getContext().getPackageManager().resolveActivity(intent, 0) == null ||
+                intent.resolveActivity(AppCompat.getContext().getPackageManager()) == null ||
+                AppCompat.getContext().getPackageManager().queryIntentActivities(intent, 0).size() == 0);
     }
 
     /**
@@ -95,7 +95,7 @@ public final class AppHelper {
      * @param cls activity类
      */
     public static void startActivity(@NonNull final Class<?> cls) {
-        Context context = Tools.getContext();
+        Context context = AppCompat.getContext();
         startActivity(context, null, context.getPackageName(), cls.getName(), null);
     }
 
@@ -107,7 +107,7 @@ public final class AppHelper {
      */
     public static void startActivity(@NonNull final Class<?> cls,
                                      @NonNull final Bundle options) {
-        Context context = Tools.getContext();
+        Context context = AppCompat.getContext();
         startActivity(context, null, context.getPackageName(), cls.getName(), options);
     }
 
@@ -159,7 +159,7 @@ public final class AppHelper {
      */
     public static void startActivity(@NonNull final Bundle extras,
                                      @NonNull final Class<?> cls) {
-        Context context = Tools.getContext();
+        Context context = AppCompat.getContext();
         startActivity(context, extras, context.getPackageName(), cls.getName(), null);
     }
 
@@ -173,7 +173,7 @@ public final class AppHelper {
     public static void startActivity(@NonNull final Bundle extras,
                                      @NonNull final Class<?> cls,
                                      @NonNull final Bundle options) {
-        Context context = Tools.getContext();
+        Context context = AppCompat.getContext();
         startActivity(context, extras, context.getPackageName(), cls.getName(), options);
     }
 
@@ -231,7 +231,7 @@ public final class AppHelper {
      */
     public static void startActivity(@NonNull final String pkg,
                                      @NonNull final String cls) {
-        startActivity(Tools.getContext(), null, pkg, cls, null);
+        startActivity(AppCompat.getContext(), null, pkg, cls, null);
     }
 
     /**
@@ -244,7 +244,7 @@ public final class AppHelper {
     public static void startActivity(@NonNull final String pkg,
                                      @NonNull final String cls,
                                      @NonNull final Bundle options) {
-        startActivity(Tools.getContext(), null, pkg, cls, options);
+        startActivity(AppCompat.getContext(), null, pkg, cls, options);
     }
 
     /**
@@ -303,7 +303,7 @@ public final class AppHelper {
     public static void startActivity(@NonNull final Bundle extras,
                                      @NonNull final String pkg,
                                      @NonNull final String cls) {
-        startActivity(Tools.getContext(), extras, pkg, cls, null);
+        startActivity(AppCompat.getContext(), extras, pkg, cls, null);
     }
 
     /**
@@ -318,7 +318,7 @@ public final class AppHelper {
                                      @NonNull final String pkg,
                                      @NonNull final String cls,
                                      @NonNull final Bundle options) {
-        startActivity(Tools.getContext(), extras, pkg, cls, options);
+        startActivity(AppCompat.getContext(), extras, pkg, cls, options);
     }
 
     /**
@@ -400,7 +400,7 @@ public final class AppHelper {
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PackageManager pm = Tools.getContext().getPackageManager();
+        PackageManager pm = AppCompat.getContext().getPackageManager();
         List<ResolveInfo> info = pm.queryIntentActivities(intent, 0);
         for (ResolveInfo aInfo : info) {
             if (aInfo.activityInfo.packageName.equals(packageName)) {
@@ -417,20 +417,20 @@ public final class AppHelper {
      * @return 栈顶Activity
      */
     public static Activity getTopActivity() {
-        if (Tools.sTopActivityWeakRef != null) {
-            Activity activity = Tools.sTopActivityWeakRef.get();
+        if (AppCompat.sTopActivityWeakRef != null) {
+            Activity activity = AppCompat.sTopActivityWeakRef.get();
             if (activity != null) {
                 return activity;
             }
         }
-        return Tools.sActivityList.get(Tools.sActivityList.size() - 1);
+        return AppCompat.sActivityList.get(AppCompat.sActivityList.size() - 1);
     }
 
     /**
      * 结束所有activity
      */
     public static void finishAllActivities() {
-        List<Activity> activityList = Tools.sActivityList;
+        List<Activity> activityList = AppCompat.sActivityList;
         for (int i = activityList.size() - 1; i >= 0; --i) {
             activityList.get(i).finish();
             activityList.remove(i);
@@ -447,7 +447,7 @@ public final class AppHelper {
     public static boolean isAppInstalled(final String packageName) {
         boolean installed = false;
         try {
-            Tools.getContext().getPackageManager().getPackageInfo(packageName, 0);
+            AppCompat.getContext().getPackageManager().getPackageInfo(packageName, 0);
             installed = true;
         } catch (Throwable e) {
             e.printStackTrace();
@@ -475,7 +475,7 @@ public final class AppHelper {
      */
     public static void installApp(final File file, final String authority) {
         if (!FileHelper.isFileExists(file)) return;
-        Tools.getContext().startActivity(getInstallAppIntent(file, authority));
+        AppCompat.getContext().startActivity(getInstallAppIntent(file, authority));
     }
 
     /**
@@ -527,7 +527,7 @@ public final class AppHelper {
      */
     public static void uninstallApp(final String packageName) {
         if (FileHelper.isSpace(packageName)) return;
-        Tools.getContext().startActivity(getUninstallAppIntent(packageName));
+        AppCompat.getContext().startActivity(getUninstallAppIntent(packageName));
     }
 
     /**
@@ -581,7 +581,7 @@ public final class AppHelper {
      */
     public static void launchApp(final String packageName) {
         if (FileHelper.isSpace(packageName)) return;
-        Tools.getContext().startActivity(getLaunchAppIntent(packageName));
+        AppCompat.getContext().startActivity(getLaunchAppIntent(packageName));
     }
 
     /**
@@ -600,7 +600,7 @@ public final class AppHelper {
      * 关闭App
      */
     public static void exitApp() {
-        List<Activity> activityList = Tools.sActivityList;
+        List<Activity> activityList = AppCompat.sActivityList;
         for (int i = activityList.size() - 1; i >= 0; --i) {
             activityList.get(i).finish();
             activityList.remove(i);
@@ -614,14 +614,14 @@ public final class AppHelper {
      * @return App包名
      */
     public static String getAppPackageName() {
-        return Tools.getContext().getPackageName();
+        return AppCompat.getContext().getPackageName();
     }
 
     /**
      * 获取App具体设置
      */
 //    public static void getAppDetailsSettings() {
-//        getAppDetailsSettings(Tools.getContext().getPackageName());
+//        getAppDetailsSettings(AppCompat.getContext().getPackageName());
 //    }
 
     /**
@@ -631,7 +631,7 @@ public final class AppHelper {
      */
 //    public static void getAppDetailsSettings(final String packageName) {
 //        if (FileHelper.isSpace(packageName)) return;
-//        Tools.getContext().startActivity(IntentTools.getContextDetailsSettingsIntent(packageName));
+//        AppCompat.getContext().startActivity(IntentAppCompat.getContextDetailsSettingsIntent(packageName));
 //    }
 
     /**
@@ -640,7 +640,7 @@ public final class AppHelper {
      * @return App名称
      */
     public static String getAppName() {
-        return getAppName(Tools.getContext().getPackageName());
+        return getAppName(AppCompat.getContext().getPackageName());
     }
 
     /**
@@ -652,7 +652,7 @@ public final class AppHelper {
     public static String getAppName(final String packageName) {
         if (FileHelper.isSpace(packageName)) return null;
         try {
-            PackageManager pm = Tools.getContext().getPackageManager();
+            PackageManager pm = AppCompat.getContext().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.applicationInfo.loadLabel(pm).toString();
         } catch (PackageManager.NameNotFoundException e) {
@@ -667,7 +667,7 @@ public final class AppHelper {
      * @return App图标
      */
     public static Drawable getAppIcon() {
-        return getAppIcon(Tools.getContext().getPackageName());
+        return getAppIcon(AppCompat.getContext().getPackageName());
     }
 
     /**
@@ -679,7 +679,7 @@ public final class AppHelper {
     public static Drawable getAppIcon(final String packageName) {
         if (FileHelper.isSpace(packageName)) return null;
         try {
-            PackageManager pm = Tools.getContext().getPackageManager();
+            PackageManager pm = AppCompat.getContext().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.applicationInfo.loadIcon(pm);
         } catch (PackageManager.NameNotFoundException e) {
@@ -694,7 +694,7 @@ public final class AppHelper {
      * @return App路径
      */
     public static String getAppPath() {
-        return getAppPath(Tools.getContext().getPackageName());
+        return getAppPath(AppCompat.getContext().getPackageName());
     }
 
     /**
@@ -706,7 +706,7 @@ public final class AppHelper {
     public static String getAppPath(final String packageName) {
         if (FileHelper.isSpace(packageName)) return null;
         try {
-            PackageManager pm = Tools.getContext().getPackageManager();
+            PackageManager pm = AppCompat.getContext().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.applicationInfo.sourceDir;
         } catch (PackageManager.NameNotFoundException e) {
@@ -721,7 +721,7 @@ public final class AppHelper {
      * @return App版本号
      */
     public static String getAppVerName() {
-        return getAppVerName(Tools.getContext().getPackageName());
+        return getAppVerName(AppCompat.getContext().getPackageName());
     }
 
     /**
@@ -733,7 +733,7 @@ public final class AppHelper {
     public static String getAppVerName(final String packageName) {
         if (FileHelper.isSpace(packageName)) return null;
         try {
-            PackageManager pm = Tools.getContext().getPackageManager();
+            PackageManager pm = AppCompat.getContext().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.versionName;
         } catch (PackageManager.NameNotFoundException e) {
@@ -748,7 +748,7 @@ public final class AppHelper {
      * @return App版本码
      */
     public static int getAppVerCode() {
-        return getAppVerCode(Tools.getContext().getPackageName());
+        return getAppVerCode(AppCompat.getContext().getPackageName());
     }
 
     /**
@@ -760,7 +760,7 @@ public final class AppHelper {
     public static int getAppVerCode(final String packageName) {
         if (FileHelper.isSpace(packageName)) return -1;
         try {
-            PackageManager pm = Tools.getContext().getPackageManager();
+            PackageManager pm = AppCompat.getContext().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? -1 : pi.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
@@ -775,7 +775,7 @@ public final class AppHelper {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isSystemApp() {
-        return isSystemApp(Tools.getContext().getPackageName());
+        return isSystemApp(AppCompat.getContext().getPackageName());
     }
 
     /**
@@ -787,7 +787,7 @@ public final class AppHelper {
     public static boolean isSystemApp(final String packageName) {
         if (FileHelper.isSpace(packageName)) return false;
         try {
-            PackageManager pm = Tools.getContext().getPackageManager();
+            PackageManager pm = AppCompat.getContext().getPackageManager();
             ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
             return ai != null && (ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
         } catch (PackageManager.NameNotFoundException e) {
@@ -802,7 +802,7 @@ public final class AppHelper {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isAppDebug() {
-        return isAppDebug(Tools.getContext().getPackageName());
+        return isAppDebug(AppCompat.getContext().getPackageName());
     }
 
     /**
@@ -814,7 +814,7 @@ public final class AppHelper {
     public static boolean isAppDebug(final String packageName) {
         if (FileHelper.isSpace(packageName)) return false;
         try {
-            PackageManager pm = Tools.getContext().getPackageManager();
+            PackageManager pm = AppCompat.getContext().getPackageManager();
             ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
             return ai != null && (ai.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
         } catch (PackageManager.NameNotFoundException e) {
@@ -829,7 +829,7 @@ public final class AppHelper {
      * @return App签名
      */
     public static Signature[] getAppSignature() {
-        return getAppSignature(Tools.getContext().getPackageName());
+        return getAppSignature(AppCompat.getContext().getPackageName());
     }
 
     /**
@@ -841,7 +841,7 @@ public final class AppHelper {
     public static Signature[] getAppSignature(final String packageName) {
         if (FileHelper.isSpace(packageName)) return null;
         try {
-            PackageManager pm = Tools.getContext().getPackageManager();
+            PackageManager pm = AppCompat.getContext().getPackageManager();
             @SuppressLint("PackageManagerGetSignatures")
             PackageInfo pi = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
             return pi == null ? null : pi.signatures;
@@ -858,7 +858,7 @@ public final class AppHelper {
      * @return 应用签名的SHA1字符串, 比如：53:FD:54:DC:19:0F:11:AC:B5:22:9E:F1:1A:68:88:1B:8B:E8:54:42
      */
     public static String getAppSignatureSHA1() {
-        return getAppSignatureSHA1(Tools.getContext().getPackageName());
+        return getAppSignatureSHA1(AppCompat.getContext().getPackageName());
     }
 
     /**
@@ -881,12 +881,12 @@ public final class AppHelper {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isForegroundApp() {
-        ActivityManager manager = (ActivityManager) Tools.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager manager = (ActivityManager) AppCompat.getContext().getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> info = manager.getRunningAppProcesses();
         if (info == null || info.size() == 0) return false;
         for (ActivityManager.RunningAppProcessInfo aInfo : info) {
             if (aInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                return aInfo.processName.equals(Tools.getContext().getPackageName());
+                return aInfo.processName.equals(AppCompat.getContext().getPackageName());
             }
         }
         return false;
@@ -1011,7 +1011,7 @@ public final class AppHelper {
      * @return 当前应用的AppInfo
      */
     public static AppInfo getAppInfo() {
-        return getAppInfo(Tools.getContext().getPackageName());
+        return getAppInfo(AppCompat.getContext().getPackageName());
     }
 
     /**
@@ -1023,7 +1023,7 @@ public final class AppHelper {
      */
     public static AppInfo getAppInfo(final String packageName) {
         try {
-            PackageManager pm = Tools.getContext().getPackageManager();
+            PackageManager pm = AppCompat.getContext().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return getBean(pm, pi);
         } catch (PackageManager.NameNotFoundException e) {
@@ -1061,7 +1061,7 @@ public final class AppHelper {
      */
     public static List<AppInfo> getAppsInfo() {
         List<AppInfo> list = new ArrayList<>();
-        PackageManager pm = Tools.getContext().getPackageManager();
+        PackageManager pm = AppCompat.getContext().getPackageManager();
         // 获取系统中安装的所有软件信息
         List<PackageInfo> installedPackages = pm.getInstalledPackages(0);
         for (PackageInfo pi : installedPackages) {
@@ -1134,7 +1134,7 @@ public final class AppHelper {
             data = Uri.fromFile(file);
         } else {
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            data = FileProvider.getUriForFile(Tools.getContext(), authority, file);
+            data = FileProvider.getUriForFile(AppCompat.getContext(), authority, file);
         }
         intent.setDataAndType(data, type);
         return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1159,7 +1159,7 @@ public final class AppHelper {
      * @return intent
      */
     public static Intent getLaunchAppIntent(final String packageName) {
-        return Tools.getContext().getPackageManager().getLaunchIntentForPackage(packageName);
+        return AppCompat.getContext().getPackageManager().getLaunchIntentForPackage(packageName);
     }
 
     /**
@@ -1322,7 +1322,7 @@ public final class AppHelper {
      * @return 状态栏高度px
      */
     public static int getStatusBarHeight() {
-        Resources resources = Tools.getContext().getResources();
+        Resources resources = AppCompat.getContext().getResources();
         int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
         return resources.getDimensionPixelSize(resourceId);
     }
@@ -1334,7 +1334,7 @@ public final class AppHelper {
      * @return 导航栏高度
      */
     public static int getNavBarHeight() {
-        Resources res = Tools.getContext().getResources();
+        Resources res = AppCompat.getContext().getResources();
         int resourceId = res.getIdentifier("navigation_bar_height", "dimen", "android");
         if (resourceId != 0) {
             return res.getDimensionPixelSize(resourceId);
@@ -1405,7 +1405,7 @@ public final class AppHelper {
         Intent intent = new Intent("android.intent.action.ACTION_REQUEST_SHUTDOWN");
         intent.putExtra("android.intent.extra.KEY_CONFIRM", false);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Tools.getContext().startActivity(intent);
+        AppCompat.getContext().startActivity(intent);
     }
 
     /**
@@ -1419,7 +1419,7 @@ public final class AppHelper {
         intent.putExtra("nowait", 1);
         intent.putExtra("interval", 1);
         intent.putExtra("window", 0);
-        Tools.getContext().sendBroadcast(intent);
+        AppCompat.getContext().sendBroadcast(intent);
     }
 
     /**
@@ -1429,7 +1429,7 @@ public final class AppHelper {
      * @param reason  传递给内核来请求特殊的引导模式，如"recovery"
      */
     public static void reboot(final String reason) {
-        PowerManager mPowerManager = (PowerManager) Tools.getContext().getSystemService(Context.POWER_SERVICE);
+        PowerManager mPowerManager = (PowerManager) AppCompat.getContext().getSystemService(Context.POWER_SERVICE);
         try {
             mPowerManager.reboot(reason);
         } catch (Exception e) {
@@ -1531,7 +1531,7 @@ public final class AppHelper {
         view.setFocusable(true);
         view.setFocusableInTouchMode(true);
         view.requestFocus();
-        InputMethodManager imm = (InputMethodManager) Tools.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) AppCompat.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm == null) return;
         imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
     }
@@ -1555,7 +1555,7 @@ public final class AppHelper {
      * @param view 视图
      */
     public static void hideSoftInput(final View view) {
-        InputMethodManager imm = (InputMethodManager) Tools.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) AppCompat.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm == null) return;
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
@@ -1564,7 +1564,7 @@ public final class AppHelper {
      * 切换键盘显示与否状态
      */
     public static void toggleSoftInput() {
-        InputMethodManager imm = (InputMethodManager) Tools.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) AppCompat.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm == null) return;
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
@@ -1575,7 +1575,7 @@ public final class AppHelper {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isPhone() {
-        TelephonyManager tm = (TelephonyManager) Tools.getContext().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) AppCompat.getContext().getSystemService(Context.TELEPHONY_SERVICE);
         return tm != null && tm.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE;
     }
 
@@ -1585,7 +1585,7 @@ public final class AppHelper {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isTablet() {
-        return (Tools.getContext().getResources().getConfiguration().screenLayout
+        return (AppCompat.getContext().getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
@@ -1602,7 +1602,7 @@ public final class AppHelper {
      * </ul>
      */
     public static int getPhoneType() {
-        TelephonyManager tm = (TelephonyManager) Tools.getContext().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) AppCompat.getContext().getSystemService(Context.TELEPHONY_SERVICE);
         return tm != null ? tm.getPhoneType() : -1;
     }
 
@@ -1612,7 +1612,7 @@ public final class AppHelper {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isSimCardReady() {
-        TelephonyManager tm = (TelephonyManager) Tools.getContext().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) AppCompat.getContext().getSystemService(Context.TELEPHONY_SERVICE);
         return tm != null && tm.getSimState() == TelephonyManager.SIM_STATE_READY;
     }
 
@@ -1623,7 +1623,7 @@ public final class AppHelper {
      * @return sim卡运营商名称
      */
     public static String getSimOperatorName() {
-        TelephonyManager tm = (TelephonyManager) Tools.getContext().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) AppCompat.getContext().getSystemService(Context.TELEPHONY_SERVICE);
         return tm != null ? tm.getSimOperatorName() : null;
     }
 
@@ -1634,7 +1634,7 @@ public final class AppHelper {
      * @return 移动网络运营商名称
      */
     public static String getSimOperatorByMnc() {
-        TelephonyManager tm = (TelephonyManager) Tools.getContext().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) AppCompat.getContext().getSystemService(Context.TELEPHONY_SERVICE);
         String operator = tm != null ? tm.getSimOperator() : null;
         if (operator == null) return null;
         switch (operator) {
@@ -1657,7 +1657,7 @@ public final class AppHelper {
      * @param phoneNumber 电话号码
      */
     public static void dial(final String phoneNumber) {
-        Tools.getContext().startActivity(getDialIntent(phoneNumber));
+        AppCompat.getContext().startActivity(getDialIntent(phoneNumber));
     }
 
     /**
@@ -1667,7 +1667,7 @@ public final class AppHelper {
      * @param phoneNumber 电话号码
      */
     public static void call(final String phoneNumber) {
-        Tools.getContext().startActivity(getCallIntent(phoneNumber));
+        AppCompat.getContext().startActivity(getCallIntent(phoneNumber));
     }
 
     /**
@@ -1677,7 +1677,7 @@ public final class AppHelper {
      * @param content     短信内容
      */
     public static void sendSms(final String phoneNumber, final String content) {
-        Tools.getContext().startActivity(getSendSmsIntent(phoneNumber, content));
+        AppCompat.getContext().startActivity(getSendSmsIntent(phoneNumber, content));
     }
 
     /**
@@ -1689,7 +1689,7 @@ public final class AppHelper {
      */
     public static void sendSmsSilent(final String phoneNumber, final String content) {
         if (isEmpty(content)) return;
-        PendingIntent sentIntent = PendingIntent.getBroadcast(Tools.getContext(), 0, new Intent(), 0);
+        PendingIntent sentIntent = PendingIntent.getBroadcast(AppCompat.getContext(), 0, new Intent(), 0);
         SmsManager smsManager = SmsManager.getDefault();
         if (content.length() >= 70) {
             List<String> ms = smsManager.divideMessage(content);
@@ -1707,7 +1707,7 @@ public final class AppHelper {
      * @return 屏幕宽
      */
     public static int getScreenWidth() {
-        return Tools.getContext().getResources().getDisplayMetrics().widthPixels;
+        return AppCompat.getContext().getResources().getDisplayMetrics().widthPixels;
     }
 
     /**
@@ -1716,7 +1716,7 @@ public final class AppHelper {
      * @return 屏幕高
      */
     public static int getScreenHeight() {
-        return Tools.getContext().getResources().getDisplayMetrics().heightPixels;
+        return AppCompat.getContext().getResources().getDisplayMetrics().heightPixels;
     }
 
     /**
@@ -1760,7 +1760,7 @@ public final class AppHelper {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isLandscape() {
-        return Tools.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        return AppCompat.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     /**
@@ -1769,7 +1769,7 @@ public final class AppHelper {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isPortrait() {
-        return Tools.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+        return AppCompat.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
     }
 
     /**
@@ -1798,7 +1798,7 @@ public final class AppHelper {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isScreenLock() {
-        KeyguardManager km = (KeyguardManager) Tools.getContext().getSystemService(Context.KEYGUARD_SERVICE);
+        KeyguardManager km = (KeyguardManager) AppCompat.getContext().getSystemService(Context.KEYGUARD_SERVICE);
         return km.inKeyguardRestrictedInputMode();
     }
 
@@ -1809,7 +1809,7 @@ public final class AppHelper {
      * @param duration 时长
      */
     public static void setSleepDuration(final int duration) {
-        Settings.System.putInt(Tools.getContext().getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, duration);
+        Settings.System.putInt(AppCompat.getContext().getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, duration);
     }
 
     /**
@@ -1819,7 +1819,7 @@ public final class AppHelper {
      */
     public static int getSleepDuration() {
         try {
-            return Settings.System.getInt(Tools.getContext().getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT);
+            return Settings.System.getInt(AppCompat.getContext().getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT);
         } catch (Settings.SettingNotFoundException e) {
             e.printStackTrace();
             return -123;
@@ -1844,7 +1844,7 @@ public final class AppHelper {
     @SuppressWarnings("TryWithIdenticalCatches")
     public static List<String> getSDCardPaths(boolean removable) {
         List<String> paths = new ArrayList<>();
-        StorageManager mStorageManager = (StorageManager) Tools.getContext()
+        StorageManager mStorageManager = (StorageManager) AppCompat.getContext()
                 .getSystemService(Context.STORAGE_SERVICE);
         try {
             Class<?> storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
@@ -1880,7 +1880,7 @@ public final class AppHelper {
      */
     @SuppressWarnings("TryWithIdenticalCatches")
     public static List<String> getSDCardPaths() {
-        StorageManager storageManager = (StorageManager) Tools.getContext()
+        StorageManager storageManager = (StorageManager) AppCompat.getContext()
                 .getSystemService(Context.STORAGE_SERVICE);
         List<String> paths = new ArrayList<>();
         try {
@@ -1904,7 +1904,7 @@ public final class AppHelper {
      * @return 服务名集合
      */
     public static Set getAllRunningService() {
-        ActivityManager activityManager = (ActivityManager) Tools.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager activityManager = (ActivityManager) AppCompat.getContext().getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningServiceInfo> info = activityManager.getRunningServices(0x7FFFFFFF);
         Set<String> names = new HashSet<>();
         if (info == null || info.size() == 0) return null;
@@ -1933,8 +1933,8 @@ public final class AppHelper {
      * @param cls 服务类
      */
     public static void startService(final Class<?> cls) {
-        Intent intent = new Intent(Tools.getContext(), cls);
-        Tools.getContext().startService(intent);
+        Intent intent = new Intent(AppCompat.getContext(), cls);
+        AppCompat.getContext().startService(intent);
     }
 
     /**
@@ -1959,8 +1959,8 @@ public final class AppHelper {
      * @return {@code true}: 停止成功<br>{@code false}: 停止失败
      */
     public static boolean stopService(final Class<?> cls) {
-        Intent intent = new Intent(Tools.getContext(), cls);
-        return Tools.getContext().stopService(intent);
+        Intent intent = new Intent(AppCompat.getContext(), cls);
+        return AppCompat.getContext().stopService(intent);
     }
 
     /**
@@ -2002,8 +2002,8 @@ public final class AppHelper {
      *              </ul>
      */
     public static void bindService(final Class<?> cls, final ServiceConnection conn, final int flags) {
-        Intent intent = new Intent(Tools.getContext(), cls);
-        Tools.getContext().bindService(intent, conn, flags);
+        Intent intent = new Intent(AppCompat.getContext(), cls);
+        AppCompat.getContext().bindService(intent, conn, flags);
     }
 
     /**
@@ -2012,7 +2012,7 @@ public final class AppHelper {
      * @param conn 服务连接对象
      */
     public static void unbindService(final ServiceConnection conn) {
-        Tools.getContext().unbindService(conn);
+        AppCompat.getContext().unbindService(conn);
     }
 
     /**
@@ -2022,7 +2022,7 @@ public final class AppHelper {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isServiceRunning(final String className) {
-        ActivityManager activityManager = (ActivityManager) Tools.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager activityManager = (ActivityManager) AppCompat.getContext().getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningServiceInfo> info = activityManager.getRunningServices(0x7FFFFFFF);
         if (info == null || info.size() == 0) return false;
         for (ActivityManager.RunningServiceInfo aInfo : info) {

@@ -4,10 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.reid.smail.SmailApp;
-
-import java.util.HashSet;
 import java.util.Set;
+
+import smail.util.AppCompat;
 
 /**
  * Created by reid on 2017/9/3.
@@ -15,7 +14,7 @@ import java.util.Set;
 
 public class Prefs {
 
-    protected static final SharedPreferences mPreferences = SmailApp.getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+    protected static final SharedPreferences mPreferences = AppCompat.getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
     protected static final SharedPreferences.Editor mEditor = mPreferences.edit();
 
     private static boolean checkKeyValid(String key){

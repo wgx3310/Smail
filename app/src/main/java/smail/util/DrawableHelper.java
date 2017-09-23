@@ -103,7 +103,7 @@ public class DrawableHelper {
      * @return drawable
      */
     public static Drawable bitmap2Drawable(final Bitmap bitmap) {
-        return bitmap == null ? null : new BitmapDrawable(Tools.getContext().getResources(), bitmap);
+        return bitmap == null ? null : new BitmapDrawable(AppCompat.getContext().getResources(), bitmap);
     }
 
     /**
@@ -309,7 +309,7 @@ public class DrawableHelper {
      * @return bitmap
      */
     public static Bitmap getBitmap(@DrawableRes final int resId) {
-        return BitmapFactory.decodeResource(Tools.getContext().getResources(), resId);
+        return BitmapFactory.decodeResource(AppCompat.getContext().getResources(), resId);
     }
 
     /**
@@ -323,10 +323,10 @@ public class DrawableHelper {
     public static Bitmap getBitmap(@DrawableRes final int resId, final int maxWidth, final int maxHeight) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(Tools.getContext().getResources(), resId, options);
+        BitmapFactory.decodeResource(AppCompat.getContext().getResources(), resId, options);
         options.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight);
         options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeResource(Tools.getContext().getResources(), resId, options);
+        return BitmapFactory.decodeResource(AppCompat.getContext().getResources(), resId, options);
     }
 
     /**
@@ -710,7 +710,7 @@ public class DrawableHelper {
         if (isEmptyBitmap(src)) return null;
         RenderScript rs = null;
         try {
-            rs = RenderScript.create(Tools.getContext());
+            rs = RenderScript.create(AppCompat.getContext());
             rs.setMessageHandler(new RenderScript.RSMessageHandler());
             Allocation input = Allocation.createFromBitmap(rs, src, Allocation.MipmapControl.MIPMAP_NONE, Allocation
                     .USAGE_SCRIPT);

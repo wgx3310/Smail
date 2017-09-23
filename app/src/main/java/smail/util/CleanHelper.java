@@ -21,7 +21,7 @@ public final class CleanHelper {
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanInternalCache() {
-        return FileHelper.deleteAllInDir(Tools.getContext().getCacheDir());
+        return FileHelper.deleteAllInDir(AppCompat.getContext().getCacheDir());
     }
 
     /**
@@ -31,7 +31,7 @@ public final class CleanHelper {
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanInternalFiles() {
-        return FileHelper.deleteAllInDir(Tools.getContext().getFilesDir());
+        return FileHelper.deleteAllInDir(AppCompat.getContext().getFilesDir());
     }
 
     /**
@@ -41,7 +41,7 @@ public final class CleanHelper {
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanInternalDbs() {
-        return FileHelper.deleteAllInDir(Tools.getContext().getFilesDir().getParent() + File.separator + "databases");
+        return FileHelper.deleteAllInDir(AppCompat.getContext().getFilesDir().getParent() + File.separator + "databases");
     }
 
     /**
@@ -52,7 +52,7 @@ public final class CleanHelper {
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanInternalDbByName(final String dbName) {
-        return Tools.getContext().deleteDatabase(dbName);
+        return AppCompat.getContext().deleteDatabase(dbName);
     }
 
     /**
@@ -62,7 +62,7 @@ public final class CleanHelper {
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanInternalSP() {
-        return FileHelper.deleteAllInDir(Tools.getContext().getFilesDir().getParent() + File.separator + "shared_prefs");
+        return FileHelper.deleteAllInDir(AppCompat.getContext().getFilesDir().getParent() + File.separator + "shared_prefs");
     }
 
     /**
@@ -72,7 +72,7 @@ public final class CleanHelper {
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanExternalCache() {
-        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) && FileHelper.deleteAllInDir(Tools.getContext().getExternalCacheDir());
+        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) && FileHelper.deleteAllInDir(AppCompat.getContext().getExternalCacheDir());
     }
 
 

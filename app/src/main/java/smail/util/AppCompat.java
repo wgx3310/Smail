@@ -13,7 +13,7 @@ import java.util.List;
  * Created by reid on 2017/9/17.
  */
 
-public class Tools {
+public class AppCompat {
 
     private static Context sContext;
 
@@ -29,7 +29,7 @@ public class Tools {
     static WeakReference<Activity> sTopActivityWeakRef;
     static List<Activity> sActivityList = new LinkedList<>();
 
-    public static void setup(Application application){
+    public static void init(Application application){
         if (application == null){
             throw new IllegalArgumentException("Application must not be null");
         }

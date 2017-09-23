@@ -1,6 +1,5 @@
 package com.reid.smail.net;
 
-import com.reid.smail.SmailApp;
 import com.reid.smail.net.api.AccountApi;
 import com.reid.smail.net.api.ShotApi;
 
@@ -16,6 +15,7 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import smail.util.AppCompat;
 import smail.util.NetHelper;
 
 /**
@@ -83,7 +83,7 @@ public class NetService {
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .addNetworkInterceptor(getNetworkInterceptor())
                 .addInterceptor(getInterceptor())
-                .cache(new Cache(SmailApp.getContext().getExternalCacheDir(), 10*1024*1024))
+                .cache(new Cache(AppCompat.getContext().getExternalCacheDir(), 10*1024*1024))
                 .build();
 
         return httpClient;

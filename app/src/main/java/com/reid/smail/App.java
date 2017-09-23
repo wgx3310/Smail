@@ -7,25 +7,19 @@ import com.liulishuo.filedownloader.FileDownloader;
 import com.liulishuo.filedownloader.services.DownloadMgrInitialParams;
 import com.reid.smail.io.offline.OkHttpConnection;
 
-import smail.util.Tools;
+import smail.util.AppCompat;
 
 
 /**
  * Created by reid on 2017/8/22.
  */
 
-public class SmailApp extends Application {
-
-    private static Context sContext;
-    public static Context getContext(){
-        return sContext;
-    }
+public class App extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        sContext = getApplicationContext();
-        Tools.setup(this);
+        AppCompat.init(this);
 
         DownloadMgrInitialParams.InitCustomMaker initCustomMaker = FileDownloader.setupOnApplicationOnCreate(this);
         initCustomMaker.connectionCreator(new OkHttpConnection.Creator());

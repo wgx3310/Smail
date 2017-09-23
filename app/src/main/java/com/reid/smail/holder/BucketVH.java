@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.reid.smail.R;
 import com.reid.smail.model.shot.Bucket;
+import com.reid.smail.util.IntentUtils;
 
 /**
  * Created by reid on 2017/9/23.
@@ -26,7 +27,7 @@ public class BucketVH extends BaseVH<Bucket> {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                IntentUtils.goBucket(context, mData);
             }
         });
     }

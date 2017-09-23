@@ -156,6 +156,21 @@ public interface ShotApi {
                                 @Field("access_token") String accessToken,
                                 @Field("body") String comment);
 
+    /**
+     * 获取登录用户的Buckets
+     * @param accessToken 登录用户的token
+     * @return
+     */
     @GET("user/buckets")
     Call<List<Bucket>> getUserBuckets(@Query("access_token") String accessToken);
+
+    /**
+     *获取一个Bucket中的Shots
+     * @param bucketId bucket的id
+     * @param accessToken 登录用户的token
+     * @return
+     */
+    @GET("buckets/{id}/shots")
+    Call<List<Shot>> getBucketShots(@Path("id") long bucketId,
+                                    @Query("access_token") String accessToken);
 }

@@ -18,4 +18,5 @@ public class SettingKey {
     public static final String KEY_URL = "url";
     public static final String KEY_SHOT = "shot";
     public static final String KEY_USER = "user";
+    public static final String KEY_BUCKET = "bucket";
 }

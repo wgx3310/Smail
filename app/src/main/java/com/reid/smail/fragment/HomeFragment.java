@@ -60,7 +60,7 @@ public class HomeFragment extends BaseFragment {
         List<TabSpan> spans = new ArrayList<>();
         TabSpan sortSpan = new TabSpan();
         sortSpan.title = "popular";
-        sortSpan.sort = "sort";
+        sortSpan.sort = "comments";
         sortSpan.id = String.valueOf(1);
         spans.add(sortSpan);
         TabSpan recentSpan = new TabSpan();
@@ -68,6 +68,11 @@ public class HomeFragment extends BaseFragment {
         recentSpan.sort = "recent";
         recentSpan.id = String.valueOf(2);
         spans.add(recentSpan);
+        TabSpan viewSpan = new TabSpan();
+        viewSpan.title = "views";
+        viewSpan.sort = "views";
+        viewSpan.id = String.valueOf(3);
+        spans.add(viewSpan);
         mAdapter.setData(spans);
         mViewPager.setAdapter(mAdapter);
     }

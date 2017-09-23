@@ -49,16 +49,21 @@
         </activity>
         <activity
             android:name=".ui.UserActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme" />
         <activity
             android:name=".ui.DetailActivity"
-            android:theme="@style/TranslucentTheme"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/TranslucentTheme" />
         <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/label_settings"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.WebActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.WebActivity"
+        <activity android:name=".ui.BucketActivity"
             android:screenOrientation="portrait"/>
     </application>
 

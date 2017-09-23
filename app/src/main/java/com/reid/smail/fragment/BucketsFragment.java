@@ -87,7 +87,9 @@ public class BucketsFragment extends BaseFragment {
             mEmptyView.setVisibility(View.VISIBLE);
         }else {
             mRecyclerLayout.setVisibility(View.VISIBLE);
-            mProgressBar.setVisibility(View.VISIBLE);
+            if (!inited){
+                mProgressBar.setVisibility(View.VISIBLE);
+            }
             mEmptyView.setVisibility(View.GONE);
         }
     }

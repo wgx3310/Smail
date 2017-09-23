@@ -6,10 +6,15 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.reid.smail.content.SettingKey;
+import com.reid.smail.model.shot.Bucket;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.model.shot.User;
+import com.reid.smail.ui.BucketActivity;
 import com.reid.smail.ui.DetailActivity;
 import com.reid.smail.ui.UserActivity;
+
+import smail.util.Logger;
 
 /**
  * Created by reid on 2017/9/2.
@@ -43,6 +48,18 @@ public class IntentUtils {
             context.startActivity(intent);
         }catch (Throwable t){
             Log.e(TAG, "goDetail err: " + t.getMessage());
+        }
+    }
+
+    public static void goBucket(Context context, Bucket bucket){
+        if (context == null || bucket == null) return;
+
+        try{
+            Intent intent = new Intent(context, BucketActivity.class);
+            intent.putExtra(SettingKey.KEY_BUCKET, bucket);
+            context.startActivity(intent);
+        }catch (Throwable t){
+            Logger.e(TAG, "goBucket err: " + t.getMessage());
         }
     }
 

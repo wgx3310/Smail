@@ -11,4 +11,5 @@ public class TabSpan implements Serializable{
     public String title;
     public String desc;
     public String sort;
+    public String list;
 }

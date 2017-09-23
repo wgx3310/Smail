@@ -1,7 +1,6 @@
 package com.reid.smail;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.liulishuo.filedownloader.FileDownloader;
 import com.liulishuo.filedownloader.services.DownloadMgrInitialParams;

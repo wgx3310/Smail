@@ -52,8 +52,7 @@
             android:theme="@style/TranslucentTheme" />
         <activity
             android:name=".ui.DetailActivity"
-            android:theme="@style/TranslucentTheme"
-            android:windowSoftInputMode="adjustUnspecified"/>
+            android:theme="@style/TranslucentTheme"/>
         <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/label_settings"

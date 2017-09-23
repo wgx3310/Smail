@@ -1,6 +1,7 @@
 package com.reid.smail.net.api;
 
 import com.reid.smail.model.Item;
+import com.reid.smail.model.shot.Bucket;
 import com.reid.smail.model.shot.Comment;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.model.shot.User;
@@ -154,4 +155,7 @@ public interface ShotApi {
     Call<Comment> createComment(@Path("shot") long shotId,
                                 @Field("access_token") String accessToken,
                                 @Field("body") String comment);
+
+    @GET("user/buckets")
+    Call<List<Bucket>> getUserBuckets(@Query("access_token") String accessToken);
 }

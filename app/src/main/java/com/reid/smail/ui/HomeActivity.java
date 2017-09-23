@@ -20,6 +20,7 @@ import com.reid.smail.R;
 import com.reid.smail.content.AccountManager;
 import com.reid.smail.fragment.BaseFragment;
 import com.reid.smail.fragment.BucketsFragment;
+import com.reid.smail.fragment.DesignFragment;
 import com.reid.smail.fragment.HomeFragment;
 import com.reid.smail.model.shot.User;
 import com.reid.smail.util.IntentUtils;
@@ -43,6 +44,7 @@ public class HomeActivity extends BaseActivity
 
     private HomeFragment mHomeFragment;
     private BucketsFragment mBucketsFragment;
+    private DesignFragment mDesignFragment;
 
     private int mCurNavId = -1;
 
@@ -113,11 +115,13 @@ public class HomeActivity extends BaseActivity
                 startActivity(settingIntent);
                 break;
             case R.id.nav_home:
+            case R.id.nav_design:
             case R.id.nav_buckets:
                 int oldNavId = mCurNavId;
                 mCurNavId = item.getItemId();
                 if (mCurNavId != oldNavId){
                     showFragment();
+                    setTitle(item.getTitle());
                 }
                 break;
             default:
@@ -138,6 +142,11 @@ public class HomeActivity extends BaseActivity
                     mHomeFragment = new HomeFragment();
                 }
                 return mHomeFragment;
+            case R.id.nav_design:
+                if (mDesignFragment == null){
+                    mDesignFragment = new DesignFragment();
+                }
+                return mDesignFragment;
             case R.id.nav_buckets:
                 if (mBucketsFragment == null){
                     mBucketsFragment = new BucketsFragment();

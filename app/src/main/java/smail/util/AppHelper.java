@@ -2037,10 +2037,10 @@ public final class AppHelper {
      *
      * @param unit    单位
      * @param value   值
-     * @param metrics DisplayMetrics
      * @return 转换结果
      */
-    public static float applyDimension(final int unit, final float value, final DisplayMetrics metrics) {
+    public static float applyDimension(final int unit, final float value) {
+        DisplayMetrics metrics = AppCompat.getContext().getResources().getDisplayMetrics();
         switch (unit) {
             case TypedValue.COMPLEX_UNIT_PX:
                 return value;

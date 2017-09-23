@@ -65,7 +65,7 @@
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end" />
 
-    <!--<include layout="@layout/comment_layout" />-->
+    <include layout="@layout/layout_add_comment" />
 
     <!--<FrameLayout-->
         <!--android:id="@+id/add_layout"-->

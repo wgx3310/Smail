@@ -9,12 +9,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.reid.smail.R;
 import com.reid.smail.adapter.DetailAdapter;
@@ -48,6 +52,11 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private DetailAdapter mAdapter;
+
+    private ImageView mAvatar;
+    private ImageView mSendBtn;
+    private ProgressBar mSendProgress;
+    private EditText mCommentEdit;
 
     private int curPage = 1;
     private boolean isLoading;
@@ -89,6 +98,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         mFavBtn.setOnClickListener(this);
 
         initRecyclerView();
+        initCommentView();
     }
 
     private void checkShotLiked() {
@@ -114,6 +124,18 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         });
     }
 
+    private void initCommentView() {
+        mAvatar = findViewById(R.id.comment_avatar);
+        mSendBtn = findViewById(R.id.send_btn);
+        mSendProgress = findViewById(R.id.send_progress);
+        mCommentEdit = findViewById(R.id.comment_edit);
+
+        if (AccountManager.get().isLogin()){
+            mCommentEdit.setFocusable(true);
+            mCommentEdit.setFocusableInTouchMode(true);
+        }
+    }
+
     private void bindData() {
         if (mShot == null) return;
 
@@ -125,8 +147,48 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         }
 
         if (AccountManager.get().isLogin()){
+            GlideApp.with(this).load(AccountManager.get().getUser().avatar_url).circleCrop().into(mAvatar);
             checkShotLiked();
         }
+
+        mCommentEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!AccountManager.get().isLogin()){
+                    Reminder.toast(R.string.not_login);
+                }
+            }
+        });
+
+        mCommentEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (TextUtils.isEmpty(charSequence)){
+                    mSendBtn.setImageResource(R.drawable.ic_send_disable_24dp);
+                    mSendBtn.setEnabled(false);
+                }else {
+                    mSendBtn.setImageResource(R.drawable.ic_send_enable_24dp);
+                    mSendBtn.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mSendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         loadData(false);
     }

@@ -8,7 +8,8 @@ import android.support.annotation.Nullable;
 
 import com.reid.smail.R;
 import com.reid.smail.content.Reminder;
-import com.reid.smail.util.Utils;
+
+import smail.util.AppHelper;
 
 
 /**
@@ -30,7 +31,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
     private void init() {
         mVersionScreen = (PreferenceScreen) findPreference(KEY_APP_VERSION);
-        mVersionScreen.setSummary(Utils.appVerName());
+        mVersionScreen.setSummary(AppHelper.getAppVerName());
         mVersionScreen.setOnPreferenceClickListener(this);
     }
 

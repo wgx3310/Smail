@@ -18,6 +18,9 @@ import java.util.Enumeration;
  */
 
 public class NetHelper {
+
+    private static final String TAG = "NetHelper";
+
     public enum NetType {
         NETWORK_WIFI,
         NETWORK_4G,
@@ -41,7 +44,12 @@ public class NetHelper {
      * @return NetworkInfo
      */
     private static NetworkInfo getActiveNetworkInfo() {
-        return ((ConnectivityManager) Tools.getContext().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        try {
+            return ((ConnectivityManager) Tools.getContext().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        }catch (Throwable t){
+            Logger.e(TAG, "getActiveNetworkInfo err: " + t.getMessage());
+        }
+        return null;
     }
 
     /**
@@ -52,7 +60,7 @@ public class NetHelper {
      */
     public static boolean isConnected() {
         NetworkInfo info = getActiveNetworkInfo();
-        return info != null && info.isConnected();
+        return info != null && info.isAvailable() && info.isConnected();
     }
 
     /**

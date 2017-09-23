@@ -2,7 +2,6 @@ package com.reid.smail.content;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.reid.smail.R;
 import com.reid.smail.io.Prefs;
@@ -52,7 +51,7 @@ public class CommentManager {
                 });
             }
         }else {
-            Reminder.toast(R.string.not_logged);
+            Reminder.toast(R.string.not_login);
         }
     }
 
@@ -86,7 +85,7 @@ public class CommentManager {
                 });
             }
         }else {
-            Reminder.toast(R.string.not_logged);
+            Reminder.toast(R.string.not_login);
         }
     }
 
@@ -126,7 +125,7 @@ public class CommentManager {
                 });
             }
         }else {
-            Reminder.toast(R.string.not_logged);
+            Reminder.toast(R.string.not_login);
         }
     }
 

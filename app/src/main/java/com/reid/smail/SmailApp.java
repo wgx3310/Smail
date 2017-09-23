@@ -7,6 +7,8 @@ import com.liulishuo.filedownloader.FileDownloader;
 import com.liulishuo.filedownloader.services.DownloadMgrInitialParams;
 import com.reid.smail.io.offline.OkHttpConnection;
 
+import smail.util.Tools;
+
 
 /**
  * Created by reid on 2017/8/22.
@@ -23,6 +25,7 @@ public class SmailApp extends Application {
     public void onCreate() {
         super.onCreate();
         sContext = getApplicationContext();
+        Tools.setup(this);
 
         DownloadMgrInitialParams.InitCustomMaker initCustomMaker = FileDownloader.setupOnApplicationOnCreate(this);
         initCustomMaker.connectionCreator(new OkHttpConnection.Creator());

@@ -3,7 +3,6 @@ package com.reid.smail.net;
 import com.reid.smail.SmailApp;
 import com.reid.smail.net.api.AccountApi;
 import com.reid.smail.net.api.ShotApi;
-import com.reid.smail.util.Utils;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +16,7 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import smail.util.NetHelper;
 
 /**
  * Created by reid on 2017/8/26.
@@ -94,7 +94,7 @@ public class NetService {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request request = chain.request();
-                if (!Utils.isNetConnected()){
+                if (!NetHelper.isConnected()){
                     request = request.newBuilder()
                             .cacheControl(CacheControl.FORCE_CACHE)
                             .build();
@@ -111,7 +111,7 @@ public class NetService {
             public Response intercept(Chain chain) throws IOException {
                 Request request = chain.request();
                 Response response = chain.proceed(request);
-                if (Utils.isNetConnected()){
+                if (NetHelper.isConnected()){
                     response.newBuilder().header("Cache-Control", "public, max-age=0")
                             .removeHeader("Pragma").build();
                 }else {

@@ -141,4 +141,17 @@ public interface ShotApi {
     Call<Item> checkCommentLiked(@Path("shot") long shotId,
                                  @Path("id") long commentId,
                                  @Query("access_token") String accessToken);
+
+    /**
+     * 创建一个评论
+     * @param shotId comment所属shot id
+     * @param accessToken 登录用户的token
+     * @param comment 评论内容
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("shots/{shot}/comments")
+    Call<Comment> createComment(@Path("shot") long shotId,
+                                @Field("access_token") String accessToken,
+                                @Field("body") String comment);
 }

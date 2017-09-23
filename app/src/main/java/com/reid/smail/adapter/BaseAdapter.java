@@ -27,6 +27,16 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseVH<T>> {
         }
     }
 
+    public void appendData(T data, boolean front){
+        if (data == null) return;
+        if (front) {
+            mDataList.add(0, data);
+        }else {
+            mDataList.add(data);
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(BaseVH holder, int position) {
         holder.bindData(mDataList.get(position));

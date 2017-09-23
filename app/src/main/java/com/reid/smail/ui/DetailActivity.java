@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +42,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import smail.util.AppHelper;
 
 public class DetailActivity extends BaseActivity implements View.OnClickListener {
 
@@ -53,6 +55,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private LinearLayoutManager mLayoutManager;
     private DetailAdapter mAdapter;
 
+    private View mAddCommentLayout;
     private ImageView mAvatar;
     private ImageView mSendBtn;
     private ProgressBar mSendProgress;
@@ -125,30 +128,18 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initCommentView() {
+        mAddCommentLayout = findViewById(R.id.add_comment_layout);
         mAvatar = findViewById(R.id.comment_avatar);
         mSendBtn = findViewById(R.id.send_btn);
         mSendProgress = findViewById(R.id.send_progress);
         mCommentEdit = findViewById(R.id.comment_edit);
+        if (mShot == null){
+            mAddCommentLayout.setVisibility(View.GONE);
+        }
 
         if (AccountManager.get().isLogin()){
             mCommentEdit.setFocusable(true);
             mCommentEdit.setFocusableInTouchMode(true);
-        }
-    }
-
-    private void bindData() {
-        if (mShot == null) return;
-
-        if (mShot.images != null){
-            String postUrl = mShot.images.hidpi != null? mShot.images.hidpi:mShot.images.normal;
-            if (!TextUtils.isEmpty(postUrl)){
-                GlideApp.with(this).load(postUrl).thumbnail(0.1f).placeholder(R.drawable.loading_icon).into(mPoster);
-            }
-        }
-
-        if (AccountManager.get().isLogin()){
-            GlideApp.with(this).load(AccountManager.get().getUser().avatar_url).circleCrop().into(mAvatar);
-            checkShotLiked();
         }
 
         mCommentEdit.setOnClickListener(new View.OnClickListener() {
@@ -186,9 +177,57 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         mSendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!AccountManager.get().isLogin()){
+                    Reminder.toast(R.string.not_login);
+                    return;
+                }
 
+                if (mCommentEdit != null && !TextUtils.isEmpty(mCommentEdit.getText())
+                        && !TextUtils.isEmpty(mCommentEdit.getText().toString()) && !TextUtils.isEmpty(mCommentEdit.getText().toString().trim())){
+                    if (mShot == null) return;
+                    String text = mCommentEdit.getText().toString().trim();
+                    Call<Comment> call = NetService.get().getShotApi().createComment(mShot.id, AccountManager.get().getAccessToken(), text);
+                    if (call != null){
+                        call.enqueue(new Callback<Comment>() {
+                            @Override
+                            public void onResponse(Call<Comment> call, Response<Comment> response) {
+                                if (response != null && response.body() != null){
+                                    Comment comment = response.body();
+                                    mAdapter.appendData(comment, true);
+                                    mCommentEdit.setText("");
+                                }else {
+                                    Reminder.toast(R.string.error_no_player);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Comment> call, Throwable t) {
+                                Reminder.toast(R.string.error_add_comment);
+                            }
+                        });
+                    }
+                }else {
+                    Reminder.toast(R.string.empty_comment_hint);
+                }
+                AppHelper.hideSoftInput(DetailActivity.this);
             }
         });
+    }
+
+    private void bindData() {
+        if (mShot == null) return;
+
+        if (mShot.images != null){
+            String postUrl = mShot.images.hidpi != null? mShot.images.hidpi:mShot.images.normal;
+            if (!TextUtils.isEmpty(postUrl)){
+                GlideApp.with(this).load(postUrl).thumbnail(0.1f).placeholder(R.drawable.loading_icon).into(mPoster);
+            }
+        }
+
+        if (AccountManager.get().isLogin()){
+            GlideApp.with(this).load(AccountManager.get().getUser().avatar_url).circleCrop().into(mAvatar);
+            checkShotLiked();
+        }
 
         loadData(false);
     }

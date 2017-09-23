@@ -7,6 +7,7 @@ import com.liulishuo.filedownloader.services.DownloadMgrInitialParams;
 import com.reid.smail.io.offline.OkHttpConnection;
 
 import smail.util.AppCompat;
+import smail.util.ProcessHelper;
 
 
 /**
@@ -20,7 +21,9 @@ public class App extends Application {
         super.onCreate();
         AppCompat.init(this);
 
-        DownloadMgrInitialParams.InitCustomMaker initCustomMaker = FileDownloader.setupOnApplicationOnCreate(this);
-        initCustomMaker.connectionCreator(new OkHttpConnection.Creator());
+        if (ProcessHelper.isMainProcess()){
+            DownloadMgrInitialParams.InitCustomMaker initCustomMaker = FileDownloader.setupOnApplicationOnCreate(this);
+            initCustomMaker.connectionCreator(new OkHttpConnection.Creator());
+        }
     }
 }

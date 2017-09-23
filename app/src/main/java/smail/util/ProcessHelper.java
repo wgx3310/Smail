@@ -27,6 +27,37 @@ import java.util.Set;
 public final class ProcessHelper {
 
     /**
+     * 获取进程名称
+     *
+     * @return
+     */
+    public static String getProcessName() {
+        ActivityManager am = (ActivityManager) AppCompat.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
+        if (runningApps == null) {
+            return null;
+        }
+        for (ActivityManager.RunningAppProcessInfo proInfo : runningApps) {
+            if (proInfo.pid == android.os.Process.myPid()) {
+                if (proInfo.processName != null) {
+                    return proInfo.processName;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 包名判断是否为主进程
+     *
+     * @return
+     */
+    public static boolean isMainProcess() {
+        return AppCompat.getContext().getPackageName().equals(getProcessName());
+    }
+
+
+    /**
      * 获取前台线程包名
      * <p>当不是查看当前App，且SDK大于21时，
      * 需添加权限 {@code <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"/>}</p>

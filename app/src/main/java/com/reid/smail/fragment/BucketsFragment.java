@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.reid.smail.R;
 import com.reid.smail.adapter.BucketAdapter;
-import com.reid.smail.adapter.RecyclerAdapter;
 import com.reid.smail.content.AccountManager;
 import com.reid.smail.content.Reminder;
 import com.reid.smail.model.shot.Bucket;
@@ -99,7 +98,7 @@ public class BucketsFragment extends BaseFragment {
             return;
         }
 
-        Call<List<Bucket>> call = NetService.get().getShotApi().getUserBuckets(AccountManager.get().getAccessToken());
+        Call<List<Bucket>> call = NetService.get().getShotApi().getMyBuckets(AccountManager.get().getAccessToken());
         if (call != null){
             call.enqueue(new Callback<List<Bucket>>() {
                 @Override

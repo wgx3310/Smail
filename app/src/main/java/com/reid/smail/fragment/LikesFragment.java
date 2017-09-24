@@ -26,7 +26,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import smail.util.AppHelper;
 
 /**
  * Created by reid on 2017/9/11.
@@ -98,7 +97,7 @@ public class LikesFragment extends BaseFragment {
             return;
         }
 
-        Call<List<Like>> call = NetService.get().getShotApi().getUserLikes(AccountManager.get().getAccessToken());
+        Call<List<Like>> call = NetService.get().getShotApi().getMyLikes(AccountManager.get().getAccessToken());
         if (call != null){
             call.enqueue(new Callback<List<Like>>() {
                 @Override

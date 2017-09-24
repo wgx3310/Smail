@@ -105,7 +105,7 @@ public class AccountManager {
         }
 
         if (mUser == null){
-            Call<User> call = NetService.get().getShotApi().getUserInfo(mToken.access_token);
+            Call<User> call = NetService.get().getShotApi().getMyInfo(mToken.access_token);
             if (call != null){
                 call.enqueue(new Callback<User>() {
                     @Override

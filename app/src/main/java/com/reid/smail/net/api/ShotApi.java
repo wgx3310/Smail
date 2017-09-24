@@ -73,7 +73,7 @@ public interface ShotApi {
      * @return
      */
     @GET("user")
-    Call<User> getUserInfo(@Query("access_token") String accessToken);
+    Call<User> getMyInfo(@Query("access_token") String accessToken);
 
 
     /**
@@ -163,7 +163,7 @@ public interface ShotApi {
      * @return
      */
     @GET("user/buckets")
-    Call<List<Bucket>> getUserBuckets(@Query("access_token") String accessToken);
+    Call<List<Bucket>> getMyBuckets(@Query("access_token") String accessToken);
 
     /**
      *获取一个Bucket中的Shots
@@ -181,5 +181,5 @@ public interface ShotApi {
      * @return
      */
     @GET("user/likes")
-    Call<List<Like>> getUserLikes(@Query("access_token") String accessToken);
+    Call<List<Like>> getMyLikes(@Query("access_token") String accessToken);
 }

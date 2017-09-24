@@ -22,6 +22,10 @@
             android:icon="@drawable/ic_bucket_24dp"
             android:title="@string/navigation_buckets" />
 
+        <item
+            android:id="@+id/nav_likes"
+            android:icon="@drawable/ic_favorite_black_18dp"
+            android:title="@string/navigation_likes" />
     </group>
 
     <!-- Set an id on this group to show a divider. -->

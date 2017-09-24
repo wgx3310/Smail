@@ -3,6 +3,7 @@ package com.reid.smail.net.api;
 import com.reid.smail.model.Item;
 import com.reid.smail.model.shot.Bucket;
 import com.reid.smail.model.shot.Comment;
+import com.reid.smail.model.shot.Like;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.model.shot.User;
 
@@ -173,4 +174,12 @@ public interface ShotApi {
     @GET("buckets/{id}/shots")
     Call<List<Shot>> getBucketShots(@Path("id") long bucketId,
                                     @Query("access_token") String accessToken);
+
+    /**
+     * 获取登录用户的Likes
+     * @param accessToken 登录用户的token
+     * @return
+     */
+    @GET("user/likes")
+    Call<List<Like>> getUserLikes(@Query("access_token") String accessToken);
 }

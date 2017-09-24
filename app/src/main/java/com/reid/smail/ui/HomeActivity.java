@@ -22,6 +22,7 @@ import com.reid.smail.fragment.BaseFragment;
 import com.reid.smail.fragment.BucketsFragment;
 import com.reid.smail.fragment.DesignFragment;
 import com.reid.smail.fragment.HomeFragment;
+import com.reid.smail.fragment.LikesFragment;
 import com.reid.smail.model.shot.User;
 import com.reid.smail.util.IntentUtils;
 import com.reid.smail.view.glide.GlideApp;
@@ -45,6 +46,7 @@ public class HomeActivity extends BaseActivity
     private HomeFragment mHomeFragment;
     private BucketsFragment mBucketsFragment;
     private DesignFragment mDesignFragment;
+    private LikesFragment mLikesFragment;
 
     private int mCurNavId = -1;
 
@@ -117,6 +119,7 @@ public class HomeActivity extends BaseActivity
             case R.id.nav_home:
             case R.id.nav_design:
             case R.id.nav_buckets:
+            case R.id.nav_likes:
                 int oldNavId = mCurNavId;
                 mCurNavId = item.getItemId();
                 if (mCurNavId != oldNavId){
@@ -152,6 +155,11 @@ public class HomeActivity extends BaseActivity
                     mBucketsFragment = new BucketsFragment();
                 }
                 return mBucketsFragment;
+            case R.id.nav_likes:
+                if (mLikesFragment == null){
+                    mLikesFragment = new LikesFragment();
+                }
+                return mLikesFragment;
             default:
                 if (mHomeFragment == null){
                     mHomeFragment = new HomeFragment();

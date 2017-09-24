@@ -137,6 +137,7 @@ public class WebActivity extends BaseActivity {
             mWebView.setWebChromeClient(null);
             mWebView.freeMemory();
             mWebView.pauseTimers();
+            mWebView.destroy();
             mWebView = null;
         }
         super.onDestroy();

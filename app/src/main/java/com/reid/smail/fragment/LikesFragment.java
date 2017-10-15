@@ -63,14 +63,6 @@ public class LikesFragment extends BaseFragment {
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
-//        mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-//            @Override
-//            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-//                outRect.left = (int) AppHelper.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8);
-//                outRect.right = outRect.left;
-//                outRect.bottom = (int) AppHelper.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10);
-//            }
-//        });
         mAdapter = new RecyclerAdapter();
         mRecyclerView.setAdapter(mAdapter);
 

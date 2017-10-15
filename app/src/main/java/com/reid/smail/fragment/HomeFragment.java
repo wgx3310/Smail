@@ -56,6 +56,7 @@ public class HomeFragment extends BaseFragment {
 
     private void setupViewPager(View view) {
         mViewPager = (ViewPager) view.findViewById(R.id.home_view_pager);
+        mViewPager.setOffscreenPageLimit(2);
         mAdapter = new HomePagerAdapter(getChildFragmentManager());
         List<TabSpan> spans = new ArrayList<>();
         TabSpan sortSpan = new TabSpan();

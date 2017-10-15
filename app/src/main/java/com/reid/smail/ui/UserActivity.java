@@ -2,6 +2,7 @@ package com.reid.smail.ui;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +66,7 @@ public class UserActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
     private GridLayoutManager mLayoutManager;
     private UserShotAdapter mAdapter;
+    private ProgressBar mProgressBar;
 
     private User mUser;
     private int mAppBarState = EXPANDED;
@@ -117,6 +120,7 @@ public class UserActivity extends BaseActivity {
         mGetLikedText = findViewById(R.id.get_liked_text);
         mProjectsText = findViewById(R.id.projects_text);
         mTeamsText = findViewById(R.id.teams_text);
+        mProgressBar = findViewById(R.id.progress_bar);
 
         initAppBar();
         initRecyclerView();
@@ -151,12 +155,19 @@ public class UserActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new UserShotAdapter(mUser);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                outRect.set(10, 10, 10, 10);
+            }
+        });
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 int lastCompletelyVisibleItemPosition = mLayoutManager.findLastCompletelyVisibleItemPosition();
                 if (lastCompletelyVisibleItemPosition + 3 >= recyclerView.getAdapter().getItemCount()){
-                    loadData(true);
+//                    loadData(true);
                 }
             }
         });
@@ -214,6 +225,7 @@ public class UserActivity extends BaseActivity {
                     @Override
                     public void onResponse(Call<List<Shot>> call, Response<List<Shot>> response) {
                         isLoading = false;
+                        mProgressBar.setVisibility(View.GONE);
                         List<Shot> body = response.body();
                         if (body != null){
                             mAdapter.setData(body, curPage > 1);
@@ -225,6 +237,7 @@ public class UserActivity extends BaseActivity {
                     @Override
                     public void onFailure(Call<List<Shot>> call, Throwable t) {
                         isLoading = false;
+                        mProgressBar.setVisibility(View.GONE);
                         Reminder.toast(R.string.load_data_failed);
                     }
                 });

@@ -13,4 +13,7 @@ public class Constant {
     public static final String OAUTH_URL = "https://dribbble.com/oauth/authorize?client_id="+CLIENT_ID+"&scope=public+write+comment+upload&state="+OAUTH_STATE;
 
     public static final String SCHEMA = "smail";
+
+    public static final String BASE_URL_DESIGN = "https://api.dribbble.com/v1/";
+    public static final String BASE_URL_WEBSITE = "https://dribbble.com/";
 }

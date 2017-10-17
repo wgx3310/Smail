@@ -7,6 +7,7 @@ import com.reid.smail.R;
 import com.reid.smail.io.Prefs;
 import com.reid.smail.model.Item;
 import com.reid.smail.net.NetService;
+import com.reid.smail.net.loader.ShotLoader;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +15,7 @@ import java.util.Set;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.functions.Action1;
 
 /**
  * Created by reid on 2017/9/10.
@@ -25,31 +27,28 @@ public class CommentManager {
         if (context == null) return;
 
         if (AccountManager.get().isLogin()){
-            Call<Item> call = NetService.get().getShotApi().likeComment(shotId, commentId, AccountManager.get().getAccessToken());
-            if (call != null){
-                call.enqueue(new Callback<Item>() {
-                    @Override
-                    public void onResponse(Call<Item> call, Response<Item> response) {
-                        if (response != null && response.body() != null){
-                            cacheLiked(shotId, commentId, true);
-                            if (listener != null){
-                                listener.onSuccess(true);
-                            }
-                        }else {
-                            if (listener != null){
-                                listener.onFail();
-                            }
+            ShotLoader.get().likeComment(shotId, commentId).subscribe(new Action1<Item>() {
+                @Override
+                public void call(Item item) {
+                    if (item != null){
+                        cacheLiked(shotId, commentId, true);
+                        if (listener != null){
+                            listener.onSuccess(true);
                         }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Item> call, Throwable t) {
+                    }else {
                         if (listener != null){
                             listener.onFail();
                         }
                     }
-                });
-            }
+                }
+            }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                    if (listener != null){
+                        listener.onFail();
+                    }
+                }
+            });
         }else {
             Reminder.toast(R.string.not_login);
         }
@@ -59,31 +58,22 @@ public class CommentManager {
         if (context == null) return;
 
         if (AccountManager.get().isLogin()){
-            Call<Item> call = NetService.get().getShotApi().unlikeComment(shotId, commentId, AccountManager.get().getAccessToken());
-            if (call != null){
-                call.enqueue(new Callback<Item>() {
-                    @Override
-                    public void onResponse(Call<Item> call, Response<Item> response) {
-                        if (response.code() == 204){
-                            cacheLiked(shotId, commentId, false);
-                            if (listener != null){
-                                listener.onSuccess(false);
-                            }
-                        }else {
-                            if (listener != null){
-                                listener.onFail();
-                            }
-                        }
+            ShotLoader.get().unlikeComment(shotId, commentId).subscribe(new Action1<Item>() {
+                @Override
+                public void call(Item item) {
+                    cacheLiked(shotId, commentId, false);
+                    if (listener != null){
+                        listener.onSuccess(false);
                     }
-
-                    @Override
-                    public void onFailure(Call<Item> call, Throwable t) {
-                        if (listener != null){
-                            listener.onFail();
-                        }
+                }
+            }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                    if (listener != null){
+                        listener.onFail();
                     }
-                });
-            }
+                }
+            });
         }else {
             Reminder.toast(R.string.not_login);
         }
@@ -100,31 +90,28 @@ public class CommentManager {
         if (context == null) return;
 
         if (AccountManager.get().isLogin()){
-            Call<Item> call = NetService.get().getShotApi().checkCommentLiked(shotId, commentId, AccountManager.get().getAccessToken());
-            if (call != null){
-                call.enqueue(new Callback<Item>() {
-                    @Override
-                    public void onResponse(Call<Item> call, Response<Item> response) {
-                        if (response != null && response.body() != null){
-                            if (listener != null){
-                                listener.onSuccess(true);
-                            }
-                        }else {
-                            if (listener != null){
-                                listener.onSuccess(false);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Item> call, Throwable t) {
+            ShotLoader.get().checkCommentLiked(shotId, commentId).subscribe(new Action1<Item>() {
+                @Override
+                public void call(Item item) {
+                    if (item != null){
                         if (listener != null){
-                            listener.onFail();
+                            listener.onSuccess(true);
+                        }
+                    }else {
+                        if (listener != null){
+                            listener.onSuccess(false);
                         }
                     }
-                });
-            }
-        }else {
+                }
+            }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                    if (listener != null){
+                        listener.onFail();
+                    }
+                }
+            });
+        } else {
             Reminder.toast(R.string.not_login);
         }
     }

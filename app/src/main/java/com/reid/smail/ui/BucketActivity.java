@@ -17,12 +17,15 @@ import com.reid.smail.content.SettingKey;
 import com.reid.smail.model.shot.Bucket;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.net.NetService;
+import com.reid.smail.net.loader.ShotLoader;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Subscription;
+import rx.functions.Action1;
 
 public class BucketActivity extends BaseActivity {
 
@@ -67,33 +70,30 @@ public class BucketActivity extends BaseActivity {
         if (isLoading || mBucket == null){
             return;
         }
-
-        Call<List<Shot>> call = NetService.get().getShotApi().getBucketShots(mBucket.id, AccountManager.get().getAccessToken());
-        if (call != null){
-            isLoading = true;
-            call.enqueue(new Callback<List<Shot>>() {
-                @Override
-                public void onResponse(Call<List<Shot>> call, Response<List<Shot>> response) {
-                    isLoading = false;
-                    mProgressBar.setVisibility(View.GONE);
-                    if (response != null && response.body() != null){
-                        List<Shot> shots = response.body();
-                        mAdapter.setData(shots);
-                    }else {
-                        Log.e(TAG, "body is null");
-                        Reminder.toast(R.string.empty_data);
+        isLoading = true;
+        Subscription subscribe = ShotLoader.get().getBucketShots(mBucket.id)
+                .subscribe(new Action1<List<Shot>>() {
+                    @Override
+                    public void call(List<Shot> shots) {
+                        isLoading = false;
+                        mProgressBar.setVisibility(View.GONE);
+                        if (shots != null){
+                            mAdapter.setData(shots);
+                        }else {
+                            Log.e(TAG, "body is null");
+                            Reminder.toast(R.string.empty_data);
+                        }
                     }
-                }
-
-                @Override
-                public void onFailure(Call<List<Shot>> call, Throwable t) {
-                    isLoading = false;
-                    mProgressBar.setVisibility(View.GONE);
-                    Log.e(TAG, "get body fail " + t.getMessage());
-                    Reminder.toast(R.string.load_data_failed);
-                }
-            });
-        }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        isLoading = false;
+                        mProgressBar.setVisibility(View.GONE);
+                        Log.e(TAG, "get body fail " + throwable.getMessage());
+                        Reminder.toast(R.string.load_data_failed);
+                    }
+                });
+        addSubscription(subscribe);
     }
 
     private void initView() {

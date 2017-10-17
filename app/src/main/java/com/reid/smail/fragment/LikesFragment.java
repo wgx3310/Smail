@@ -19,6 +19,7 @@ import com.reid.smail.content.Reminder;
 import com.reid.smail.model.shot.Like;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.net.NetService;
+import com.reid.smail.net.loader.ShotLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Subscription;
+import rx.functions.Action1;
 
 /**
  * Created by reid on 2017/9/11.
@@ -89,38 +92,37 @@ public class LikesFragment extends BaseFragment {
             return;
         }
 
-        Call<List<Like>> call = NetService.get().getShotApi().getMyLikes(AccountManager.get().getAccessToken());
-        if (call != null){
-            call.enqueue(new Callback<List<Like>>() {
-                @Override
-                public void onResponse(Call<List<Like>> call, Response<List<Like>> response) {
-                    isLoading = false;
-                    mProgressBar.setVisibility(View.GONE);
-                    mRefreshLayout.setRefreshing(false);
-                    if (response != null && response.body() != null){
-                        inited = true;
-                        List<Like> likes = response.body();
-                        List<Shot> shots = new ArrayList<>();
-                        for (Like like:likes){
-                            shots.add(like.shot);
+        isLoading = true;
+        Subscription subscribe = ShotLoader.get().getMyLikes()
+                .subscribe(new Action1<List<Like>>() {
+                    @Override
+                    public void call(List<Like> likes) {
+                        isLoading = false;
+                        mProgressBar.setVisibility(View.GONE);
+                        mRefreshLayout.setRefreshing(false);
+                        if (likes != null){
+                            inited = true;
+                            List<Shot> shots = new ArrayList<>();
+                            for (Like like:likes){
+                                shots.add(like.shot);
+                            }
+                            mAdapter.setData(shots);
+                        }else {
+                            Log.e(TAG, "body is null");
+                            Reminder.toast(R.string.empty_data);
                         }
-                        mAdapter.setData(shots);
-                    }else {
-                        Log.e(TAG, "body is null");
-                        Reminder.toast(R.string.empty_data);
                     }
-                }
-
-                @Override
-                public void onFailure(Call<List<Like>> call, Throwable t) {
-                    isLoading = false;
-                    mProgressBar.setVisibility(View.GONE);
-                    mRefreshLayout.setRefreshing(false);
-                    Log.e(TAG, "get body fail " + t.getMessage());
-                    Reminder.toast(R.string.load_data_failed);
-                }
-            });
-        }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        isLoading = false;
+                        mProgressBar.setVisibility(View.GONE);
+                        mRefreshLayout.setRefreshing(false);
+                        Log.e(TAG, "get body fail " + throwable.getMessage());
+                        Reminder.toast(R.string.load_data_failed);
+                    }
+                });
+        addSubscription(subscribe);
     }
 
     @Override

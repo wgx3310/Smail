@@ -33,6 +33,7 @@ import com.reid.smail.model.shot.Comment;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.net.NetService;
 import com.reid.smail.net.api.ShotApi;
+import com.reid.smail.net.loader.ShotLoader;
 import com.reid.smail.util.IntentUtils;
 import com.reid.smail.view.glide.GlideApp;
 
@@ -42,6 +43,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Subscription;
+import rx.functions.Action1;
 import smail.util.AppHelper;
 
 public class DetailActivity extends BaseActivity implements View.OnClickListener {
@@ -64,6 +67,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private int curPage = 1;
     private boolean isLoading;
     private boolean mLiked;
+    private ShotLoader mLoader = ShotLoader.get();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,26 +190,24 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                         && !TextUtils.isEmpty(mCommentEdit.getText().toString()) && !TextUtils.isEmpty(mCommentEdit.getText().toString().trim())){
                     if (mShot == null) return;
                     String text = mCommentEdit.getText().toString().trim();
-                    Call<Comment> call = NetService.get().getShotApi().createComment(mShot.id, AccountManager.get().getAccessToken(), text);
-                    if (call != null){
-                        call.enqueue(new Callback<Comment>() {
-                            @Override
-                            public void onResponse(Call<Comment> call, Response<Comment> response) {
-                                if (response != null && response.body() != null){
-                                    Comment comment = response.body();
-                                    mAdapter.appendData(comment, true);
-                                    mCommentEdit.setText("");
-                                }else {
-                                    Reminder.toast(R.string.error_no_player);
+                    Subscription subscribe = mLoader.createComment(mShot.id, text)
+                            .subscribe(new Action1<Comment>() {
+                                @Override
+                                public void call(Comment comment) {
+                                    if (comment != null){
+                                        mAdapter.appendData(comment, true);
+                                        mCommentEdit.setText("");
+                                    }else {
+                                        Reminder.toast(R.string.error_no_player);
+                                    }
                                 }
-                            }
-
-                            @Override
-                            public void onFailure(Call<Comment> call, Throwable t) {
-                                Reminder.toast(R.string.error_add_comment);
-                            }
-                        });
-                    }
+                            }, new Action1<Throwable>() {
+                                @Override
+                                public void call(Throwable throwable) {
+                                    Reminder.toast(R.string.error_add_comment);
+                                }
+                            });
+                    addSubscription(subscribe);
                 }else {
                     Reminder.toast(R.string.empty_comment_hint);
                 }
@@ -246,32 +248,27 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         }
 
         curPage = loadMore?curPage+1:1;
+        isLoading = true;
 
-        ShotApi shotApi = NetService.get().getShotApi();
-        if (shotApi != null){
-            Call<List<Comment>> call = shotApi.getShotComments(mShot.id, Constant.ACCESS_TOKEN, curPage, 100);
-            if (call != null){
-                isLoading = true;
-                call.enqueue(new Callback<List<Comment>>() {
+        Subscription subscribe = mLoader.getShotComments(mShot.id, curPage)
+                .subscribe(new Action1<List<Comment>>() {
                     @Override
-                    public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
+                    public void call(List<Comment> comments) {
                         isLoading = false;
-                        List<Comment> body = response.body();
-                        if (body != null){
-                            mAdapter.setData(body, curPage > 1);
+                        if (comments != null){
+                            mAdapter.setData(comments, curPage > 1);
                         }else {
                             Reminder.toast(R.string.empty_data);
                         }
                     }
-
+                }, new Action1<Throwable>() {
                     @Override
-                    public void onFailure(Call<List<Comment>> call, Throwable t) {
+                    public void call(Throwable throwable) {
                         isLoading = false;
                         Reminder.toast(R.string.load_data_failed);
                     }
                 });
-            }
-        }
+        addSubscription(subscribe);
     }
 
     @Override

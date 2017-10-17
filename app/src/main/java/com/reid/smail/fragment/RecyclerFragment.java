@@ -13,18 +13,15 @@ import android.widget.ProgressBar;
 
 import com.reid.smail.R;
 import com.reid.smail.adapter.RecyclerAdapter;
-import com.reid.smail.content.Constant;
 import com.reid.smail.content.Reminder;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.model.span.TabSpan;
-import com.reid.smail.net.NetService;
-import com.reid.smail.net.api.ShotApi;
+import com.reid.smail.net.loader.ShotLoader;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import rx.Subscription;
+import rx.functions.Action1;
 
 /**
  * Created by reid on 2017/8/30.
@@ -54,6 +51,7 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
 
     private int curPage = 1;
     private boolean isLoading;
+    private ShotLoader mLoader = ShotLoader.get();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,41 +99,35 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
             return;
         }
 
+        isLoading = true;
         curPage = loadMore?curPage+1:1;
-
-        ShotApi shotApi = NetService.get().getShotApi();
-        if (shotApi != null){
-            String list = mSpan != null?mSpan.list:"";
-            String sort = mSpan != null?mSpan.sort:"";
-            Call<List<Shot>> call = shotApi.getShots(Constant.ACCESS_TOKEN, list, null, sort, curPage);
-            if (call != null){
-                isLoading = true;
-                call.enqueue(new Callback<List<Shot>>() {
+        String list = mSpan != null?mSpan.list:"";
+        String sort = mSpan != null?mSpan.sort:"";
+        Subscription subscribe = mLoader.getShots(list, sort, curPage)
+                .subscribe(new Action1<List<Shot>>() {
                     @Override
-                    public void onResponse(Call<List<Shot>> call, Response<List<Shot>> response) {
+                    public void call(List<Shot> shots) {
                         isLoading = false;
                         mProgressBar.setVisibility(View.GONE);
                         mRefreshLayout.setRefreshing(false);
-                        List<Shot> body = response.body();
-                        if (body != null){
-                            mAdapter.setData(body, curPage > 1);
+                        if (shots != null){
+                            mAdapter.setData(shots, curPage > 1);
                         }else {
                             Log.e(TAG, "body is null");
                             Reminder.toast(R.string.empty_data);
                         }
                     }
-
+                }, new Action1<Throwable>() {
                     @Override
-                    public void onFailure(Call<List<Shot>> call, Throwable t) {
+                    public void call(Throwable throwable) {
                         isLoading = false;
                         mProgressBar.setVisibility(View.GONE);
                         mRefreshLayout.setRefreshing(false);
-                        Log.e(TAG, "get body fail " + t.getMessage());
+                        Log.e(TAG, "get body fail " + throwable.getMessage());
                         Reminder.toast(R.string.load_data_failed);
                     }
                 });
-            }
-        }
+        addSubscription(subscribe);
     }
 
     @Override

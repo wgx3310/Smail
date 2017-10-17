@@ -26,6 +26,7 @@ import com.reid.smail.model.shot.Shot;
 import com.reid.smail.model.shot.User;
 import com.reid.smail.net.NetService;
 import com.reid.smail.net.api.ShotApi;
+import com.reid.smail.net.loader.ShotLoader;
 import com.reid.smail.view.glide.GlideApp;
 
 import java.util.List;
@@ -33,6 +34,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Subscription;
+import rx.functions.Action1;
 
 public class UserActivity extends BaseActivity {
 
@@ -72,6 +75,7 @@ public class UserActivity extends BaseActivity {
     private int mAppBarState = EXPANDED;
     private int curPage = 1;
     private boolean isLoading;
+    private ShotLoader mLoader = ShotLoader.get();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,33 +219,27 @@ public class UserActivity extends BaseActivity {
         }
 
         curPage = loadMore?curPage+1:1;
-
-        ShotApi shotApi = NetService.get().getShotApi();
-        if (shotApi != null){
-            Call<List<Shot>> call = shotApi.getUserShots("users", mUser.id, Constant.ACCESS_TOKEN, curPage);
-            if (call != null){
-                isLoading = true;
-                call.enqueue(new Callback<List<Shot>>() {
-                    @Override
-                    public void onResponse(Call<List<Shot>> call, Response<List<Shot>> response) {
-                        isLoading = false;
-                        mProgressBar.setVisibility(View.GONE);
-                        List<Shot> body = response.body();
-                        if (body != null){
-                            mAdapter.setData(body, curPage > 1);
-                        }else {
-                            Reminder.toast(R.string.empty_data);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Shot>> call, Throwable t) {
-                        isLoading = false;
-                        mProgressBar.setVisibility(View.GONE);
-                        Reminder.toast(R.string.load_data_failed);
-                    }
-                });
+        isLoading = true;
+        Subscription subscribe = mLoader.getUserShots(mUser.id, curPage).subscribe(new Action1<List<Shot>>() {
+            @Override
+            public void call(List<Shot> shots) {
+                isLoading = false;
+                mProgressBar.setVisibility(View.GONE);
+                if (shots != null){
+                    mAdapter.setData(shots, curPage > 1);
+                }else {
+                    Reminder.toast(R.string.empty_data);
+                }
             }
-        }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                isLoading = false;
+                mProgressBar.setVisibility(View.GONE);
+                Reminder.toast(R.string.load_data_failed);
+            }
+        });
+        addSubscription(subscribe);
+
     }
 }

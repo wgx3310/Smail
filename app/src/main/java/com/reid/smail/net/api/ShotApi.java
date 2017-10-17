@@ -9,7 +9,6 @@ import com.reid.smail.model.shot.User;
 
 import java.util.List;
 
-import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -17,6 +16,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import rx.Observable;
 
 /**
  * Created by reid on 2017/8/26.
@@ -34,11 +34,11 @@ public interface ShotApi {
      * @return List<Shot>
      */
     @GET("shots")
-    Call<List<Shot>> getShots(@Query("access_token") String accessToken,
-                              @Query("list") String list,
-                              @Query("timeframe") String timeFrame,
-                              @Query("sort") String sort,
-                              @Query("page") int page);
+    Observable<List<Shot>> getShots(@Query("access_token") String accessToken,
+                                    @Query("list") String list,
+                                    @Query("timeframe") String timeFrame,
+                                    @Query("sort") String sort,
+                                    @Query("page") int page);
 
     /**
      * 获取一个用户的shot
@@ -48,7 +48,7 @@ public interface ShotApi {
      * @param page 页码
      */
     @GET("{user}/{id}/shots")
-    Call<List<Shot>> getUserShots(@Path("user") String user,
+    Observable<List<Shot>> getUserShots(@Path("user") String user,
                                   @Path("id") long id,
                                   @Query("access_token") String accessToken,
                                   @Query("page") int page);
@@ -62,7 +62,7 @@ public interface ShotApi {
      * @param perPage 一页
      */
     @GET("shots/{id}/comments")
-    Call<List<Comment>> getShotComments(@Path("id") long id,
+    Observable<List<Comment>> getShotComments(@Path("id") long id,
                                         @Query("access_token") String accessToken,
                                         @Query("page") int page,
                                         @Query("per_page") int perPage);
@@ -73,7 +73,7 @@ public interface ShotApi {
      * @return
      */
     @GET("user")
-    Call<User> getMyInfo(@Query("access_token") String accessToken);
+    Observable<User> getMyInfo(@Query("access_token") String accessToken);
 
 
     /**
@@ -84,7 +84,7 @@ public interface ShotApi {
      */
     @FormUrlEncoded
     @POST("shots/{id}/like")
-    Call<Item> likeShot(@Path("id") long id,
+    Observable<Item> likeShot(@Path("id") long id,
                         @Field("access_token") String accessToken);
 
     /**
@@ -94,7 +94,7 @@ public interface ShotApi {
      * @return
      */
     @DELETE("shots/{id}/like")
-    Call<Item> unlikeShot(@Path("id") long id,
+    Observable<Item> unlikeShot(@Path("id") long id,
                           @Query("access_token") String accessToken);
 
     /**
@@ -104,7 +104,7 @@ public interface ShotApi {
      * @return
      */
     @GET("shots/{id}/like")
-    Call<Item> checkShotLiked(@Path("id") long id,
+    Observable<Item> checkShotLiked(@Path("id") long id,
                               @Query("access_token") String accessToken);
 
     /**
@@ -116,7 +116,7 @@ public interface ShotApi {
      */
     @FormUrlEncoded
     @POST("shots/{shot}/comments/{id}/like")
-    Call<Item> likeComment(@Path("shot") long shotId,
+    Observable<Item> likeComment(@Path("shot") long shotId,
                            @Path("id") long commentId,
                            @Field("access_token") String accessToken);
 
@@ -128,7 +128,7 @@ public interface ShotApi {
      * @return
      */
     @DELETE("shots/{shot}/comments/{id}/like")
-    Call<Item> unlikeComment(@Path("shot") long shotId,
+    Observable<Item> unlikeComment(@Path("shot") long shotId,
                              @Path("id") long commentId,
                              @Query("access_token") String accessToken);
 
@@ -140,7 +140,7 @@ public interface ShotApi {
      * @return
      */
     @GET("shots/{shot}/comments/{id}/like")
-    Call<Item> checkCommentLiked(@Path("shot") long shotId,
+    Observable<Item> checkCommentLiked(@Path("shot") long shotId,
                                  @Path("id") long commentId,
                                  @Query("access_token") String accessToken);
 
@@ -153,7 +153,7 @@ public interface ShotApi {
      */
     @FormUrlEncoded
     @POST("shots/{shot}/comments")
-    Call<Comment> createComment(@Path("shot") long shotId,
+    Observable<Comment> createComment(@Path("shot") long shotId,
                                 @Field("access_token") String accessToken,
                                 @Field("body") String comment);
 
@@ -163,7 +163,7 @@ public interface ShotApi {
      * @return
      */
     @GET("user/buckets")
-    Call<List<Bucket>> getMyBuckets(@Query("access_token") String accessToken);
+    Observable<List<Bucket>> getMyBuckets(@Query("access_token") String accessToken);
 
     /**
      *获取一个Bucket中的Shots
@@ -172,7 +172,7 @@ public interface ShotApi {
      * @return
      */
     @GET("buckets/{id}/shots")
-    Call<List<Shot>> getBucketShots(@Path("id") long bucketId,
+    Observable<List<Shot>> getBucketShots(@Path("id") long bucketId,
                                     @Query("access_token") String accessToken);
 
     /**
@@ -181,5 +181,5 @@ public interface ShotApi {
      * @return
      */
     @GET("user/likes")
-    Call<List<Like>> getMyLikes(@Query("access_token") String accessToken);
+    Observable<List<Like>> getMyLikes(@Query("access_token") String accessToken);
 }

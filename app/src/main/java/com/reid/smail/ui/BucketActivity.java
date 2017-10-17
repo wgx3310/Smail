@@ -11,19 +11,14 @@ import android.widget.ProgressBar;
 
 import com.reid.smail.R;
 import com.reid.smail.adapter.RecyclerAdapter;
-import com.reid.smail.content.AccountManager;
 import com.reid.smail.content.Reminder;
 import com.reid.smail.content.SettingKey;
 import com.reid.smail.model.shot.Bucket;
 import com.reid.smail.model.shot.Shot;
-import com.reid.smail.net.NetService;
 import com.reid.smail.net.loader.ShotLoader;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.Subscription;
 import rx.functions.Action1;
 

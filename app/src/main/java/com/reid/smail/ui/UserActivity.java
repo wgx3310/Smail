@@ -19,21 +19,15 @@ import android.widget.Toast;
 
 import com.reid.smail.R;
 import com.reid.smail.adapter.UserShotAdapter;
-import com.reid.smail.content.Constant;
 import com.reid.smail.content.Reminder;
 import com.reid.smail.content.SettingKey;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.model.shot.User;
-import com.reid.smail.net.NetService;
-import com.reid.smail.net.api.ShotApi;
 import com.reid.smail.net.loader.ShotLoader;
 import com.reid.smail.view.glide.GlideApp;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.Subscription;
 import rx.functions.Action1;
 

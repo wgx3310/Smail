@@ -7,16 +7,13 @@ import com.reid.smail.R;
 import com.reid.smail.io.Prefs;
 import com.reid.smail.model.shot.Token;
 import com.reid.smail.model.shot.User;
-import com.reid.smail.net.NetService;
+import com.reid.smail.net.loader.AccountLoader;
 import com.reid.smail.net.loader.ShotLoader;
 import com.reid.smail.ui.WebActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.functions.Action1;
 import smail.util.AppCompat;
 
@@ -73,28 +70,23 @@ public class AccountManager {
     public void acquireAccessToken(String code){
         if (TextUtils.isEmpty(code)) return;
 
-        Call<Token> call = NetService.get().getWebsiteApi().getToken(Constant.CLIENT_ID, Constant.CLIENT_SECRET, code);
-        if (call != null){
-            call.enqueue(new Callback<Token>() {
-                @Override
-                public void onResponse(Call<Token> call, Response<Token> response) {
-                    if (response != null && response.body() != null){
-                        mToken = response.body();
-                        Prefs.putString(SettingKey.SETTING_TOKEN, AppGson.get().toJson(mToken));
-                        updateUserInfo();
-                    }else {
-                        Reminder.toast(R.string.login_failed);
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Token> call, Throwable t) {
+        AccountLoader.get().getToken(code).subscribe(new Action1<Token>() {
+            @Override
+            public void call(Token token) {
+                if (token != null){
+                    mToken = token;
+                    Prefs.putString(SettingKey.SETTING_TOKEN, AppGson.get().toJson(mToken));
+                    updateUserInfo();
+                }else {
                     Reminder.toast(R.string.login_failed);
                 }
-            });
-        }else {
-            Reminder.toast(R.string.login_failed);
-        }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                Reminder.toast(R.string.login_failed);
+            }
+        });
     }
 
     public void updateUserInfo() {

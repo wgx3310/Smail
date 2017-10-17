@@ -31,8 +31,6 @@ import com.reid.smail.content.SettingKey;
 import com.reid.smail.io.offline.Downloader;
 import com.reid.smail.model.shot.Comment;
 import com.reid.smail.model.shot.Shot;
-import com.reid.smail.net.NetService;
-import com.reid.smail.net.api.ShotApi;
 import com.reid.smail.net.loader.ShotLoader;
 import com.reid.smail.util.IntentUtils;
 import com.reid.smail.view.glide.GlideApp;
@@ -40,9 +38,6 @@ import com.reid.smail.view.glide.GlideApp;
 import java.io.File;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.Subscription;
 import rx.functions.Action1;
 import smail.util.AppHelper;

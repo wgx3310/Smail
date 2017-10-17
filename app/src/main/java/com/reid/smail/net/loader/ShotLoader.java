@@ -8,7 +8,7 @@ import com.reid.smail.model.shot.Comment;
 import com.reid.smail.model.shot.Like;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.model.shot.User;
-import com.reid.smail.net.api.RxShotApi;
+import com.reid.smail.net.api.ShotApi;
 import com.reid.smail.net.client.Loader;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import rx.Observable;
  * Created by reid on 2017/10/16.
  */
 
-public class ShotLoader extends Loader<RxShotApi> {
+public class ShotLoader extends Loader<ShotApi> {
 
     private ShotLoader(){
 

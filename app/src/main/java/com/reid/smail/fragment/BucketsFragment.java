@@ -19,14 +19,10 @@ import com.reid.smail.adapter.BucketAdapter;
 import com.reid.smail.content.AccountManager;
 import com.reid.smail.content.Reminder;
 import com.reid.smail.model.shot.Bucket;
-import com.reid.smail.net.NetService;
 import com.reid.smail.net.loader.ShotLoader;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.Subscription;
 import rx.functions.Action1;
 import smail.util.AppHelper;

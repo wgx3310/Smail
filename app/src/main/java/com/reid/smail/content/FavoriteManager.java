@@ -4,12 +4,8 @@ import android.content.Context;
 
 import com.reid.smail.R;
 import com.reid.smail.model.Item;
-import com.reid.smail.net.NetService;
 import com.reid.smail.net.loader.ShotLoader;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.functions.Action1;
 
 /**

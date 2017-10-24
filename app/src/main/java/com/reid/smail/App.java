@@ -7,6 +7,7 @@ import com.liulishuo.filedownloader.services.DownloadMgrInitialParams;
 import com.reid.smail.content.Constant;
 import com.reid.smail.io.offline.OkHttpConnection;
 import com.reid.smail.net.client.ApiClient;
+import com.squareup.leakcanary.LeakCanary;
 
 import smail.util.AppCompat;
 import smail.util.ProcessHelper;
@@ -29,6 +30,11 @@ public class App extends Application {
 
             ApiClient.getInstance().register(Constant.BASE_URL_DESIGN);
             ApiClient.getInstance().register(Constant.BASE_URL_WEBSITE);
+
+            if (LeakCanary.isInAnalyzerProcess(this)){
+                return;
+            }
+            LeakCanary.install(this);
         }
     }
 }

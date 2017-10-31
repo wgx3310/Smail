@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PlasticView">
+        <attr name="refreshable" format="boolean|reference"/>
+        <attr name="layout_empty" format="reference"/>
+        <attr name="layout_progress" format="reference" />
+        <attr name="layout_more_loading" format="reference"/>
+        <attr name="recyclerClipToPadding" format="boolean|reference"/>
+        <attr name="recyclerPadding" format="dimension|reference"/>
+        <attr name="recyclerPaddingTop" format="dimension|reference"/>
+        <attr name="recyclerPaddingBottom" format="dimension|reference"/>
+        <attr name="recyclerPaddingLeft" format="dimension|reference"/>
+        <attr name="recyclerPaddingRight" format="dimension|reference"/>
+        <attr name="recyclerScrollbarStyle">
+            <enum name="insideOverlay" value="0"/>
+            <enum name="insideInset" value="0x01000000" />
+            <enum name="outsideOverlay" value="0x02000000"/>
+            <enum name="outsideInset" value="0x03000000"/>
+        </attr>
+
+    </declare-styleable>
+</resources>

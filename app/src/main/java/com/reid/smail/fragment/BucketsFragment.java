@@ -23,9 +23,9 @@ import com.reid.smail.net.loader.ShotLoader;
 
 import java.util.List;
 
+import reid.utils.AppHelper;
 import rx.Subscription;
 import rx.functions.Action1;
-import smail.util.AppHelper;
 
 /**
  * Created by reid on 2017/9/11.

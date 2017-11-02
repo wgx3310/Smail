@@ -9,8 +9,8 @@ import com.reid.smail.io.offline.OkHttpConnection;
 import com.reid.smail.net.client.ApiClient;
 import com.squareup.leakcanary.LeakCanary;
 
-import smail.util.AppCompat;
-import smail.util.ProcessHelper;
+import reid.utils.AppCompat;
+import reid.utils.ProcessHelper;
 
 
 /**

@@ -1,6 +1,5 @@
 package com.reid.smail.net.client;
 
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.ArrayMap;
 
@@ -18,11 +17,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
+import reid.utils.AppCompat;
+import reid.utils.NetHelper;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import smail.util.AppCompat;
-import smail.util.NetHelper;
 
 /**
  * Created by reid on 2017/10/16.

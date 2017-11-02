@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import com.reid.smail.R;
 import com.reid.smail.content.Reminder;
 
-import smail.util.AppHelper;
+import reid.utils.AppHelper;
 
 
 /**

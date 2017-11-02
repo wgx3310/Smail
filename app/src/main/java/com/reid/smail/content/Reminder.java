@@ -2,7 +2,8 @@ package com.reid.smail.content;
 
 import android.widget.Toast;
 
-import smail.util.AppCompat;
+import reid.utils.AppCompat;
+
 
 /**
  * Created by reid on 2017/9/11.

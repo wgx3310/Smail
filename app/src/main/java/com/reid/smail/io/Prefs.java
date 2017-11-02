@@ -6,7 +6,8 @@ import android.text.TextUtils;
 
 import java.util.Set;
 
-import smail.util.AppCompat;
+import reid.utils.AppCompat;
+
 
 /**
  * Created by reid on 2017/9/3.

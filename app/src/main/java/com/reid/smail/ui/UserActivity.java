@@ -8,9 +8,12 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -21,6 +24,7 @@ import com.reid.smail.R;
 import com.reid.smail.adapter.UserShotAdapter;
 import com.reid.smail.content.Reminder;
 import com.reid.smail.content.SettingKey;
+import com.reid.smail.holder.UserHeaderView;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.model.shot.User;
 import com.reid.smail.net.loader.ShotLoader;
@@ -28,6 +32,9 @@ import com.reid.smail.view.glide.GlideApp;
 
 import java.util.List;
 
+import reid.list.DecorativeView;
+import reid.list.PlasticAdapter;
+import reid.list.PlasticView;
 import rx.Subscription;
 import rx.functions.Action1;
 
@@ -60,7 +67,7 @@ public class UserActivity extends BaseActivity {
     private TextView mTeamsText;
     private AppBarLayout mAppBar;
 
-    private RecyclerView mRecyclerView;
+    private PlasticView mRecyclerView;
     private GridLayoutManager mLayoutManager;
     private UserShotAdapter mAdapter;
     private ProgressBar mProgressBar;
@@ -119,6 +126,7 @@ public class UserActivity extends BaseActivity {
         mProjectsText = findViewById(R.id.projects_text);
         mTeamsText = findViewById(R.id.teams_text);
         mProgressBar = findViewById(R.id.progress_bar);
+        mProgressBar.setVisibility(View.GONE);
 
         initAppBar();
         initRecyclerView();
@@ -152,7 +160,9 @@ public class UserActivity extends BaseActivity {
         mLayoutManager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new UserShotAdapter(mUser);
-        mRecyclerView.setAdapter(mAdapter);
+        PlasticAdapter adapter = new PlasticAdapter(mAdapter);
+        adapter.addHeaderView(new UserHeaderView(mUser));
+        mRecyclerView.setAdapter(adapter);
         mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -218,7 +228,7 @@ public class UserActivity extends BaseActivity {
             @Override
             public void call(List<Shot> shots) {
                 isLoading = false;
-                mProgressBar.setVisibility(View.GONE);
+//                mProgressBar.setVisibility(View.GONE);
                 if (shots != null){
                     mAdapter.setData(shots, curPage > 1);
                 }else {
@@ -229,7 +239,7 @@ public class UserActivity extends BaseActivity {
             @Override
             public void call(Throwable throwable) {
                 isLoading = false;
-                mProgressBar.setVisibility(View.GONE);
+//                mProgressBar.setVisibility(View.GONE);
                 Reminder.toast(R.string.load_data_failed);
             }
         });

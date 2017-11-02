@@ -14,7 +14,8 @@ import com.reid.smail.ui.BucketActivity;
 import com.reid.smail.ui.DetailActivity;
 import com.reid.smail.ui.UserActivity;
 
-import smail.util.Logger;
+import reid.utils.Logger;
+
 
 /**
  * Created by reid on 2017/9/2.

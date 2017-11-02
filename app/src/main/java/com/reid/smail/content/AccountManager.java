@@ -14,8 +14,8 @@ import com.reid.smail.ui.WebActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import reid.utils.AppCompat;
 import rx.functions.Action1;
-import smail.util.AppCompat;
 
 /**
  * Created by reid on 2017/9/2.

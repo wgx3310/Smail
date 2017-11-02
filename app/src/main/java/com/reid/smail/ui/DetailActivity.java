@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +23,6 @@ import android.widget.ProgressBar;
 import com.reid.smail.R;
 import com.reid.smail.adapter.DetailAdapter;
 import com.reid.smail.content.AccountManager;
-import com.reid.smail.content.Constant;
 import com.reid.smail.content.FavoriteManager;
 import com.reid.smail.content.Reminder;
 import com.reid.smail.content.SettingKey;
@@ -38,9 +36,9 @@ import com.reid.smail.view.glide.GlideApp;
 import java.io.File;
 import java.util.List;
 
+import reid.utils.AppHelper;
 import rx.Subscription;
 import rx.functions.Action1;
-import smail.util.AppHelper;
 
 public class DetailActivity extends BaseActivity implements View.OnClickListener {
 

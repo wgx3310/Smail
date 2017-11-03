@@ -57,6 +57,7 @@ public class PlasticView extends FrameLayout {
 
     private OnMoreListener mOnMoreListener;
     private boolean isLoadingMore;
+    private boolean isLoadMoreEnable;
     private int mItemCountToLoadMore = DEFAULT_ITEM_COUNT_TO_LOAD_MORE;
 
     private int mLayoutManagerType = 0;
@@ -99,7 +100,7 @@ public class PlasticView extends FrameLayout {
         mPtrLayout = inflate.findViewById(R.id.ptr_layout);
         mPtrLayout.setEnabled(mRefreshable);
 
-        mProgress = inflate.findViewById(android.R.id.progress);
+        mProgress = inflate.findViewById(R.id.progress);
         mProgress.setLayoutResource(mProgressId);
         mProgressView = mProgress.inflate();
 
@@ -162,12 +163,13 @@ public class PlasticView extends FrameLayout {
     }
 
     private void processOnLoadMore() {
+        if (!isLoadMoreEnable || getOnMoreListener() == null) return;
+
         RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
         int lastVisibleItemPosition = getLastVisibleItemPosition(layoutManager);
         int totalItemCount = layoutManager.getItemCount();
 
-        if (!isLoadingMore() && getOnMoreListener() != null
-                && (totalItemCount - lastVisibleItemPosition) <= mItemCountToLoadMore){
+        if (!isLoadingMore() && (totalItemCount - lastVisibleItemPosition) <= mItemCountToLoadMore){
             isLoadingMore = true;
             if (mMoreLoading != null){
                 mMoreLoading.setVisibility(View.VISIBLE);
@@ -238,7 +240,7 @@ public class PlasticView extends FrameLayout {
         else
             mRecyclerView.setAdapter(adapter);
 
-        mProgress.setVisibility(View.GONE);
+        mProgress.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
         mPtrLayout.setRefreshing(false);
         if (null != adapter)
@@ -275,8 +277,7 @@ public class PlasticView extends FrameLayout {
 
                 private void update() {
                     mProgress.setVisibility(View.GONE);
-                    mMoreLoading.setVisibility(View.GONE);
-                    isLoadingMore = false;
+                    stopLoadingMore();
                     mPtrLayout.setRefreshing(false);
                     if (mRecyclerView.getAdapter().getItemCount() == 0 && mEmptyId != 0) {
                         mEmpty.setVisibility(View.VISIBLE);
@@ -380,14 +381,27 @@ public class PlasticView extends FrameLayout {
 
     public void setOnMoreListener(OnMoreListener mOnMoreListener) {
         this.mOnMoreListener = mOnMoreListener;
+        isLoadMoreEnable = true;
     }
 
     public boolean isLoadingMore() {
         return isLoadingMore;
     }
 
-    public void setLoadingMore(boolean isLoadingMore) {
-        this.isLoadingMore = isLoadingMore;
+    public void stopLoadingMore(){
+        mMoreLoading.setVisibility(View.GONE);
+        isLoadingMore = false;
+    }
+
+    public boolean isLoadMoreEnable() {
+        return isLoadMoreEnable;
+    }
+
+    public void setLoadMoreEnable(boolean loadMoreEnable) {
+        isLoadMoreEnable = loadMoreEnable;
+        if (!isLoadMoreEnable()){
+            mMoreLoading.setVisibility(View.GONE);
+        }
     }
 
     public int getItemCountToLoadMore() {

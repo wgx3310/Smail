@@ -20,11 +20,11 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseVH<T>> {
     }
 
     public void setData(List<T> list, boolean append){
+        if (!append) mDataList.clear();
         if (list != null && !list.isEmpty()){
-            if (!append) mDataList.clear();
             mDataList.addAll(list);
-            notifyDataSetChanged();
         }
+        notifyDataSetChanged();
     }
 
     public void appendData(T data, boolean front){
@@ -34,6 +34,11 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseVH<T>> {
         }else {
             mDataList.add(data);
         }
+        notifyDataSetChanged();
+    }
+
+    public void clearData(){
+        mDataList.clear();
         notifyDataSetChanged();
     }
 

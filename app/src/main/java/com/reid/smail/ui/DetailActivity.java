@@ -126,6 +126,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     private void initCommentView() {
         mAddCommentLayout = findViewById(R.id.add_comment_layout);
+        mAddCommentLayout.setVisibility(View.GONE);
         mAvatar = findViewById(R.id.comment_avatar);
         mSendBtn = findViewById(R.id.send_btn);
         mSendProgress = findViewById(R.id.send_progress);

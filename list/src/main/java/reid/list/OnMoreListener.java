@@ -5,5 +5,5 @@ package reid.list;
  */
 
 public interface OnMoreListener {
-    void onMore(int overallItemsCount, int itemsBeforeMore, int maxLastVisiblePosition);
+    void onMore(int totalItemCount, int itemCountToLoadMore, int lastVisibleItemPosition);
 }

@@ -33,6 +33,7 @@ import com.reid.smail.view.glide.GlideApp;
 import java.util.List;
 
 import reid.list.DecorativeView;
+import reid.list.OnMoreListener;
 import reid.list.PlasticAdapter;
 import reid.list.PlasticView;
 import rx.Subscription;
@@ -70,7 +71,6 @@ public class UserActivity extends BaseActivity {
     private PlasticView mRecyclerView;
     private GridLayoutManager mLayoutManager;
     private UserShotAdapter mAdapter;
-    private ProgressBar mProgressBar;
 
     private User mUser;
     private int mAppBarState = EXPANDED;
@@ -125,8 +125,6 @@ public class UserActivity extends BaseActivity {
         mGetLikedText = findViewById(R.id.get_liked_text);
         mProjectsText = findViewById(R.id.projects_text);
         mTeamsText = findViewById(R.id.teams_text);
-        mProgressBar = findViewById(R.id.progress_bar);
-        mProgressBar.setVisibility(View.GONE);
 
         initAppBar();
         initRecyclerView();
@@ -170,13 +168,10 @@ public class UserActivity extends BaseActivity {
                 outRect.set(10, 10, 10, 10);
             }
         });
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRecyclerView.setOnMoreListener(new OnMoreListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                int lastCompletelyVisibleItemPosition = mLayoutManager.findLastCompletelyVisibleItemPosition();
-                if (lastCompletelyVisibleItemPosition + 3 >= recyclerView.getAdapter().getItemCount()){
-//                    loadData(true);
-                }
+            public void onMore(int totalItemCount, int itemCountToLoadMore, int lastVisibleItemPosition) {
+                loadData(true);
             }
         });
     }
@@ -217,7 +212,7 @@ public class UserActivity extends BaseActivity {
         animator.start();
     }
 
-    private void loadData(boolean loadMore) {
+    private void loadData(final boolean loadMore) {
         if (isLoading){
             return;
         }
@@ -228,18 +223,19 @@ public class UserActivity extends BaseActivity {
             @Override
             public void call(List<Shot> shots) {
                 isLoading = false;
-//                mProgressBar.setVisibility(View.GONE);
-                if (shots != null){
-                    mAdapter.setData(shots, curPage > 1);
+
+                mAdapter.setData(shots, curPage > 1);
+                if (shots.size() > 0){
+                    mRecyclerView.stopLoadingMore();
                 }else {
-                    Reminder.toast(R.string.empty_data);
+                    mRecyclerView.setLoadMoreEnable(false);
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
                 isLoading = false;
-//                mProgressBar.setVisibility(View.GONE);
+                mRecyclerView.stopLoadingMore();
                 Reminder.toast(R.string.load_data_failed);
             }
         });

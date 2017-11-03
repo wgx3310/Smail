@@ -1,25 +1,31 @@
 package com.reid.smail.holder;
 
+import android.content.Context;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.reid.smail.R;
-import com.reid.smail.model.shot.Comment;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.util.IntentUtils;
 import com.reid.smail.view.glide.GlideApp;
 
+import reid.list.DecorativeView;
+
 /**
- * Created by reid on 2017/9/1.
+ * Created by reid on 2017/11/3.
  */
 
-public class DetailHeaderVH extends BaseVH<Comment> implements View.OnClickListener {
+public class DetailHeaderView implements DecorativeView, View.OnClickListener {
 
     private Shot mShot;
+    private Context mContext;
+
     private ImageView mAvatar;
     private TextView mTitle;
     private TextView mAuthor;
@@ -34,33 +40,34 @@ public class DetailHeaderVH extends BaseVH<Comment> implements View.OnClickListe
     private TextView mCommentCount;
     private TextView mAttachCount;
 
-    public DetailHeaderVH(View itemView, Shot shot) {
-        super(itemView);
+    public DetailHeaderView(Shot shot){
         mShot = shot;
-
-        mAvatar = itemView.findViewById(R.id.avatar);
-        mTitle = itemView.findViewById(R.id.title);
-        mAuthor = itemView.findViewById(R.id.author);
-        mDescription = itemView.findViewById(R.id.description);
-        mTags = itemView.findViewById(R.id.tag);
-        mTagLayout = itemView.findViewById(R.id.tag_layout);
-        mAuthorLayout = itemView.findViewById(R.id.author_layout);
-
-        mLikeCount = itemView.findViewById(R.id.like_count);
-        mViewCount = itemView.findViewById(R.id.view_count);
-        mBucketCount = itemView.findViewById(R.id.bucket_count);
-        mCommentCount = itemView.findViewById(R.id.comment_count);
-        mAttachCount = itemView.findViewById(R.id.attach_count);
-
-        mAuthorLayout.setOnClickListener(this);
     }
 
     @Override
-    public void bindData(Comment data) {
-        super.bindData(data);
+    public View getView(ViewGroup parent) {
+        mContext = parent.getContext();
+        View container = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_detail_head, parent, false);
+        mAvatar = container.findViewById(R.id.avatar);
+        mTitle = container.findViewById(R.id.title);
+        mAuthor = container.findViewById(R.id.author);
+        mDescription = container.findViewById(R.id.description);
+        mTags = container.findViewById(R.id.tag);
+        mTagLayout = container.findViewById(R.id.tag_layout);
+        mAuthorLayout = container.findViewById(R.id.author_layout);
 
-        if (mShot == null) return;
+        mLikeCount = container.findViewById(R.id.like_count);
+        mViewCount = container.findViewById(R.id.view_count);
+        mBucketCount = container.findViewById(R.id.bucket_count);
+        mCommentCount = container.findViewById(R.id.comment_count);
+        mAttachCount = container.findViewById(R.id.attach_count);
 
+        mAuthorLayout.setOnClickListener(this);
+        return container;
+    }
+
+    @Override
+    public void bindView(int position) {
         mTitle.setText(mShot.title);
         if (mShot.user != null){
             mAuthor.setText(mShot.user.name);
@@ -83,7 +90,7 @@ public class DetailHeaderVH extends BaseVH<Comment> implements View.OnClickListe
         }
 
         if (mShot.user != null && !TextUtils.isEmpty(mShot.user.avatar_url)){
-            GlideApp.with(context).load(mShot.user.avatar_url).circleCrop().into(mAvatar);
+            GlideApp.with(mContext).load(mShot.user.avatar_url).circleCrop().into(mAvatar);
         }
 
         mLikeCount.setText(String.valueOf(mShot.likes_count));
@@ -94,11 +101,11 @@ public class DetailHeaderVH extends BaseVH<Comment> implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()){
+    public void onClick(View v) {
+        switch (v.getId()){
             case R.id.author_layout:
                 if (mShot != null && mShot.user != null){
-                    IntentUtils.goUser(context, mShot.user);
+                    IntentUtils.goUser(mContext, mShot.user);
                 }
                 break;
         }

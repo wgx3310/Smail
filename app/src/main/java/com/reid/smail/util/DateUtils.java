@@ -2,7 +2,6 @@ package com.reid.smail.util;
 
 import com.google.gson.internal.bind.util.ISO8601Utils;
 
-import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 

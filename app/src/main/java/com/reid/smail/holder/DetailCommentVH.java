@@ -3,7 +3,6 @@ package com.reid.smail.holder;
 import android.support.v7.widget.ButtonBarLayout;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;

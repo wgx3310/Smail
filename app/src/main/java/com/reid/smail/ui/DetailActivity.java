@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -26,6 +25,7 @@ import com.reid.smail.content.AccountManager;
 import com.reid.smail.content.FavoriteManager;
 import com.reid.smail.content.Reminder;
 import com.reid.smail.content.SettingKey;
+import com.reid.smail.holder.DetailHeaderView;
 import com.reid.smail.io.offline.Downloader;
 import com.reid.smail.model.shot.Comment;
 import com.reid.smail.model.shot.Shot;
@@ -36,6 +36,9 @@ import com.reid.smail.view.glide.GlideApp;
 import java.io.File;
 import java.util.List;
 
+import reid.list.OnMoreListener;
+import reid.list.PlasticAdapter;
+import reid.list.PlasticView;
 import reid.utils.AppHelper;
 import rx.Subscription;
 import rx.functions.Action1;
@@ -47,7 +50,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     private ImageView mPoster;
     private FloatingActionButton mFavBtn;
-    private RecyclerView mRecyclerView;
+    private PlasticView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private DetailAdapter mAdapter;
 
@@ -112,14 +115,13 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new DetailAdapter(mShot);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        PlasticAdapter adapter = new PlasticAdapter(mAdapter);
+        adapter.addHeaderView(new DetailHeaderView(mShot));
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setOnMoreListener(new OnMoreListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                int lastCompletelyVisibleItemPosition = mLayoutManager.findLastCompletelyVisibleItemPosition();
-                if (lastCompletelyVisibleItemPosition + 5 >= recyclerView.getAdapter().getItemCount()){
-                    loadData(true);
-                }
+            public void onMore(int totalItemCount, int itemCountToLoadMore, int lastVisibleItemPosition) {
+                loadData(true);
             }
         });
     }
@@ -249,16 +251,18 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void call(List<Comment> comments) {
                         isLoading = false;
-                        if (comments != null){
-                            mAdapter.setData(comments, curPage > 1);
+                        mAdapter.setData(comments, curPage > 1);
+                        if (comments != null && comments.size() > 0){
+                            mRecyclerView.stopLoadingMore();
                         }else {
-                            Reminder.toast(R.string.empty_data);
+                            mRecyclerView.setLoadMoreEnable(false);
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         isLoading = false;
+                        mRecyclerView.stopLoadingMore();
                         Reminder.toast(R.string.load_data_failed);
                     }
                 });

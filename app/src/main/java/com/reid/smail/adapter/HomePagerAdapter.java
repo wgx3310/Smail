@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.text.TextUtils;
 
-import com.reid.smail.fragment.BaseFragment;
 import com.reid.smail.fragment.RecyclerFragment;
 import com.reid.smail.model.span.TabSpan;
 

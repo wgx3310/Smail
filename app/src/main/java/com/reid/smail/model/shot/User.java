@@ -19,7 +19,6 @@ package com.reid.smail.model.shot;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-
 import com.reid.smail.util.ParcelUtils;
 
 import java.util.Date;

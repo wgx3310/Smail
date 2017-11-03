@@ -8,17 +8,11 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.reid.smail.R;
 import com.reid.smail.adapter.UserShotAdapter;
@@ -32,7 +26,6 @@ import com.reid.smail.view.glide.GlideApp;
 
 import java.util.List;
 
-import reid.list.DecorativeView;
 import reid.list.OnMoreListener;
 import reid.list.PlasticAdapter;
 import reid.list.PlasticView;
@@ -225,7 +218,7 @@ public class UserActivity extends BaseActivity {
                 isLoading = false;
 
                 mAdapter.setData(shots, curPage > 1);
-                if (shots.size() > 0){
+                if (shots != null && shots.size() > 0){
                     mRecyclerView.stopLoadingMore();
                 }else {
                     mRecyclerView.setLoadMoreEnable(false);

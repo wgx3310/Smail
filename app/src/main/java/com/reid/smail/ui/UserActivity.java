@@ -26,9 +26,10 @@ import com.reid.smail.view.glide.GlideApp;
 
 import java.util.List;
 
-import reid.list.OnMoreListener;
+import reid.list.load.OnMoreListener;
 import reid.list.PlasticAdapter;
 import reid.list.PlasticView;
+import reid.utils.Logger;
 import rx.Subscription;
 import rx.functions.Action1;
 
@@ -217,18 +218,18 @@ public class UserActivity extends BaseActivity {
             public void call(List<Shot> shots) {
                 isLoading = false;
 
-                mAdapter.setData(shots, curPage > 1);
                 if (shots != null && shots.size() > 0){
-                    mRecyclerView.stopLoadingMore();
+                    mAdapter.setData(shots, curPage > 1);
+                    mRecyclerView.loadMoreComplete();
                 }else {
-                    mRecyclerView.setLoadMoreEnable(false);
+                    mRecyclerView.loadMoreEnd();
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
                 isLoading = false;
-                mRecyclerView.stopLoadingMore();
+                mRecyclerView.loadMoreComplete();
                 Reminder.toast(R.string.load_data_failed);
             }
         });

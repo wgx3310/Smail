@@ -4,7 +4,6 @@
         <attr name="refreshable" format="boolean|reference"/>
         <attr name="layout_empty" format="reference"/>
         <attr name="layout_progress" format="reference" />
-        <attr name="layout_more_loading" format="reference"/>
         <attr name="recyclerClipToPadding" format="boolean|reference"/>
         <attr name="recyclerPadding" format="dimension|reference"/>
         <attr name="recyclerPaddingTop" format="dimension|reference"/>

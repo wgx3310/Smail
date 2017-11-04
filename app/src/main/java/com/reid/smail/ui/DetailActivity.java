@@ -36,7 +36,7 @@ import com.reid.smail.view.glide.GlideApp;
 import java.io.File;
 import java.util.List;
 
-import reid.list.OnMoreListener;
+import reid.list.load.OnMoreListener;
 import reid.list.PlasticAdapter;
 import reid.list.PlasticView;
 import reid.utils.AppHelper;
@@ -251,18 +251,18 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void call(List<Comment> comments) {
                         isLoading = false;
-                        mAdapter.setData(comments, curPage > 1);
                         if (comments != null && comments.size() > 0){
-                            mRecyclerView.stopLoadingMore();
+                            mAdapter.setData(comments, curPage > 1);
+                            mRecyclerView.loadMoreComplete();
                         }else {
-                            mRecyclerView.setLoadMoreEnable(false);
+                            mRecyclerView.loadMoreEnd();
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         isLoading = false;
-                        mRecyclerView.stopLoadingMore();
+                        mRecyclerView.loadMoreComplete();
                         Reminder.toast(R.string.load_data_failed);
                     }
                 });

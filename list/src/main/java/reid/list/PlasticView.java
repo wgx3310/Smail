@@ -18,13 +18,15 @@ import android.widget.FrameLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import reid.list.load.OnMoreListener;
+
 /**
  * Created by reid on 2017/10/25.
  */
 
 public class PlasticView extends FrameLayout {
 
-    private static final int DEFAULT_ITEM_COUNT_TO_LOAD_MORE = 6;
+    private static final int DEFAULT_ITEM_COUNT_TO_LOAD_MORE = 2;
 
     private static final int LAYOUT_TYPE_LINEAR = 1;
     private static final int LAYOUT_TYPE_GRID = 2;
@@ -32,12 +34,12 @@ public class PlasticView extends FrameLayout {
 
     private SwipeRefreshLayout mPtrLayout;
     private RecyclerView mRecyclerView;
+    private PlasticAdapter mAdapter;
+    private PlasticAdapterObserver mObserver = new PlasticAdapterObserver();
     protected ViewStub mProgress;
-    protected ViewStub mMoreLoading;
     protected ViewStub mEmpty;
 
     protected View mProgressView;
-    protected View mMoreLoadingView;
     protected View mEmptyView;
 
     protected boolean mRefreshable;
@@ -50,13 +52,11 @@ public class PlasticView extends FrameLayout {
     protected int mScrollbarStyle;
     protected int mEmptyId;
     protected int mProgressId;
-    protected int mMoreLoadingId;
 
     private RecyclerView.OnScrollListener mInternalScrollListener;
     private List<RecyclerView.OnScrollListener> mScrollListeners;
 
     private OnMoreListener mOnMoreListener;
-    private boolean isLoadingMore;
     private boolean isLoadMoreEnable;
     private int mItemCountToLoadMore = DEFAULT_ITEM_COUNT_TO_LOAD_MORE;
 
@@ -82,7 +82,6 @@ public class PlasticView extends FrameLayout {
             mRefreshable = array.getBoolean(R.styleable.PlasticView_refreshable, false);
             mEmptyId = array.getResourceId(R.styleable.PlasticView_layout_empty, 0);
             mProgressId = array.getResourceId(R.styleable.PlasticView_layout_progress, R.layout.layout_progress);
-            mMoreLoadingId = array.getResourceId(R.styleable.PlasticView_layout_more_loading, R.layout.layout_more_loading);
             mClipToPadding = array.getBoolean(R.styleable.PlasticView_recyclerClipToPadding, false);
             mPadding = (int) array.getDimension(R.styleable.PlasticView_recyclerPadding, -1.0f);
             mPaddingLeft = (int) array.getDimension(R.styleable.PlasticView_recyclerPaddingLeft, 0.0f);
@@ -103,13 +102,6 @@ public class PlasticView extends FrameLayout {
         mProgress = inflate.findViewById(R.id.progress);
         mProgress.setLayoutResource(mProgressId);
         mProgressView = mProgress.inflate();
-
-        mMoreLoading = inflate.findViewById(R.id.more_loading);
-        mMoreLoading.setLayoutResource(mMoreLoadingId);
-        if (mMoreLoadingId != 0){
-            mMoreLoadingView = mMoreLoading.inflate();
-        }
-        mMoreLoading.setVisibility(View.GONE);
 
         mEmpty = inflate.findViewById(R.id.empty);
         mEmpty.setLayoutResource(mEmptyId);
@@ -162,18 +154,16 @@ public class PlasticView extends FrameLayout {
         mRecyclerView.addOnScrollListener(mInternalScrollListener);
     }
 
-    private void processOnLoadMore() {
-        if (!isLoadMoreEnable || getOnMoreListener() == null) return;
+    void processOnLoadMore() {
+        if (!isLoadMoreEnable || getOnMoreListener() == null || mAdapter == null) return;
 
         RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
         int lastVisibleItemPosition = getLastVisibleItemPosition(layoutManager);
         int totalItemCount = layoutManager.getItemCount();
 
-        if (!isLoadingMore() && (totalItemCount - lastVisibleItemPosition) <= mItemCountToLoadMore){
-            isLoadingMore = true;
-            if (mMoreLoading != null){
-                mMoreLoading.setVisibility(View.VISIBLE);
-            }
+        if (mAdapter.canLoadMore() && (totalItemCount - lastVisibleItemPosition) <= mItemCountToLoadMore){
+//            Logger.e("WGX", "processOnLoadMore");
+            mAdapter.setLoadingMore();
             mOnMoreListener.onMore(totalItemCount, mItemCountToLoadMore, lastVisibleItemPosition);
         }
     }
@@ -225,15 +215,11 @@ public class PlasticView extends FrameLayout {
         return max;
     }
 
-    public void setAdapter(RecyclerView.Adapter adapter) {
+    public void setAdapter(PlasticAdapter adapter) {
         setAdapterInternal(adapter, false, true);
     }
 
-    public void swapAdapter(RecyclerView.Adapter adapter, boolean removeAndRecycleExistingViews) {
-        setAdapterInternal(adapter, true, removeAndRecycleExistingViews);
-    }
-
-    private final void setAdapterInternal(RecyclerView.Adapter adapter, boolean compatibleWithPrevious,
+    private final void setAdapterInternal(PlasticAdapter adapter, boolean compatibleWithPrevious,
                                     boolean removeAndRecycleExistingViews) {
         if (compatibleWithPrevious)
             mRecyclerView.swapAdapter(adapter, removeAndRecycleExistingViews);
@@ -243,54 +229,62 @@ public class PlasticView extends FrameLayout {
         mProgress.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
         mPtrLayout.setRefreshing(false);
-        if (null != adapter)
-            adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-                @Override
-                public void onItemRangeChanged(int positionStart, int itemCount) {
-                    super.onItemRangeChanged(positionStart, itemCount);
-                    update();
-                }
-
-                @Override
-                public void onItemRangeInserted(int positionStart, int itemCount) {
-                    super.onItemRangeInserted(positionStart, itemCount);
-                    update();
-                }
-
-                @Override
-                public void onItemRangeRemoved(int positionStart, int itemCount) {
-                    super.onItemRangeRemoved(positionStart, itemCount);
-                    update();
-                }
-
-                @Override
-                public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-                    super.onItemRangeMoved(fromPosition, toPosition, itemCount);
-                    update();
-                }
-
-                @Override
-                public void onChanged() {
-                    super.onChanged();
-                    update();
-                }
-
-                private void update() {
-                    mProgress.setVisibility(View.GONE);
-                    stopLoadingMore();
-                    mPtrLayout.setRefreshing(false);
-                    if (mRecyclerView.getAdapter().getItemCount() == 0 && mEmptyId != 0) {
-                        mEmpty.setVisibility(View.VISIBLE);
-                    } else if (mEmptyId != 0) {
-                        mEmpty.setVisibility(View.GONE);
-                    }
-                }
-            });
+        if (mAdapter != null){
+            mAdapter.unregisterAdapterDataObserver(mObserver);
+            mAdapter.onDetachedFromPlasticView(this);
+        }
+        mAdapter = adapter;
+        if (null != adapter) {
+            adapter.registerAdapterDataObserver(mObserver);
+            adapter.onAttachedToPlasticView(this);
+        }
 
         if (mEmptyId != 0) {
             mEmpty.setVisibility(null != adapter && adapter.getItemCount() > 0
-                    ? View.GONE
-                    : View.VISIBLE);
+                    ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    private class PlasticAdapterObserver extends RecyclerView.AdapterDataObserver{
+
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount) {
+                super.onItemRangeChanged(positionStart, itemCount);
+                update();
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                update();
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                update();
+            }
+
+            @Override
+            public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+                super.onItemRangeMoved(fromPosition, toPosition, itemCount);
+                update();
+            }
+
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                update();
+            }
+
+        private void update() {
+            mProgress.setVisibility(View.GONE);
+            mPtrLayout.setRefreshing(false);
+            if (mRecyclerView.getAdapter().getItemCount() == 0 && mEmptyId != 0) {
+                mEmpty.setVisibility(View.VISIBLE);
+            } else if (mEmptyId != 0) {
+                mEmpty.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -324,14 +318,6 @@ public class PlasticView extends FrameLayout {
 
     public void hideRecycler() {
         mRecyclerView.setVisibility(View.GONE);
-    }
-
-    public void showMoreLoading() {
-        mMoreLoading.setVisibility(View.VISIBLE);
-    }
-
-    public void hideMoreLoading() {
-        mMoreLoading.setVisibility(View.GONE);
     }
 
     public void setRefreshing(boolean refreshing) {
@@ -385,12 +371,29 @@ public class PlasticView extends FrameLayout {
     }
 
     public boolean isLoadingMore() {
-        return isLoadingMore;
+        if (mAdapter == null) return false;
+        return mAdapter.isLoadingMore();
     }
 
-    public void stopLoadingMore(){
-        mMoreLoading.setVisibility(View.GONE);
-        isLoadingMore = false;
+    public void loadMoreComplete(){
+        if (mAdapter == null) return;
+
+        mAdapter.setLoadMoreComplete(true);
+    }
+
+    public void loadMoreEnd(){
+        loadMoreEnd(false);
+    }
+
+    public void loadMoreEnd(boolean gone){
+        if (mAdapter == null) return;
+        mAdapter.setLoadMoreEnd(gone);
+    }
+
+    public void setLoadingMore(){
+        if (mAdapter == null) return;
+
+        mAdapter.setLoadingMore();
     }
 
     public boolean isLoadMoreEnable() {
@@ -398,9 +401,16 @@ public class PlasticView extends FrameLayout {
     }
 
     public void setLoadMoreEnable(boolean loadMoreEnable) {
+        int oldCount = mAdapter != null? mAdapter.getLoadMoreViewCount():0;
         isLoadMoreEnable = loadMoreEnable;
-        if (!isLoadMoreEnable()){
-            mMoreLoading.setVisibility(View.GONE);
+        int newCount = mAdapter != null? mAdapter.getLoadMoreViewCount():0;
+
+        if (oldCount == 1 && mAdapter != null){
+            if (newCount == 0) {
+                mAdapter.notifyItemRemoved(mAdapter.getLoadMoreViewPosition());
+            }else {
+                mAdapter.setLoadMoreComplete(true);
+            }
         }
     }
 

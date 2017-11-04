@@ -160,9 +160,10 @@ public class PlasticView extends FrameLayout {
         RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
         int lastVisibleItemPosition = getLastVisibleItemPosition(layoutManager);
         int totalItemCount = layoutManager.getItemCount();
+        int realItemCount = mAdapter.getItemCount();
 
-        if (mAdapter.canLoadMore() && (totalItemCount - lastVisibleItemPosition) <= mItemCountToLoadMore){
-//            Logger.e("WGX", "processOnLoadMore");
+        if (mAdapter.canLoadMore() && realItemCount > 0
+                && (totalItemCount - lastVisibleItemPosition) <= mItemCountToLoadMore){
             mAdapter.setLoadingMore();
             mOnMoreListener.onMore(totalItemCount, mItemCountToLoadMore, lastVisibleItemPosition);
         }
@@ -226,7 +227,6 @@ public class PlasticView extends FrameLayout {
         else
             mRecyclerView.setAdapter(adapter);
 
-        mProgress.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
         mPtrLayout.setRefreshing(false);
         if (mAdapter != null){
@@ -237,6 +237,7 @@ public class PlasticView extends FrameLayout {
         if (null != adapter) {
             adapter.registerAdapterDataObserver(mObserver);
             adapter.onAttachedToPlasticView(this);
+            mProgress.setVisibility(adapter.getItemCount() > 0 ? View.GONE : View.VISIBLE);
         }
 
         if (mEmptyId != 0) {
@@ -378,7 +379,7 @@ public class PlasticView extends FrameLayout {
     public void loadMoreComplete(){
         if (mAdapter == null) return;
 
-        mAdapter.setLoadMoreComplete(true);
+        mAdapter.setLoadMoreComplete();
     }
 
     public void loadMoreEnd(){
@@ -409,7 +410,7 @@ public class PlasticView extends FrameLayout {
             if (newCount == 0) {
                 mAdapter.notifyItemRemoved(mAdapter.getLoadMoreViewPosition());
             }else {
-                mAdapter.setLoadMoreComplete(true);
+                mAdapter.setLoadMoreComplete();
             }
         }
     }

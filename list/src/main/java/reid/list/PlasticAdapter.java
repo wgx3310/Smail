@@ -24,12 +24,13 @@ public class PlasticAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private SparseArray<DecorativeView> mFooterViews = new SparseArray<>();
 
     private RecyclerView.Adapter mAdapter;
-    private PlasticAdapterObserver mObserver = new PlasticAdapterObserver();
     private PlasticView mPlasticView;
 
     private LoadMoreView mLoadMoreView = new DefaultLoadMoreView();
 
     public PlasticAdapter(RecyclerView.Adapter adapter){
+
+        PlasticAdapterObserver mObserver = new PlasticAdapterObserver();
         if (mAdapter != null){
             mAdapter.unregisterAdapterDataObserver(mObserver);
         }
@@ -119,12 +120,8 @@ public class PlasticAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             return false;
         }
 
-        if (position == getHeaderViewCount() + getRealItemCount()
-                + getFooterViewCount()){
-            return true;
-        }
-
-        return false;
+        return position == getHeaderViewCount() + getRealItemCount()
+                + getFooterViewCount();
     }
 
     @Override
@@ -138,12 +135,12 @@ public class PlasticAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     private boolean isHeaderView(int position){
-        return mHeaderViews != null?mHeaderViews.get(ITEM_TYPE_HEADER + position) != null:false;
+        return mHeaderViews != null && mHeaderViews.get(ITEM_TYPE_HEADER + position) != null;
     }
 
     private boolean isFooterView(int position){
         int index = position - getHeaderViewCount() - getRealItemCount();
-        return mFooterViews != null?mFooterViews.get(ITEM_TYPE_FOOTER + index) != null : false;
+        return mFooterViews != null && mFooterViews.get(ITEM_TYPE_FOOTER + index) != null;
     }
 
     public int getHeaderViewCount(){
@@ -185,10 +182,10 @@ public class PlasticAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return mLoadMoreView.isLoading();
     }
 
-    void setLoadMoreComplete(boolean notify){
+    void setLoadMoreComplete(){
         if (getLoadMoreViewCount() == 0) return;
         mLoadMoreView.setLoadComplete();
-        if (notify) notifyItemChanged(getLoadMoreViewPosition());
+        notifyItemChanged(getLoadMoreViewPosition());
     }
 
     void setLoadMoreEnd(boolean gone){

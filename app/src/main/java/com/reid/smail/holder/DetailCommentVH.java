@@ -49,7 +49,7 @@ public class DetailCommentVH extends BaseVH<Comment> implements CommentManager.O
         if (mData == null) return;
 
         if (mData.user != null) {
-            GlideApp.with(context).load(mData.user.avatar_url).circleCrop().into(mAvatar);
+            GlideApp.with(context).load(mData.user.avatar_url).placeholder(R.drawable.ic_user_placeholder).circleCrop().into(mAvatar);
             mName.setText(mData.user.name);
         }
 

@@ -116,6 +116,9 @@ public class PlasticView extends FrameLayout {
     private void initRecycler(View inflate) {
         mRecyclerView = inflate.findViewById(R.id.recycler);
         mRecyclerView.setClipToPadding(mClipToPadding);
+        if (!getClipToPadding()){
+            mRecyclerView.setClipToPadding(false);
+        }
 
         if (mPadding != -1.0f){
             mRecyclerView.setPadding(mPadding, mPadding, mPadding, mPadding);
@@ -325,7 +328,7 @@ public class PlasticView extends FrameLayout {
         mPtrLayout.setRefreshing(refreshing);
     }
 
-    public void setRefreshListener(SwipeRefreshLayout.OnRefreshListener listener) {
+    public void setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener listener) {
         mPtrLayout.setEnabled(listener != null?true:false);
         mPtrLayout.setOnRefreshListener(listener);
     }

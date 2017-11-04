@@ -20,6 +20,9 @@ import com.reid.smail.net.loader.ShotLoader;
 
 import java.util.List;
 
+import reid.list.PlasticAdapter;
+import reid.list.PlasticView;
+import reid.list.load.OnMoreListener;
 import rx.Subscription;
 import rx.functions.Action1;
 
@@ -43,11 +46,9 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
     private TabSpan mSpan;
-    private SwipeRefreshLayout mRefreshLayout;
-    private ProgressBar mProgressBar;
-    private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private RecyclerAdapter mAdapter;
+    private PlasticView mRecyclerView;
 
     private int curPage = 1;
     private boolean isLoading;
@@ -69,27 +70,20 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        mRefreshLayout = view.findViewById(R.id.refresh_layout);
-        mRefreshLayout.setColorSchemeResources(R.color.red, R.color.yellow, R.color.green, R.color.blue);
-        mRefreshLayout.setOnRefreshListener(this);
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
+        mRecyclerView.setRefreshingColorResources(R.color.red, R.color.yellow, R.color.green, R.color.blue);
+        mRecyclerView.setOnRefreshListener(this);
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new RecyclerAdapter();
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
+        mRecyclerView.setAdapter(new PlasticAdapter(mAdapter));
+        mRecyclerView.setOnMoreListener(new OnMoreListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                int lastCompletelyVisibleItemPosition = mLayoutManager.findLastCompletelyVisibleItemPosition();
-                if (lastCompletelyVisibleItemPosition + 5 >= recyclerView.getAdapter().getItemCount()){
-                    loadData(true);
-                }
+            public void onMore(int totalItemCount, int itemCountToLoadMore, int lastVisibleItemPosition) {
+                loadData(true);
             }
         });
-
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
 
         loadData(false);
     }
@@ -108,21 +102,18 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
                     @Override
                     public void call(List<Shot> shots) {
                         isLoading = false;
-                        mProgressBar.setVisibility(View.GONE);
-                        mRefreshLayout.setRefreshing(false);
-                        if (shots != null){
+                        if (shots != null && shots.size() > 0){
                             mAdapter.setData(shots, curPage > 1);
+                            mRecyclerView.loadMoreComplete();
                         }else {
-                            Log.e(TAG, "body is null");
-                            Reminder.toast(R.string.empty_data);
+                            mRecyclerView.loadMoreEnd(true);
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         isLoading = false;
-                        mProgressBar.setVisibility(View.GONE);
-                        mRefreshLayout.setRefreshing(false);
+                        mRecyclerView.loadMoreComplete();
                         Log.e(TAG, "get body fail " + throwable.getMessage());
                         Reminder.toast(R.string.load_data_failed);
                     }

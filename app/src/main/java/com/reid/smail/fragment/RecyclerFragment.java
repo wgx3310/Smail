@@ -32,7 +32,6 @@ import rx.functions.Action1;
 
 public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-
     public static RecyclerFragment newInstance(TabSpan span){
         RecyclerFragment fragment = new RecyclerFragment();
         Bundle args =  new Bundle();

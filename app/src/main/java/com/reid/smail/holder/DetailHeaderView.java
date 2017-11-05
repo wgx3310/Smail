@@ -3,6 +3,7 @@ package com.reid.smail.holder;
 import android.content.Context;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ public class DetailHeaderView implements DecorativeView, View.OnClickListener {
         mTitle = container.findViewById(R.id.title);
         mAuthor = container.findViewById(R.id.author);
         mDescription = container.findViewById(R.id.description);
+        mDescription.setMovementMethod(LinkMovementMethod.getInstance());
         mTags = container.findViewById(R.id.tag);
         mTagLayout = container.findViewById(R.id.tag_layout);
         mAuthorLayout = container.findViewById(R.id.author_layout);

@@ -23,6 +23,8 @@ import com.reid.smail.net.loader.ShotLoader;
 
 import java.util.List;
 
+import reid.list.PlasticAdapter;
+import reid.list.PlasticView;
 import reid.utils.AppHelper;
 import rx.Subscription;
 import rx.functions.Action1;
@@ -34,11 +36,9 @@ import rx.functions.Action1;
 public class BucketsFragment extends BaseFragment {
 
     private View mRecyclerLayout;
-    private SwipeRefreshLayout mRefreshLayout;
-    private RecyclerView mRecyclerView;
+    private PlasticView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private BucketAdapter mAdapter;
-    private ProgressBar mProgressBar;
     private TextView mEmptyView;
 
     private boolean inited;
@@ -54,11 +54,7 @@ public class BucketsFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecyclerLayout = view.findViewById(R.id.recycler_fragment_layout);
-        mProgressBar = view.findViewById(R.id.progress_bar);
         mEmptyView = view.findViewById(R.id.empty_text);
-
-        mRefreshLayout = view.findViewById(R.id.refresh_layout);
-        mRefreshLayout.setEnabled(false);
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -72,7 +68,7 @@ public class BucketsFragment extends BaseFragment {
             }
         });
         mAdapter = new BucketAdapter();
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(new PlasticAdapter(mAdapter));
 
         updateEmptyState();
         loadData();
@@ -81,13 +77,9 @@ public class BucketsFragment extends BaseFragment {
     private void updateEmptyState() {
         if (!AccountManager.get().isLogin()){
             mRecyclerLayout.setVisibility(View.GONE);
-            mProgressBar.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }else {
             mRecyclerLayout.setVisibility(View.VISIBLE);
-            if (!inited){
-                mProgressBar.setVisibility(View.VISIBLE);
-            }
             mEmptyView.setVisibility(View.GONE);
         }
     }
@@ -101,12 +93,12 @@ public class BucketsFragment extends BaseFragment {
                     @Override
                     public void call(List<Bucket> buckets) {
                         isLoading = false;
-                        mProgressBar.setVisibility(View.GONE);
-                        mRefreshLayout.setRefreshing(false);
-                        if (buckets != null){
+                        if (buckets != null && buckets.size() > 0){
                             inited = true;
                             mAdapter.setData(buckets);
+                            mRecyclerView.loadMoreComplete();
                         }else {
+                            mRecyclerView.loadMoreEnd(true);
                             Log.e(TAG, "body is null");
                             Reminder.toast(R.string.empty_data);
                         }
@@ -115,8 +107,7 @@ public class BucketsFragment extends BaseFragment {
                     @Override
                     public void call(Throwable throwable) {
                         isLoading = false;
-                        mProgressBar.setVisibility(View.GONE);
-                        mRefreshLayout.setRefreshing(false);
+                        mRecyclerView.loadMoreComplete();
                         Log.e(TAG, "get body fail " + throwable.getMessage());
                         Reminder.toast(R.string.load_data_failed);
                     }

@@ -23,6 +23,8 @@ import com.reid.smail.net.loader.ShotLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import reid.list.PlasticAdapter;
+import reid.list.PlasticView;
 import rx.Subscription;
 import rx.functions.Action1;
 
@@ -33,11 +35,9 @@ import rx.functions.Action1;
 public class LikesFragment extends BaseFragment {
 
     private View mRecyclerLayout;
-    private SwipeRefreshLayout mRefreshLayout;
-    private RecyclerView mRecyclerView;
+    private PlasticView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private RecyclerAdapter mAdapter;
-    private ProgressBar mProgressBar;
     private TextView mEmptyView;
 
     private boolean inited;
@@ -53,17 +53,14 @@ public class LikesFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecyclerLayout = view.findViewById(R.id.recycler_fragment_layout);
-        mProgressBar = view.findViewById(R.id.progress_bar);
         mEmptyView = view.findViewById(R.id.empty_text);
-
-        mRefreshLayout = view.findViewById(R.id.refresh_layout);
-        mRefreshLayout.setEnabled(false);
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new RecyclerAdapter();
-        mRecyclerView.setAdapter(mAdapter);
+        PlasticAdapter adapter = new PlasticAdapter(mAdapter);
+        mRecyclerView.setAdapter(adapter);
 
         updateEmptyState();
         loadData();
@@ -72,13 +69,9 @@ public class LikesFragment extends BaseFragment {
     private void updateEmptyState() {
         if (!AccountManager.get().isLogin()){
             mRecyclerLayout.setVisibility(View.GONE);
-            mProgressBar.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }else {
             mRecyclerLayout.setVisibility(View.VISIBLE);
-            if (!inited){
-                mProgressBar.setVisibility(View.VISIBLE);
-            }
             mEmptyView.setVisibility(View.GONE);
         }
     }
@@ -94,26 +87,23 @@ public class LikesFragment extends BaseFragment {
                     @Override
                     public void call(List<Like> likes) {
                         isLoading = false;
-                        mProgressBar.setVisibility(View.GONE);
-                        mRefreshLayout.setRefreshing(false);
-                        if (likes != null){
+                        if (likes != null && likes.size() > 0){
                             inited = true;
                             List<Shot> shots = new ArrayList<>();
                             for (Like like:likes){
                                 shots.add(like.shot);
                             }
                             mAdapter.setData(shots);
+                            mRecyclerView.loadMoreComplete();
                         }else {
-                            Log.e(TAG, "body is null");
-                            Reminder.toast(R.string.empty_data);
+                            mRecyclerView.loadMoreEnd(true);
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         isLoading = false;
-                        mProgressBar.setVisibility(View.GONE);
-                        mRefreshLayout.setRefreshing(false);
+                        mRecyclerView.loadMoreComplete();
                         Log.e(TAG, "get body fail " + throwable.getMessage());
                         Reminder.toast(R.string.load_data_failed);
                     }

@@ -13,7 +13,9 @@ import android.widget.ProgressBar;
 
 import com.reid.smail.R;
 import com.reid.smail.adapter.RecyclerAdapter;
+import com.reid.smail.content.AppGson;
 import com.reid.smail.content.Reminder;
+import com.reid.smail.io.ACache;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.model.span.TabSpan;
 import com.reid.smail.net.loader.ShotLoader;
@@ -23,6 +25,7 @@ import java.util.List;
 import reid.list.PlasticAdapter;
 import reid.list.PlasticView;
 import reid.list.load.OnMoreListener;
+import reid.utils.Logger;
 import rx.Subscription;
 import rx.functions.Action1;
 
@@ -45,6 +48,7 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
     private TabSpan mSpan;
+    private String mCacheKey = "Shot";
     private LinearLayoutManager mLayoutManager;
     private RecyclerAdapter mAdapter;
     private PlasticView mRecyclerView;
@@ -58,6 +62,7 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
         super.onCreate(savedInstanceState);
         if (getArguments() != null){
             mSpan = (TabSpan) getArguments().getSerializable("tab");
+            mCacheKey = "Shot-" + mSpan.title;
         }
     }
 
@@ -103,6 +108,9 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
                         isLoading = false;
                         if (shots != null && shots.size() > 0){
                             mAdapter.setData(shots, curPage > 1);
+                            if (curPage == 1){
+                                ACache.get(getContext()).put(mCacheKey, AppGson.get().toJson(shots));
+                            }
                             mRecyclerView.loadMoreComplete();
                         }else {
                             mRecyclerView.loadMoreEnd(true);

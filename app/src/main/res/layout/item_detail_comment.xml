@@ -31,42 +31,39 @@
         android:text="这里是评论"
         android:textIsSelectable="true" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="2017年3月1日 "
+        android:textSize="11sp"
+        android:layout_toRightOf="@id/avatar"
+        android:layout_marginLeft="16dp"
+        android:layout_below="@id/comment"
+        android:layout_marginBottom="16dp"/>
+
+    <android.support.v7.widget.ButtonBarLayout
+        android:id="@+id/like_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/comment"
         android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@id/avatar">
+        android:background="?android:attr/selectableItemBackgroundBorderless">
+
+        <ImageView
+            android:id="@+id/like_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_favorite_black_18dp" />
 
         <TextView
-            android:id="@+id/time"
+            android:id="@+id/like_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2017年3月1日 "
-            android:textSize="11sp" />
-
-        <android.support.v7.widget.ButtonBarLayout
-            android:id="@+id/like_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="?android:attr/selectableItemBackgroundBorderless">
-
-            <ImageView
-                android:id="@+id/like_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_favorite_black_18dp" />
-
-            <TextView
-                android:id="@+id/like_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text="11" />
-        </android.support.v7.widget.ButtonBarLayout>
-    </RelativeLayout>
+            android:layout_marginLeft="8dp"
+            android:text="11" />
+    </android.support.v7.widget.ButtonBarLayout>
 
     <View
         android:layout_width="match_parent"

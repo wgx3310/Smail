@@ -4,17 +4,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
+import com.google.gson.reflect.TypeToken;
 import com.reid.smail.R;
 import com.reid.smail.adapter.RecyclerAdapter;
 import com.reid.smail.content.AppGson;
-import com.reid.smail.content.Reminder;
+import com.reid.smail.content.Tips;
 import com.reid.smail.io.ACache;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.model.span.TabSpan;
@@ -25,7 +25,6 @@ import java.util.List;
 import reid.list.PlasticAdapter;
 import reid.list.PlasticView;
 import reid.list.load.OnMoreListener;
-import reid.utils.Logger;
 import rx.Subscription;
 import rx.functions.Action1;
 
@@ -89,7 +88,20 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
             }
         });
 
-        loadData(false);
+        boolean useCache = false;
+        String cache = ACache.get(getContext()).getString(mCacheKey);
+        if (!TextUtils.isEmpty(cache)){
+            List<Shot> shots = AppGson.get().fromJson(cache, new TypeToken<List<Shot>>(){}.getType());
+            if (shots != null && !shots.isEmpty()){
+                useCache = true;
+                mAdapter.setData(shots);
+                mRecyclerView.loadMoreComplete();
+            }
+        }
+
+        if (!useCache){
+            loadData(false);
+        }
     }
 
     private void loadData(boolean loadMore) {
@@ -109,7 +121,7 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
                         if (shots != null && shots.size() > 0){
                             mAdapter.setData(shots, curPage > 1);
                             if (curPage == 1){
-                                ACache.get(getContext()).put(mCacheKey, AppGson.get().toJson(shots));
+                                ACache.get(getContext()).put(mCacheKey, AppGson.get().toJson(shots), 30*60);
                             }
                             mRecyclerView.loadMoreComplete();
                         }else {
@@ -122,7 +134,7 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
                         isLoading = false;
                         mRecyclerView.loadMoreComplete();
                         Log.e(TAG, "get body fail " + throwable.getMessage());
-                        Reminder.toast(R.string.load_data_failed);
+                        Tips.toast(R.string.load_data_failed);
                     }
                 });
         addSubscription(subscribe);

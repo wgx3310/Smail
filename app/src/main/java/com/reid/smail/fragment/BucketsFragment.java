@@ -3,7 +3,6 @@ package com.reid.smail.fragment;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,13 +10,12 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.reid.smail.R;
 import com.reid.smail.adapter.BucketAdapter;
 import com.reid.smail.content.AccountManager;
-import com.reid.smail.content.Reminder;
+import com.reid.smail.content.Tips;
 import com.reid.smail.model.shot.Bucket;
 import com.reid.smail.net.loader.ShotLoader;
 
@@ -100,7 +98,7 @@ public class BucketsFragment extends BaseFragment {
                         }else {
                             mRecyclerView.loadMoreEnd(true);
                             Log.e(TAG, "body is null");
-                            Reminder.toast(R.string.empty_data);
+                            Tips.toast(R.string.empty_data);
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -109,7 +107,7 @@ public class BucketsFragment extends BaseFragment {
                         isLoading = false;
                         mRecyclerView.loadMoreComplete();
                         Log.e(TAG, "get body fail " + throwable.getMessage());
-                        Reminder.toast(R.string.load_data_failed);
+                        Tips.toast(R.string.load_data_failed);
                     }
                 });
         addSubscription(subscribe);

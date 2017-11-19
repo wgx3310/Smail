@@ -23,7 +23,7 @@ import com.reid.smail.R;
 import com.reid.smail.adapter.DetailAdapter;
 import com.reid.smail.content.AccountManager;
 import com.reid.smail.content.FavoriteManager;
-import com.reid.smail.content.Reminder;
+import com.reid.smail.content.Tips;
 import com.reid.smail.content.SettingKey;
 import com.reid.smail.holder.DetailHeaderView;
 import com.reid.smail.io.offline.Downloader;
@@ -146,7 +146,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void onClick(View view) {
                 if (!AccountManager.get().isLogin()){
-                    Reminder.toast(R.string.not_login);
+                    Tips.toast(R.string.not_login);
                 }
             }
         });
@@ -178,7 +178,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void onClick(View view) {
                 if (!AccountManager.get().isLogin()){
-                    Reminder.toast(R.string.not_login);
+                    Tips.toast(R.string.not_login);
                     return;
                 }
 
@@ -194,18 +194,18 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                                         mAdapter.appendData(comment, true);
                                         mCommentEdit.setText("");
                                     }else {
-                                        Reminder.toast(R.string.error_no_player);
+                                        Tips.toast(R.string.error_no_player);
                                     }
                                 }
                             }, new Action1<Throwable>() {
                                 @Override
                                 public void call(Throwable throwable) {
-                                    Reminder.toast(R.string.error_add_comment);
+                                    Tips.toast(R.string.error_add_comment);
                                 }
                             });
                     addSubscription(subscribe);
                 }else {
-                    Reminder.toast(R.string.empty_comment_hint);
+                    Tips.toast(R.string.empty_comment_hint);
                 }
                 AppHelper.hideSoftInput(DetailActivity.this);
             }
@@ -263,7 +263,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                     public void call(Throwable throwable) {
                         isLoading = false;
                         mRecyclerView.loadMoreComplete();
-                        Reminder.toast(R.string.load_data_failed);
+                        Tips.toast(R.string.load_data_failed);
                     }
                 });
         addSubscription(subscribe);
@@ -312,7 +312,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
         @Override
         public void onFail() {
-            Reminder.toast(R.string.fav_failed);
+            Tips.toast(R.string.fav_failed);
         }
     };
 

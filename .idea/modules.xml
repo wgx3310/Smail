@@ -3,13 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Smail.iml" filepath="$PROJECT_DIR$/Smail.iml" />
-      <module fileurl="file://D:\projects\android\Smail\Smail.iml" filepath="D:\projects\android\Smail\Smail.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://D:\projects\android\Smail\app\app.iml" filepath="D:\projects\android\Smail\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/list/list.iml" filepath="$PROJECT_DIR$/list/list.iml" />
-      <module fileurl="file://D:\projects\android\Smail\list\list.iml" filepath="D:\projects\android\Smail\list\list.iml" />
       <module fileurl="file://$PROJECT_DIR$/utils/utils.iml" filepath="$PROJECT_DIR$/utils/utils.iml" />
-      <module fileurl="file://D:\projects\android\Smail\utils\utils.iml" filepath="D:\projects\android\Smail\utils\utils.iml" />
     </modules>
   </component>
 </project>

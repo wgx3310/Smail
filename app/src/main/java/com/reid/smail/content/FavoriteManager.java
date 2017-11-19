@@ -34,7 +34,7 @@ public class FavoriteManager {
                 }
             });
         }else {
-            Reminder.toast(R.string.not_login);
+            Tips.toast(R.string.not_login);
         }
     }
 
@@ -64,7 +64,7 @@ public class FavoriteManager {
                 }
             });
         }else {
-            Reminder.toast(R.string.not_login);
+            Tips.toast(R.string.not_login);
         }
     }
 
@@ -98,7 +98,7 @@ public class FavoriteManager {
                 }
             });
         }else {
-            Reminder.toast(R.string.not_login);
+            Tips.toast(R.string.not_login);
         }
     }
 

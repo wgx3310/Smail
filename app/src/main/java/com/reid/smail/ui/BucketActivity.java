@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 
 import com.reid.smail.R;
 import com.reid.smail.adapter.RecyclerAdapter;
-import com.reid.smail.content.Reminder;
+import com.reid.smail.content.Tips;
 import com.reid.smail.content.SettingKey;
 import com.reid.smail.model.shot.Bucket;
 import com.reid.smail.model.shot.Shot;
@@ -76,7 +76,7 @@ public class BucketActivity extends BaseActivity {
                             mAdapter.setData(shots);
                         }else {
                             Log.e(TAG, "body is null");
-                            Reminder.toast(R.string.empty_data);
+                            Tips.toast(R.string.empty_data);
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -85,7 +85,7 @@ public class BucketActivity extends BaseActivity {
                         isLoading = false;
                         mProgressBar.setVisibility(View.GONE);
                         Log.e(TAG, "get body fail " + throwable.getMessage());
-                        Reminder.toast(R.string.load_data_failed);
+                        Tips.toast(R.string.load_data_failed);
                     }
                 });
         addSubscription(subscribe);

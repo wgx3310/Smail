@@ -9,7 +9,7 @@ import reid.utils.AppCompat;
  * Created by reid on 2017/9/11.
  */
 
-public class Reminder {
+public class Tips {
 
     public static void toast(String msg){
         Toast.makeText(AppCompat.getContext(), msg, Toast.LENGTH_SHORT).show();

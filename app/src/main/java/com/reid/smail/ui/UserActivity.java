@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.reid.smail.R;
 import com.reid.smail.adapter.UserShotAdapter;
-import com.reid.smail.content.Reminder;
+import com.reid.smail.content.Tips;
 import com.reid.smail.content.SettingKey;
 import com.reid.smail.holder.UserHeaderView;
 import com.reid.smail.model.shot.Shot;
@@ -29,7 +29,6 @@ import java.util.List;
 import reid.list.load.OnMoreListener;
 import reid.list.PlasticAdapter;
 import reid.list.PlasticView;
-import reid.utils.Logger;
 import rx.Subscription;
 import rx.functions.Action1;
 
@@ -230,7 +229,7 @@ public class UserActivity extends BaseActivity {
             public void call(Throwable throwable) {
                 isLoading = false;
                 mRecyclerView.loadMoreComplete();
-                Reminder.toast(R.string.load_data_failed);
+                Tips.toast(R.string.load_data_failed);
             }
         });
         addSubscription(subscribe);

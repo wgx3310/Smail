@@ -7,7 +7,7 @@ import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
 
 import com.reid.smail.R;
-import com.reid.smail.content.Reminder;
+import com.reid.smail.content.Tips;
 
 import reid.utils.AppHelper;
 
@@ -41,7 +41,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         String key = preference.getKey();
         switch (key){
             case KEY_APP_VERSION:
-                Reminder.toast(R.string.setting_last_version);
+                Tips.toast(R.string.setting_last_version);
                 break;
         }
         return false;

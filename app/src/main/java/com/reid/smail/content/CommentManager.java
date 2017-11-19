@@ -46,7 +46,7 @@ public class CommentManager {
                 }
             });
         }else {
-            Reminder.toast(R.string.not_login);
+            Tips.toast(R.string.not_login);
         }
     }
 
@@ -71,7 +71,7 @@ public class CommentManager {
                 }
             });
         }else {
-            Reminder.toast(R.string.not_login);
+            Tips.toast(R.string.not_login);
         }
     }
 
@@ -108,7 +108,7 @@ public class CommentManager {
                 }
             });
         } else {
-            Reminder.toast(R.string.not_login);
+            Tips.toast(R.string.not_login);
         }
     }
 

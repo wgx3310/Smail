@@ -78,13 +78,13 @@ public class AccountManager {
                     Prefs.putString(SettingKey.SETTING_TOKEN, AppGson.get().toJson(mToken));
                     updateUserInfo();
                 }else {
-                    Reminder.toast(R.string.login_failed);
+                    Tips.toast(R.string.login_failed);
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                Reminder.toast(R.string.login_failed);
+                Tips.toast(R.string.login_failed);
             }
         });
     }
@@ -106,14 +106,14 @@ public class AccountManager {
                             if (user != null){
                                 mUser = user;
                                 Prefs.putString(SettingKey.SETTING_USER, AppGson.get().toJson(mUser));
-                                Reminder.toast(R.string.login_success);
+                                Tips.toast(R.string.login_success);
                                 notifyLogin(mUser);
                             }
                         }
                     }, new Action1<Throwable>() {
                         @Override
                         public void call(Throwable throwable) {
-                            Reminder.toast(R.string.login_failed);
+                            Tips.toast(R.string.login_failed);
                         }
                     });
         } else {
@@ -140,7 +140,7 @@ public class AccountManager {
         mUser = null;
         Prefs.remove(SettingKey.SETTING_TOKEN);
         Prefs.remove(SettingKey.SETTING_USER);
-        Reminder.toast(R.string.logout_success);
+        Tips.toast(R.string.logout_success);
         notifyLogout();
     }
 

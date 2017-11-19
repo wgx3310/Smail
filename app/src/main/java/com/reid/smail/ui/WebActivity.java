@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 import com.reid.smail.R;
 import com.reid.smail.content.AccountManager;
 import com.reid.smail.content.Constant;
-import com.reid.smail.content.Reminder;
+import com.reid.smail.content.Tips;
 import com.reid.smail.content.SettingKey;
 
 public class WebActivity extends BaseActivity {
@@ -105,7 +105,7 @@ public class WebActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(code) && Constant.OAUTH_STATE.equals(state)){
                     AccountManager.get().acquireAccessToken(code);
                 }else {
-                    Reminder.toast(R.string.login_failed);
+                    Tips.toast(R.string.login_failed);
                 }
                 mWebView.stopLoading();
                 finish();

@@ -26,11 +26,11 @@ import com.reid.smail.view.glide.GlideApp;
 
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import reid.list.load.OnMoreListener;
 import reid.list.PlasticAdapter;
 import reid.list.PlasticView;
-import rx.Subscription;
-import rx.functions.Action1;
 
 public class UserActivity extends BaseActivity {
 
@@ -212,9 +212,9 @@ public class UserActivity extends BaseActivity {
 
         curPage = loadMore?curPage+1:1;
         isLoading = true;
-        Subscription subscribe = mLoader.getUserShots(mUser.id, curPage).subscribe(new Action1<List<Shot>>() {
+        Disposable subscribe = mLoader.getUserShots(mUser.id, curPage).subscribe(new Consumer<List<Shot>>() {
             @Override
-            public void call(List<Shot> shots) {
+            public void accept(List<Shot> shots) {
                 isLoading = false;
 
                 if (shots != null && shots.size() > 0){
@@ -224,9 +224,9 @@ public class UserActivity extends BaseActivity {
                     mRecyclerView.loadMoreEnd();
                 }
             }
-        }, new Action1<Throwable>() {
+        }, new Consumer<Throwable>() {
             @Override
-            public void call(Throwable throwable) {
+            public void accept(Throwable throwable) {
                 isLoading = false;
                 mRecyclerView.loadMoreComplete();
                 Tips.toast(R.string.load_data_failed);

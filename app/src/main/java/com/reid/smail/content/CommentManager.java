@@ -11,7 +11,8 @@ import com.reid.smail.net.loader.ShotLoader;
 import java.util.HashSet;
 import java.util.Set;
 
-import rx.functions.Action1;
+import io.reactivex.functions.Consumer;
+
 
 /**
  * Created by reid on 2017/9/10.
@@ -23,9 +24,9 @@ public class CommentManager {
         if (context == null) return;
 
         if (AccountManager.get().isLogin()){
-            ShotLoader.get().likeComment(shotId, commentId).subscribe(new Action1<Item>() {
+            ShotLoader.get().likeComment(shotId, commentId).subscribe(new Consumer<Item>() {
                 @Override
-                public void call(Item item) {
+                public void accept(Item item) {
                     if (item != null){
                         cacheLiked(shotId, commentId, true);
                         if (listener != null){
@@ -37,9 +38,9 @@ public class CommentManager {
                         }
                     }
                 }
-            }, new Action1<Throwable>() {
+            }, new Consumer<Throwable>() {
                 @Override
-                public void call(Throwable throwable) {
+                public void accept(Throwable throwable) {
                     if (listener != null){
                         listener.onFail();
                     }
@@ -54,17 +55,17 @@ public class CommentManager {
         if (context == null) return;
 
         if (AccountManager.get().isLogin()){
-            ShotLoader.get().unlikeComment(shotId, commentId).subscribe(new Action1<Item>() {
+            ShotLoader.get().unlikeComment(shotId, commentId).subscribe(new Consumer<Item>() {
                 @Override
-                public void call(Item item) {
+                public void accept(Item item) {
                     cacheLiked(shotId, commentId, false);
                     if (listener != null){
                         listener.onSuccess(false);
                     }
                 }
-            }, new Action1<Throwable>() {
+            }, new Consumer<Throwable>() {
                 @Override
-                public void call(Throwable throwable) {
+                public void accept(Throwable throwable) {
                     if (listener != null){
                         listener.onFail();
                     }
@@ -86,9 +87,9 @@ public class CommentManager {
         if (context == null) return;
 
         if (AccountManager.get().isLogin()){
-            ShotLoader.get().checkCommentLiked(shotId, commentId).subscribe(new Action1<Item>() {
+            ShotLoader.get().checkCommentLiked(shotId, commentId).subscribe(new Consumer<Item>() {
                 @Override
-                public void call(Item item) {
+                public void accept(Item item) {
                     if (item != null){
                         if (listener != null){
                             listener.onSuccess(true);
@@ -99,9 +100,9 @@ public class CommentManager {
                         }
                     }
                 }
-            }, new Action1<Throwable>() {
+            }, new Consumer<Throwable>() {
                 @Override
-                public void call(Throwable throwable) {
+                public void accept(Throwable throwable) {
                     if (listener != null){
                         listener.onFail();
                     }

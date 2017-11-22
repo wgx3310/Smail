@@ -21,11 +21,11 @@ import com.reid.smail.net.loader.ShotLoader;
 
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import reid.list.PlasticAdapter;
 import reid.list.PlasticView;
 import reid.utils.AppHelper;
-import rx.Subscription;
-import rx.functions.Action1;
 
 /**
  * Created by reid on 2017/9/11.
@@ -86,10 +86,10 @@ public class BucketsFragment extends BaseFragment {
         if (inited ||isLoading|| !AccountManager.get().isLogin()){
             return;
         }
-        Subscription subscribe = ShotLoader.get().getMyBuckets()
-                .subscribe(new Action1<List<Bucket>>() {
+        Disposable subscribe = ShotLoader.get().getMyBuckets()
+                .subscribe(new Consumer<List<Bucket>>() {
                     @Override
-                    public void call(List<Bucket> buckets) {
+                    public void accept(List<Bucket> buckets) {
                         isLoading = false;
                         if (buckets != null && buckets.size() > 0){
                             inited = true;
@@ -101,9 +101,9 @@ public class BucketsFragment extends BaseFragment {
                             Tips.toast(R.string.empty_data);
                         }
                     }
-                }, new Action1<Throwable>() {
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) {
                         isLoading = false;
                         mRecyclerView.loadMoreComplete();
                         Log.e(TAG, "get body fail " + throwable.getMessage());

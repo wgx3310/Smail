@@ -19,8 +19,9 @@ import com.reid.smail.net.loader.ShotLoader;
 
 import java.util.List;
 
-import rx.Subscription;
-import rx.functions.Action1;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+
 
 public class BucketActivity extends BaseActivity {
 
@@ -66,10 +67,10 @@ public class BucketActivity extends BaseActivity {
             return;
         }
         isLoading = true;
-        Subscription subscribe = ShotLoader.get().getBucketShots(mBucket.id)
-                .subscribe(new Action1<List<Shot>>() {
+        Disposable subscribe = ShotLoader.get().getBucketShots(mBucket.id)
+                .subscribe(new Consumer<List<Shot>>() {
                     @Override
-                    public void call(List<Shot> shots) {
+                    public void accept(List<Shot> shots) {
                         isLoading = false;
                         mProgressBar.setVisibility(View.GONE);
                         if (shots != null){
@@ -79,9 +80,9 @@ public class BucketActivity extends BaseActivity {
                             Tips.toast(R.string.empty_data);
                         }
                     }
-                }, new Action1<Throwable>() {
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) {
                         isLoading = false;
                         mProgressBar.setVisibility(View.GONE);
                         Log.e(TAG, "get body fail " + throwable.getMessage());

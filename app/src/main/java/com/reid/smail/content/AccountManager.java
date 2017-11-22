@@ -14,8 +14,8 @@ import com.reid.smail.ui.WebActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.functions.Consumer;
 import reid.utils.AppCompat;
-import rx.functions.Action1;
 
 /**
  * Created by reid on 2017/9/2.
@@ -70,9 +70,9 @@ public class AccountManager {
     public void acquireAccessToken(String code){
         if (TextUtils.isEmpty(code)) return;
 
-        AccountLoader.get().getToken(code).subscribe(new Action1<Token>() {
+        AccountLoader.get().getToken(code).subscribe(new Consumer<Token>() {
             @Override
-            public void call(Token token) {
+            public void accept(Token token) {
                 if (token != null){
                     mToken = token;
                     Prefs.putString(SettingKey.SETTING_TOKEN, AppGson.get().toJson(mToken));
@@ -81,9 +81,9 @@ public class AccountManager {
                     Tips.toast(R.string.login_failed);
                 }
             }
-        }, new Action1<Throwable>() {
+        }, new Consumer<Throwable>() {
             @Override
-            public void call(Throwable throwable) {
+            public void accept(Throwable throwable) {
                 Tips.toast(R.string.login_failed);
             }
         });
@@ -100,9 +100,9 @@ public class AccountManager {
 
         if (mUser == null){
             ShotLoader.get().getMyInfo(mToken.access_token)
-                    .subscribe(new Action1<User>() {
+                    .subscribe(new Consumer<User>() {
                         @Override
-                        public void call(User user) {
+                        public void accept(User user) {
                             if (user != null){
                                 mUser = user;
                                 Prefs.putString(SettingKey.SETTING_USER, AppGson.get().toJson(mUser));
@@ -110,9 +110,9 @@ public class AccountManager {
                                 notifyLogin(mUser);
                             }
                         }
-                    }, new Action1<Throwable>() {
+                    }, new Consumer<Throwable>() {
                         @Override
-                        public void call(Throwable throwable) {
+                        public void accept(Throwable throwable) {
                             Tips.toast(R.string.login_failed);
                         }
                     });

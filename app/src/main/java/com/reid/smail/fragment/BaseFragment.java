@@ -5,8 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,15 +17,15 @@ public class BaseFragment extends Fragment {
 
     protected Handler mMainHandler = new Handler(Looper.getMainLooper());
 
-    private CompositeSubscription compositeSubscription = new CompositeSubscription();
+    private CompositeDisposable compositeSubscription = new CompositeDisposable();
 
-    protected void addSubscription(Subscription subscription){
+    protected void addSubscription(Disposable subscription){
         if (subscription == null){
             return;
         }
 
         if (compositeSubscription == null){
-            compositeSubscription = new CompositeSubscription();
+            compositeSubscription = new CompositeDisposable();
         }
         compositeSubscription.add(subscription);
     }
@@ -37,7 +37,7 @@ public class BaseFragment extends Fragment {
             mMainHandler = null;
         }
         if (compositeSubscription != null){
-            compositeSubscription.unsubscribe();
+            compositeSubscription.dispose();
             compositeSubscription = null;
         }
         super.onDestroy();

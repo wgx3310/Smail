@@ -6,7 +6,8 @@ import com.reid.smail.R;
 import com.reid.smail.model.Item;
 import com.reid.smail.net.loader.ShotLoader;
 
-import rx.functions.Action1;
+import io.reactivex.functions.Consumer;
+
 
 /**
  * Created by reid on 2017/9/10.
@@ -18,16 +19,16 @@ public class FavoriteManager {
         if (context == null) return;
 
         if (AccountManager.get().isLogin()){
-            ShotLoader.get().unlikeShot(id).subscribe(new Action1<Item>() {
+            ShotLoader.get().unlikeShot(id).subscribe(new Consumer<Item>() {
                 @Override
-                public void call(Item item) {
+                public void accept(Item item) {
                     if (listener != null){
                         listener.onSuccess(id, false);
                     }
                 }
-            }, new Action1<Throwable>() {
+            }, new Consumer<Throwable>() {
                 @Override
-                public void call(Throwable throwable) {
+                public void accept(Throwable throwable) {
                     if (listener != null){
                         listener.onFail();
                     }
@@ -42,9 +43,9 @@ public class FavoriteManager {
         if (context == null) return;
 
         if (AccountManager.get().isLogin()){
-            ShotLoader.get().likeShot(id).subscribe(new Action1<Item>() {
+            ShotLoader.get().likeShot(id).subscribe(new Consumer<Item>() {
                 @Override
-                public void call(Item item) {
+                public void accept(Item item) {
                     if (item != null){
                         if (listener != null){
                             listener.onSuccess(id, true);
@@ -55,9 +56,9 @@ public class FavoriteManager {
                         }
                     }
                 }
-            }, new Action1<Throwable>() {
+            }, new Consumer<Throwable>() {
                 @Override
-                public void call(Throwable throwable) {
+                public void accept(Throwable throwable) {
                     if (listener != null){
                         listener.onFail();
                     }
@@ -74,9 +75,9 @@ public class FavoriteManager {
 
         if (AccountManager.get().isLogin()){
             isChecking = true;
-            ShotLoader.get().checkShotLiked(id).subscribe(new Action1<Item>() {
+            ShotLoader.get().checkShotLiked(id).subscribe(new Consumer<Item>() {
                 @Override
-                public void call(Item item) {
+                public void accept(Item item) {
                     isChecking = false;
                     if (item != null){
                         if (listener != null){
@@ -88,9 +89,9 @@ public class FavoriteManager {
                         }
                     }
                 }
-            }, new Action1<Throwable>() {
+            }, new Consumer<Throwable>() {
                 @Override
-                public void call(Throwable throwable) {
+                public void accept(Throwable throwable) {
                     isChecking = false;
                     if (listener != null){
                         listener.onSuccess(id, false);

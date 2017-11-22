@@ -5,7 +5,8 @@ import com.reid.smail.model.shot.Token;
 import com.reid.smail.net.api.AccountApi;
 import com.reid.smail.net.client.Loader;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by reid on 2017/10/17.

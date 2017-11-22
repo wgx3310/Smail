@@ -13,7 +13,9 @@ import com.reid.smail.net.client.Loader;
 
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
 
 
 /**

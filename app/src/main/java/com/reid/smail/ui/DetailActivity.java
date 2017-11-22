@@ -3,14 +3,13 @@ package com.reid.smail.ui;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.reid.smail.R;
 import com.reid.smail.adapter.DetailAdapter;
 import com.reid.smail.content.AccountManager;
@@ -36,12 +36,12 @@ import com.reid.smail.view.glide.GlideApp;
 import java.io.File;
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import reid.list.load.OnMoreListener;
 import reid.list.PlasticAdapter;
 import reid.list.PlasticView;
 import reid.utils.AppHelper;
-import rx.Subscription;
-import rx.functions.Action1;
 
 public class DetailActivity extends BaseActivity implements View.OnClickListener {
 
@@ -126,6 +126,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         });
     }
 
+    @SuppressLint("CheckResult")
     private void initCommentView() {
         mAddCommentLayout = findViewById(R.id.add_comment_layout);
         mAddCommentLayout.setVisibility(View.GONE);
@@ -151,14 +152,9 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             }
         });
 
-        mCommentEdit.addTextChangedListener(new TextWatcher() {
+        RxTextView.textChanges(mCommentEdit).subscribe(new Consumer<CharSequence>() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void accept(CharSequence charSequence) throws Exception {
                 if (TextUtils.isEmpty(charSequence)){
                     mSendBtn.setImageResource(R.drawable.ic_send_disable_24dp);
                     mSendBtn.setEnabled(false);
@@ -167,13 +163,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                     mSendBtn.setEnabled(true);
                 }
             }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
         });
-
         mSendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -186,20 +176,20 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                         && !TextUtils.isEmpty(mCommentEdit.getText().toString()) && !TextUtils.isEmpty(mCommentEdit.getText().toString().trim())){
                     if (mShot == null) return;
                     String text = mCommentEdit.getText().toString().trim();
-                    Subscription subscribe = mLoader.createComment(mShot.id, text)
-                            .subscribe(new Action1<Comment>() {
+                    Disposable subscribe = mLoader.createComment(mShot.id, text)
+                            .subscribe(new Consumer<Comment>() {
                                 @Override
-                                public void call(Comment comment) {
-                                    if (comment != null){
+                                public void accept(Comment comment) {
+                                    if (comment != null) {
                                         mAdapter.appendData(comment, true);
                                         mCommentEdit.setText("");
-                                    }else {
+                                    } else {
                                         Tips.toast(R.string.error_no_player);
                                     }
                                 }
-                            }, new Action1<Throwable>() {
+                            }, new Consumer<Throwable>() {
                                 @Override
-                                public void call(Throwable throwable) {
+                                public void accept(Throwable throwable) {
                                     Tips.toast(R.string.error_add_comment);
                                 }
                             });
@@ -246,10 +236,10 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         curPage = loadMore?curPage+1:1;
         isLoading = true;
 
-        Subscription subscribe = mLoader.getShotComments(mShot.id, curPage)
-                .subscribe(new Action1<List<Comment>>() {
+        Disposable subscribe = mLoader.getShotComments(mShot.id, curPage)
+                .subscribe(new Consumer<List<Comment>>() {
                     @Override
-                    public void call(List<Comment> comments) {
+                    public void accept(List<Comment> comments) {
                         isLoading = false;
                         if (comments != null && comments.size() > 0){
                             mAdapter.setData(comments, curPage > 1);
@@ -258,9 +248,9 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                             mRecyclerView.loadMoreEnd();
                         }
                     }
-                }, new Action1<Throwable>() {
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) {
                         isLoading = false;
                         mRecyclerView.loadMoreComplete();
                         Tips.toast(R.string.load_data_failed);

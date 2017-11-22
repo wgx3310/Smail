@@ -6,8 +6,9 @@ import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
 
 /**
  * Created by reid on 2017/8/22.
@@ -19,7 +20,7 @@ public class BaseActivity extends AppCompatActivity {
 
     protected Handler mHandler = new Handler(Looper.getMainLooper());
 
-    private CompositeSubscription compositeSubscription = new CompositeSubscription();
+    private CompositeDisposable compositeSubscription = new CompositeDisposable();
 
     public Handler getMainHandler(){
         if (mHandler == null){
@@ -28,13 +29,13 @@ public class BaseActivity extends AppCompatActivity {
         return mHandler;
     }
 
-    protected void addSubscription(Subscription subscription){
+    protected void addSubscription(Disposable subscription){
         if (subscription == null){
             return;
         }
 
         if (compositeSubscription == null){
-            compositeSubscription = new CompositeSubscription();
+            compositeSubscription = new CompositeDisposable();
         }
         compositeSubscription.add(subscription);
     }
@@ -51,7 +52,7 @@ public class BaseActivity extends AppCompatActivity {
             mHandler = null;
         }
         if (compositeSubscription != null){
-            compositeSubscription.unsubscribe();
+            compositeSubscription.dispose();
             compositeSubscription = null;
         }
         super.onDestroy();

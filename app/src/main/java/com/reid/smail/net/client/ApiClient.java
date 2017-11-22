@@ -20,7 +20,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import reid.utils.AppCompat;
 import reid.utils.NetHelper;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -65,7 +65,7 @@ public class ApiClient {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(getHttpClient())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson));
 
         Retrofit retrofit = builder.build();

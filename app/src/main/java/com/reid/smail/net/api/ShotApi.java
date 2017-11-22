@@ -9,6 +9,7 @@ import com.reid.smail.model.shot.User;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -16,7 +17,6 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import rx.Observable;
 
 /**
  * Created by reid on 2017/8/26.

@@ -22,11 +22,11 @@ import com.reid.smail.net.loader.ShotLoader;
 
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import reid.list.PlasticAdapter;
 import reid.list.PlasticView;
 import reid.list.load.OnMoreListener;
-import rx.Subscription;
-import rx.functions.Action1;
 
 /**
  * Created by reid on 2017/8/30.
@@ -113,10 +113,10 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
         curPage = loadMore?curPage+1:1;
         String list = mSpan != null?mSpan.list:"";
         String sort = mSpan != null?mSpan.sort:"";
-        Subscription subscribe = mLoader.getShots(list, sort, curPage)
-                .subscribe(new Action1<List<Shot>>() {
+        Disposable subscribe = mLoader.getShots(list, sort, curPage)
+                .subscribe(new Consumer<List<Shot>>() {
                     @Override
-                    public void call(List<Shot> shots) {
+                    public void accept(List<Shot> shots) {
                         isLoading = false;
                         if (shots != null && shots.size() > 0){
                             mAdapter.setData(shots, curPage > 1);
@@ -128,9 +128,9 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
                             mRecyclerView.loadMoreEnd(true);
                         }
                     }
-                }, new Action1<Throwable>() {
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) {
                         isLoading = false;
                         mRecyclerView.loadMoreComplete();
                         Log.e(TAG, "get body fail " + throwable.getMessage());

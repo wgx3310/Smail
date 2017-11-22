@@ -2,10 +2,10 @@ package com.reid.smail.net.api;
 
 import com.reid.smail.model.shot.Token;
 
+import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
-import rx.Observable;
 
 /**
  * Created by reid on 2017/9/2.

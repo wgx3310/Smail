@@ -20,10 +20,10 @@ import com.reid.smail.net.loader.ShotLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import reid.list.PlasticAdapter;
 import reid.list.PlasticView;
-import rx.Subscription;
-import rx.functions.Action1;
 
 /**
  * Created by reid on 2017/9/11.
@@ -79,10 +79,10 @@ public class LikesFragment extends BaseFragment {
         }
 
         isLoading = true;
-        Subscription subscribe = ShotLoader.get().getMyLikes()
-                .subscribe(new Action1<List<Like>>() {
+        Disposable subscribe = ShotLoader.get().getMyLikes()
+                .subscribe(new Consumer<List<Like>>() {
                     @Override
-                    public void call(List<Like> likes) {
+                    public void accept(List<Like> likes) {
                         isLoading = false;
                         if (likes != null && likes.size() > 0){
                             inited = true;
@@ -96,9 +96,9 @@ public class LikesFragment extends BaseFragment {
                             mRecyclerView.loadMoreEnd(true);
                         }
                     }
-                }, new Action1<Throwable>() {
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) {
                         isLoading = false;
                         mRecyclerView.loadMoreComplete();
                         Log.e(TAG, "get body fail " + throwable.getMessage());

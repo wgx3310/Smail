@@ -3,9 +3,11 @@ package com.reid.smail.net.client;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by reid on 2017/10/16.
@@ -25,11 +27,11 @@ public abstract class Loader<T> {
     public abstract String getBaseUrl();
 
     //指定观察者与被观察者线程
-    protected <T> Observable.Transformer<T, T> transformer() {
-        return new Observable.Transformer<T, T>() {
+    protected <T> ObservableTransformer<T, T> transformer(){
+        return new ObservableTransformer<T, T>() {
             @Override
-            public Observable<T> call(Observable<T> source) {
-                return source.onTerminateDetach().subscribeOn(Schedulers.io())
+            public ObservableSource<T> apply(Observable<T> upstream) {
+                return upstream.onTerminateDetach().subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread());
             }
         };

@@ -234,9 +234,14 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         }
 
         curPage = loadMore?curPage+1:1;
-        isLoading = true;
 
         Disposable subscribe = mLoader.getShotComments(mShot.id, curPage)
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        isLoading = true;
+                    }
+                })
                 .subscribe(new Consumer<List<Comment>>() {
                     @Override
                     public void accept(List<Comment> comments) {

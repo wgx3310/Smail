@@ -87,6 +87,12 @@ public class BucketsFragment extends BaseFragment {
             return;
         }
         Disposable subscribe = ShotLoader.get().getMyBuckets()
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        isLoading = true;
+                    }
+                })
                 .subscribe(new Consumer<List<Bucket>>() {
                     @Override
                     public void accept(List<Bucket> buckets) {

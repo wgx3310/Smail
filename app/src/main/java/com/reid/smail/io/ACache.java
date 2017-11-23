@@ -62,7 +62,7 @@ public class ACache {
 	}
 
 	public static ACache get(Context ctx, long maxSize, int maxCount) {
-		File f = new File(ctx.getCacheDir(), "ACache");
+		File f = new File(ctx.getExternalCacheDir(), "ACache");
 		return get(f, maxSize, maxCount);
 	}
 

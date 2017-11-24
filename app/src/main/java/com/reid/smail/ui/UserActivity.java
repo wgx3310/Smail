@@ -211,27 +211,33 @@ public class UserActivity extends BaseActivity {
         }
 
         curPage = loadMore?curPage+1:1;
-        isLoading = true;
-        Disposable subscribe = mLoader.getUserShots(mUser.id, curPage).subscribe(new Consumer<List<Shot>>() {
-            @Override
-            public void accept(List<Shot> shots) {
-                isLoading = false;
+        Disposable subscribe = mLoader.getUserShots(mUser.id, curPage)
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        isLoading = true;
+                    }
+                })
+                .subscribe(new Consumer<List<Shot>>() {
+                    @Override
+                    public void accept(List<Shot> shots) {
+                        isLoading = false;
 
-                if (shots != null && shots.size() > 0){
-                    mAdapter.setData(shots, curPage > 1);
-                    mRecyclerView.loadMoreComplete();
-                }else {
-                    mRecyclerView.loadMoreEnd();
-                }
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) {
-                isLoading = false;
-                mRecyclerView.loadMoreComplete();
-                Tips.toast(R.string.load_data_failed);
-            }
-        });
+                        if (shots != null && shots.size() > 0){
+                            mAdapter.setData(shots, curPage > 1);
+                            mRecyclerView.loadMoreComplete();
+                        }else {
+                            mRecyclerView.loadMoreEnd();
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        isLoading = false;
+                        mRecyclerView.loadMoreComplete();
+                        Tips.toast(R.string.load_data_failed);
+                    }
+                });
         addSubscription(subscribe);
 
     }

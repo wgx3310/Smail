@@ -66,8 +66,13 @@ public class BucketActivity extends BaseActivity {
         if (isLoading || mBucket == null){
             return;
         }
-        isLoading = true;
         Disposable subscribe = ShotLoader.get().getBucketShots(mBucket.id)
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        isLoading = true;
+                    }
+                })
                 .subscribe(new Consumer<List<Shot>>() {
                     @Override
                     public void accept(List<Shot> shots) {

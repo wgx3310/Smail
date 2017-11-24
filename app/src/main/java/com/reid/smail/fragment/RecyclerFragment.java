@@ -109,20 +109,30 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
             return;
         }
 
-        isLoading = true;
         curPage = loadMore?curPage+1:1;
         String list = mSpan != null?mSpan.list:"";
         String sort = mSpan != null?mSpan.sort:"";
         Disposable subscribe = mLoader.getShots(list, sort, curPage)
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        isLoading = true;
+                    }
+                })
+                .doOnNext(new Consumer<List<Shot>>() {
+                    @Override
+                    public void accept(List<Shot> shots) throws Exception {
+                        if (curPage == 1){
+                            ACache.get(getContext()).put(mCacheKey, AppGson.get().toJson(shots), 30*60);
+                        }
+                    }
+                })
                 .subscribe(new Consumer<List<Shot>>() {
                     @Override
                     public void accept(List<Shot> shots) {
                         isLoading = false;
                         if (shots != null && shots.size() > 0){
                             mAdapter.setData(shots, curPage > 1);
-                            if (curPage == 1){
-                                ACache.get(getContext()).put(mCacheKey, AppGson.get().toJson(shots), 30*60);
-                            }
                             mRecyclerView.loadMoreComplete();
                         }else {
                             mRecyclerView.loadMoreEnd(true);

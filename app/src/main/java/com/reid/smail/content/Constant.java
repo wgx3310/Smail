@@ -12,8 +12,11 @@ public class Constant {
     public static final String OAUTH_STATE = "reid_smail";
     public static final String OAUTH_URL = "https://dribbble.com/oauth/authorize?client_id="+CLIENT_ID+"&scope=public+write+comment+upload&state="+OAUTH_STATE;
 
+    public static final String WEATHER_KEY = "282f3846df6b41178e4a2218ae083ea7";
+
     public static final String SCHEMA = "smail";
 
     public static final String BASE_URL_DESIGN = "https://api.dribbble.com/v1/";
     public static final String BASE_URL_WEBSITE = "https://dribbble.com/";
+    public static final String BASE_URL_WEATHER = "https://free-api.heweather.com/v5/";
 }

@@ -62,8 +62,11 @@
         <activity
             android:name=".ui.WebActivity"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".ui.BucketActivity"
+        <activity
+            android:name=".ui.BucketActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.WeatherActivity"
             android:screenOrientation="portrait"/>
     </application>
 

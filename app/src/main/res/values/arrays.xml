@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="weather_icon">
+        <item>图标一</item>
+        <item>图标二</item>
+    </string-array>
+</resources>

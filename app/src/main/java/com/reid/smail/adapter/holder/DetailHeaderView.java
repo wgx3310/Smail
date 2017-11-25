@@ -1,4 +1,4 @@
-package com.reid.smail.holder;
+package com.reid.smail.adapter.holder;
 
 import android.content.Context;
 import android.text.Html;

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -25,7 +24,6 @@ import io.reactivex.functions.Consumer;
 
 public class BucketActivity extends BaseActivity {
 
-    private Toolbar mToolbar;
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
@@ -39,15 +37,7 @@ public class BucketActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bucket);
 
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        initToolbar();
 
         handleIntent();
         initView();
@@ -94,7 +84,7 @@ public class BucketActivity extends BaseActivity {
                         Tips.toast(R.string.load_data_failed);
                     }
                 });
-        addSubscription(subscribe);
+        addDisposable(subscribe);
     }
 
     private void initView() {

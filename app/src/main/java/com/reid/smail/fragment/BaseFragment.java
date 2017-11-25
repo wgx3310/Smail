@@ -17,17 +17,17 @@ public class BaseFragment extends Fragment {
 
     protected Handler mMainHandler = new Handler(Looper.getMainLooper());
 
-    private CompositeDisposable compositeSubscription = new CompositeDisposable();
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    protected void addSubscription(Disposable subscription){
-        if (subscription == null){
+    protected void addDisposable(Disposable disposable){
+        if (disposable == null){
             return;
         }
 
-        if (compositeSubscription == null){
-            compositeSubscription = new CompositeDisposable();
+        if (compositeDisposable == null){
+            compositeDisposable = new CompositeDisposable();
         }
-        compositeSubscription.add(subscription);
+        compositeDisposable.add(disposable);
     }
 
     @Override
@@ -36,9 +36,9 @@ public class BaseFragment extends Fragment {
             mMainHandler.removeCallbacksAndMessages(null);
             mMainHandler = null;
         }
-        if (compositeSubscription != null){
-            compositeSubscription.dispose();
-            compositeSubscription = null;
+        if (compositeDisposable != null){
+            compositeDisposable.dispose();
+            compositeDisposable = null;
         }
         super.onDestroy();
     }

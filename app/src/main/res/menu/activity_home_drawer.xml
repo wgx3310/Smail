@@ -28,6 +28,18 @@
             android:title="@string/navigation_likes" />
     </group>
 
+    <item
+        android:id="@+id/nav_tools"
+        android:title="@string/navigation_tools">
+        <menu>
+
+            <item
+                android:id="@+id/nav_weather"
+                android:icon="@drawable/weather_icon_white_24dp"
+                android:title="@string/navigation_weather"/>
+        </menu>
+    </item>
+
     <!-- Set an id on this group to show a divider. -->
     <group android:id="@+id/navigation_group_secondary" >
 

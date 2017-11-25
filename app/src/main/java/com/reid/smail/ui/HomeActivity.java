@@ -1,6 +1,5 @@
 package com.reid.smail.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -34,7 +33,6 @@ public class HomeActivity extends BaseActivity
         View.OnClickListener, AccountManager.AccountCallback {
 
     private DrawerLayout mDrawerLayout;
-    private Toolbar mToolbar;
     private NavigationView mNavView;
     private ActionBarDrawerToggle mToggle;
     private ImageView mAvatar;
@@ -113,8 +111,7 @@ public class HomeActivity extends BaseActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_settings:
-                Intent settingIntent = new Intent(this, SettingsActivity.class);
-                startActivity(settingIntent);
+                SettingsActivity.launch(this);
                 break;
             case R.id.nav_home:
             case R.id.nav_design:
@@ -126,6 +123,9 @@ public class HomeActivity extends BaseActivity
                     showFragment();
                     setTitle(item.getTitle());
                 }
+                break;
+            case R.id.nav_weather:
+                WeatherActivity.launch(this);
                 break;
             default:
                 showFragment();

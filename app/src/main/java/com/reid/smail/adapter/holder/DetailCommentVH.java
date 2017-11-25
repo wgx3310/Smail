@@ -1,4 +1,4 @@
-package com.reid.smail.holder;
+package com.reid.smail.adapter.holder;
 
 import android.support.v7.widget.ButtonBarLayout;
 import android.text.Html;
@@ -43,8 +43,7 @@ public class DetailCommentVH extends BaseVH<Comment> implements CommentManager.O
     }
 
     @Override
-    public void bindData(Comment data) {
-        super.bindData(data);
+    public void onBindData(Comment data) {
 
         if (mData == null) return;
 

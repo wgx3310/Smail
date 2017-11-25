@@ -19,4 +19,6 @@ public class SettingKey {
     public static final String KEY_SHOT = "shot";
     public static final String KEY_USER = "user";
     public static final String KEY_BUCKET = "bucket";
+
+    public static final String TYPE_WEATHER_ICON = "type_weather_icon";
 }

@@ -5,6 +5,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+
+import com.reid.smail.R;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -20,7 +24,9 @@ public class BaseActivity extends AppCompatActivity {
 
     protected Handler mHandler = new Handler(Looper.getMainLooper());
 
-    private CompositeDisposable compositeSubscription = new CompositeDisposable();
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+    protected Toolbar mToolbar;
 
     public Handler getMainHandler(){
         if (mHandler == null){
@@ -29,15 +35,38 @@ public class BaseActivity extends AppCompatActivity {
         return mHandler;
     }
 
-    protected void addSubscription(Disposable subscription){
-        if (subscription == null){
+    protected void addDisposable(Disposable disposable){
+        if (disposable == null){
             return;
         }
 
-        if (compositeSubscription == null){
-            compositeSubscription = new CompositeDisposable();
+        if (compositeDisposable == null){
+            compositeDisposable = new CompositeDisposable();
         }
-        compositeSubscription.add(subscription);
+        compositeDisposable.add(disposable);
+    }
+
+    protected void initToolbar(){
+        initToolbar("");
+    }
+
+    protected void initToolbar(int resId){
+        initToolbar(getString(resId));
+    }
+
+    protected void initToolbar(String title){
+        mToolbar = findViewById(R.id.toolbar);
+        if (mToolbar != null){
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+        }
+        setTitle(title);
     }
 
     @Override
@@ -51,9 +80,9 @@ public class BaseActivity extends AppCompatActivity {
             mHandler.removeCallbacksAndMessages(null);
             mHandler = null;
         }
-        if (compositeSubscription != null){
-            compositeSubscription.dispose();
-            compositeSubscription = null;
+        if (compositeDisposable != null){
+            compositeDisposable.dispose();
+            compositeDisposable = null;
         }
         super.onDestroy();
     }

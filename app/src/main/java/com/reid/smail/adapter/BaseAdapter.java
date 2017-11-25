@@ -2,7 +2,7 @@ package com.reid.smail.adapter;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.reid.smail.holder.BaseVH;
+import com.reid.smail.adapter.holder.BaseVH;
 
 import java.util.ArrayList;
 import java.util.List;

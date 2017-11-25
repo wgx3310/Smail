@@ -1,4 +1,4 @@
-package com.reid.smail.holder;
+package com.reid.smail.adapter.holder;
 
 import android.text.TextUtils;
 import android.view.View;
@@ -33,8 +33,7 @@ public class RecyclerShotVH extends BaseVH<Shot> implements View.OnClickListener
     }
 
     @Override
-    public void bindData(Shot shot) {
-        super.bindData(shot);
+    public void onBindData(Shot shot) {
         if (shot == null){
             return;
         }

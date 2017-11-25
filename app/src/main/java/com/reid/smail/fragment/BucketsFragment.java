@@ -116,7 +116,7 @@ public class BucketsFragment extends BaseFragment {
                         Tips.toast(R.string.load_data_failed);
                     }
                 });
-        addSubscription(subscribe);
+        addDisposable(subscribe);
     }
 
     @Override

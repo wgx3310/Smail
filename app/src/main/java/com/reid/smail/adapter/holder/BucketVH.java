@@ -1,4 +1,4 @@
-package com.reid.smail.holder;
+package com.reid.smail.adapter.holder;
 
 import android.view.View;
 import android.widget.TextView;
@@ -33,8 +33,7 @@ public class BucketVH extends BaseVH<Bucket> {
     }
 
     @Override
-    public void bindData(Bucket data) {
-        super.bindData(data);
+    public void onBindData(Bucket data) {
         if (mData == null){
             return;
         }

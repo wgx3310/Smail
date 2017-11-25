@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,7 +17,7 @@ import com.reid.smail.R;
 import com.reid.smail.adapter.UserShotAdapter;
 import com.reid.smail.content.Tips;
 import com.reid.smail.content.SettingKey;
-import com.reid.smail.holder.UserHeaderView;
+import com.reid.smail.adapter.holder.UserHeaderView;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.model.shot.User;
 import com.reid.smail.net.loader.ShotLoader;
@@ -38,7 +37,6 @@ public class UserActivity extends BaseActivity {
     private static final int COLLAPSED = 0x03;
     private static final int INTERNEDIATE = 0x04;
 
-    private Toolbar mToolbar;
     private ImageView mAvatar;
     private TextView mName;
     private TextView mLocation;
@@ -76,14 +74,7 @@ public class UserActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        initToolbar();
 
         handleIntent();
         initView();
@@ -238,7 +229,7 @@ public class UserActivity extends BaseActivity {
                         Tips.toast(R.string.load_data_failed);
                     }
                 });
-        addSubscription(subscribe);
+        addDisposable(subscribe);
 
     }
 }

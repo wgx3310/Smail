@@ -147,7 +147,7 @@ public class RecyclerFragment extends BaseFragment implements SwipeRefreshLayout
                         Tips.toast(R.string.load_data_failed);
                     }
                 });
-        addSubscription(subscribe);
+        addDisposable(subscribe);
     }
 
     @Override

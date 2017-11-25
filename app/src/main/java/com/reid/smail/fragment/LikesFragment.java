@@ -35,7 +35,6 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import reid.list.PlasticAdapter;
 import reid.list.PlasticView;
-import reid.utils.Logger;
 
 /**
  * Created by reid on 2017/9/11.
@@ -169,7 +168,7 @@ public class LikesFragment extends BaseFragment {
                 Tips.toast(R.string.load_data_failed);
             }
         });
-        addSubscription(subscribe);
+        addDisposable(subscribe);
     }
 
     @Override

@@ -5,8 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reid.smail.R;
-import com.reid.smail.holder.BaseVH;
-import com.reid.smail.holder.BucketVH;
+import com.reid.smail.adapter.holder.BaseVH;
+import com.reid.smail.adapter.holder.BucketVH;
 import com.reid.smail.model.shot.Bucket;
 
 /**

@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Other">
+    <PreferenceCategory android:title="天气">
+        <Preference
+            android:key="change_icons"
+            android:title="更换天气图标"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="缓存">
+        <PreferenceScreen android:key="clear_image_cache"
+            android:title="清除图片缓存"/>
+
+        <PreferenceScreen android:key="clear_data_cache"
+            android:title="清除数据缓存"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="其它">
         <PreferenceScreen android:key="app_version"
             android:title="Version"/>
 

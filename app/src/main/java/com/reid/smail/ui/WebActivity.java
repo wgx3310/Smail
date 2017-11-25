@@ -21,7 +21,6 @@ import com.reid.smail.content.SettingKey;
 
 public class WebActivity extends BaseActivity {
 
-    private Toolbar mToolbar;
     private ProgressBar mProgressBar;
     private WebView mWebView;
 
@@ -33,7 +32,7 @@ public class WebActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
         handleIntent();
-        initToolbar();
+        initToolbar(mExtraTitle);
 
         initView();
     }
@@ -60,19 +59,6 @@ public class WebActivity extends BaseActivity {
         if (!TextUtils.isEmpty(mUrl)){
             mWebView.loadUrl(mUrl);
         }
-    }
-
-    private void initToolbar() {
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(mExtraTitle);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
     }
 
     private WebChromeClient mChromeClient = new WebChromeClient(){

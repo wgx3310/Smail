@@ -7,8 +7,10 @@ import com.liulishuo.filedownloader.services.DownloadMgrInitialParams;
 import com.reid.smail.content.Constant;
 import com.reid.smail.io.offline.OkHttpConnection;
 import com.reid.smail.net.client.ApiClient;
+import com.reid.smail.util.WeatherUtils;
 import com.squareup.leakcanary.LeakCanary;
 
+import io.reactivex.schedulers.Schedulers;
 import reid.utils.AppCompat;
 import reid.utils.ProcessHelper;
 
@@ -35,6 +37,14 @@ public class App extends Application {
                 return;
             }
             LeakCanary.install(this);
+
+            Schedulers.io().createWorker().schedule(new Runnable() {
+                @Override
+                public void run() {
+                    WeatherUtils.initWeatherState();
+                    WeatherUtils.initSuggestion();
+                }
+            });
         }
     }
 }

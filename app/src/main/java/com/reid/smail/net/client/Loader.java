@@ -24,7 +24,7 @@ public abstract class Loader<T> {
         return impl;
     }
 
-    public abstract String getBaseUrl();
+    protected abstract String getBaseUrl();
 
     //指定观察者与被观察者线程
     protected <T> ObservableTransformer<T, T> transformer(){

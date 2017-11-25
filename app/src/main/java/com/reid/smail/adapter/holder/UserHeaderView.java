@@ -1,4 +1,4 @@
-package com.reid.smail.holder;
+package com.reid.smail.adapter.holder;
 
 import android.text.Html;
 import android.text.TextUtils;
@@ -12,7 +12,6 @@ import com.reid.smail.R;
 import com.reid.smail.model.shot.User;
 
 import reid.list.DecorativeView;
-import reid.utils.Logger;
 
 /**
  * Created by reid on 2017/11/3.

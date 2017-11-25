@@ -11,7 +11,9 @@
     <string name="navigation_book">读书</string>
     <string name="navigation_movie">电影</string>
     <string name="navigation_music">音乐</string>
+    <string name="navigation_tools">工具</string>
     <string name="navigation_settings">设置</string>
+    <string name="navigation_weather">天气</string>
     <string name="navigation_feedback">反馈</string>
     <string name="navigation_buckets">BUCKETS</string>
     <string name="navigation_likes">LIKES</string>

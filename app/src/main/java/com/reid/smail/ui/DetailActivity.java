@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +24,7 @@ import com.reid.smail.content.AccountManager;
 import com.reid.smail.content.FavoriteManager;
 import com.reid.smail.content.Tips;
 import com.reid.smail.content.SettingKey;
-import com.reid.smail.holder.DetailHeaderView;
+import com.reid.smail.adapter.holder.DetailHeaderView;
 import com.reid.smail.io.offline.Downloader;
 import com.reid.smail.model.shot.Comment;
 import com.reid.smail.model.shot.Shot;
@@ -45,7 +44,6 @@ import reid.utils.AppHelper;
 
 public class DetailActivity extends BaseActivity implements View.OnClickListener {
 
-    private Toolbar mToolbar;
     private Shot mShot;
 
     private ImageView mPoster;
@@ -74,18 +72,6 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         handleIntent();
         initView();
         bindData();
-    }
-
-    private void initToolbar() {
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        setTitle("");
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
     }
 
     private void handleIntent() {
@@ -193,7 +179,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                                     Tips.toast(R.string.error_add_comment);
                                 }
                             });
-                    addSubscription(subscribe);
+                    addDisposable(subscribe);
                 }else {
                     Tips.toast(R.string.empty_comment_hint);
                 }
@@ -261,7 +247,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                         Tips.toast(R.string.load_data_failed);
                     }
                 });
-        addSubscription(subscribe);
+        addDisposable(subscribe);
     }
 
     @Override

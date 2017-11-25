@@ -1,4 +1,4 @@
-package com.reid.smail.holder;
+package com.reid.smail.adapter.holder;
 
 import android.content.Context;
 import android.support.annotation.CallSuper;
@@ -19,9 +19,13 @@ public class BaseVH<T> extends RecyclerView.ViewHolder {
         context = itemView.getContext();
     }
 
-    @CallSuper
-    public void bindData(T data){
+    public final void bindData(T data){
         mData = data;
+        onBindData(data);
+    }
+
+    public void onBindData(T data){
+
     }
 
     public void onViewAttachedToWindow(){

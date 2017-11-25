@@ -96,14 +96,14 @@ public class PlasticView extends FrameLayout {
 
     private void init() {
         View inflate = View.inflate(getContext(), R.layout.layout_plastic, this);
-        mPtrLayout = inflate.findViewById(R.id.ptr_layout);
+        mPtrLayout = inflate.findViewById(R.id.plastic_ptr_layout);
         mPtrLayout.setEnabled(mRefreshable);
 
-        mProgress = inflate.findViewById(R.id.progress);
+        mProgress = inflate.findViewById(R.id.plastic_progress);
         mProgress.setLayoutResource(mProgressId);
         mProgressView = mProgress.inflate();
 
-        mEmpty = inflate.findViewById(R.id.empty);
+        mEmpty = inflate.findViewById(R.id.plastic_empty);
         mEmpty.setLayoutResource(mEmptyId);
         if (mEmptyId != 0){
             mEmptyView = mEmpty.inflate();
@@ -114,7 +114,7 @@ public class PlasticView extends FrameLayout {
     }
 
     private void initRecycler(View inflate) {
-        mRecyclerView = inflate.findViewById(R.id.recycler);
+        mRecyclerView = inflate.findViewById(R.id.plastic_recycler);
         mRecyclerView.setClipToPadding(mClipToPadding);
         if (!getClipToPadding()){
             mRecyclerView.setClipToPadding(false);

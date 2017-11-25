@@ -3,12 +3,12 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/ptr_layout"
+        android:id="@+id/plastic_ptr_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler"
+            android:id="@+id/plastic_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"/>
@@ -16,14 +16,14 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <ViewStub
-        android:id="@+id/empty"
+        android:id="@+id/plastic_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:visibility="gone"/>
 
     <ViewStub
-        android:id="@+id/progress"
+        android:id="@+id/plastic_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

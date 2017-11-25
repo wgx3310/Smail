@@ -15,12 +15,12 @@ public class DefaultLoadMoreView extends LoadMoreView {
 
     @Override
     protected int getLoadingViewId() {
-        return R.id.load_more_loading_view;
+        return R.id.plastic_load_more_loading_view;
     }
 
     @Override
     protected int getLoadEndViewId() {
-        return R.id.load_more_load_end_view;
+        return R.id.plastic_load_more_load_end_view;
     }
 
 }

@@ -22,11 +22,13 @@ import java.util.List;
 
 public class DailyForecastVH extends BaseVH<Weather> {
 
+    private TextView mTitle;
     private RecyclerView mRecycler;
     private Adapter mAdapter;
 
     public DailyForecastVH(View itemView) {
         super(itemView);
+        mTitle = itemView.findViewById(R.id.list_title);
         mRecycler = itemView.findViewById(R.id.suggestion_recycler_view);
         mRecycler.setFocusable(false);
         mRecycler.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
@@ -34,6 +36,7 @@ public class DailyForecastVH extends BaseVH<Weather> {
 
     @Override
     public void onBindData(Weather data) {
+        mTitle.setText("一周内天气");
         mAdapter = new Adapter(data.daily_forecast);
         mRecycler.setAdapter(mAdapter);
     }

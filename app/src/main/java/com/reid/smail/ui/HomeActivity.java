@@ -68,6 +68,12 @@ public class HomeActivity extends BaseActivity
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
 
+        if (mNavView != null) {
+            View child = mNavView.getChildAt(0);
+            if (child != null) {
+                child.setVerticalScrollBarEnabled(false);
+            }
+        }
         mNavView.setCheckedItem(R.id.nav_home);
         mNavView.setNavigationItemSelectedListener(this);
         initNavHeaderView();

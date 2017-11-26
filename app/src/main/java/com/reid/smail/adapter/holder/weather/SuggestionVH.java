@@ -23,11 +23,13 @@ import java.util.Map;
 
 public class SuggestionVH extends BaseVH<Weather> {
 
+    private TextView mTitle;
     private RecyclerView mRecycler;
     private SuggestionAdapter mAdapter;
 
     public SuggestionVH(View itemView) {
         super(itemView);
+        mTitle = itemView.findViewById(R.id.list_title);
         mRecycler = itemView.findViewById(R.id.suggestion_recycler_view);
         mRecycler.setFocusable(false);
         mRecycler.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
@@ -35,6 +37,7 @@ public class SuggestionVH extends BaseVH<Weather> {
 
     @Override
     public void onBindData(Weather data) {
+        mTitle.setText("生活指数");
         mAdapter = new SuggestionAdapter(data.suggestion);
         mRecycler.setAdapter(mAdapter);
     }

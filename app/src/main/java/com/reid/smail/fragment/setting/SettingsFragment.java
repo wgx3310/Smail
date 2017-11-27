@@ -1,25 +1,19 @@
 package com.reid.smail.fragment.setting;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.TextView;
 
 import com.reid.smail.R;
 import com.reid.smail.content.SettingKey;
 import com.reid.smail.content.Tips;
 import com.reid.smail.io.ACache;
 import com.reid.smail.io.Prefs;
-import com.reid.smail.util.WeatherUtils;
+import com.reid.smail.setting.ChangeIconDialog;
+import com.reid.smail.util.WeatherProps;
 import com.reid.smail.view.glide.GlideApp;
 
 import io.reactivex.Observable;
@@ -27,9 +21,7 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import reid.utils.AppCompat;
 import reid.utils.AppHelper;
 
 
@@ -49,8 +41,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     private PreferenceScreen mClearDataCache;
     private PreferenceScreen mVersionScreen;
 
-    private int newType;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +52,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
         mChangeIcon = findPreference(KEY_CHANGE_ICON);
         int index = Prefs.getInt(SettingKey.TYPE_WEATHER_ICON, 0);
-        String[] types = getResources().getStringArray(R.array.weather_icon);
+        String[] types = getResources().getStringArray(R.array.weather_change_icon);
         mChangeIcon.setSummary(types[index]);
         mChangeIcon.setOnPreferenceClickListener(this);
 
@@ -132,64 +122,17 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     }
 
     private void showChangeIconDialog() {
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogLayout = inflater.inflate(R.layout.dialog_change_icon, (ViewGroup) getActivity().findViewById(R.id.dialog_root));
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setView(dialogLayout);
-        final AlertDialog alertDialog = builder.create();
 
-        LinearLayout layoutTypeOne = dialogLayout.findViewById(R.id.layout_one);
-        layoutTypeOne.setClickable(true);
-        final RadioButton radioTypeOne = dialogLayout.findViewById(R.id.radio_one);
-        LinearLayout layoutTypeTwo = dialogLayout.findViewById(R.id.layout_two);
-        layoutTypeTwo.setClickable(true);
-        final RadioButton radioTypeTwo = dialogLayout.findViewById(R.id.radio_two);
-        TextView done = dialogLayout.findViewById(R.id.done);
-
-        radioTypeOne.setClickable(false);
-        radioTypeTwo.setClickable(false);
-
-        int type = Prefs.getInt(SettingKey.TYPE_WEATHER_ICON, 0);
-
-        switch (type) {
-            case 0:
-                radioTypeOne.setChecked(true);
-                radioTypeTwo.setChecked(false);
-                break;
-            case 1:
-                radioTypeOne.setChecked(false);
-                radioTypeTwo.setChecked(true);
-                break;
-        }
-        alertDialog.show();
-
-        layoutTypeOne.setOnClickListener(new View.OnClickListener() {
+        final ChangeIconDialog dialog = new ChangeIconDialog(getActivity(), new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                newType = 0;
-                radioTypeOne.setChecked(true);
-                radioTypeTwo.setChecked(false);
+                int type = (Integer) v.getTag();
+                WeatherProps.updateStateMap(type);
+                String[] iconsText = getResources().getStringArray(R.array.weather_change_icon);
+                mChangeIcon.setSummary(iconsText[type]);
             }
         });
 
-        layoutTypeTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                newType = 1;
-                radioTypeOne.setChecked(false);
-                radioTypeTwo.setChecked(true);
-            }
-        });
-
-        done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WeatherUtils.updateStateMap(newType);
-                String[] iconsText = getResources().getStringArray(R.array.weather_icon);
-                mChangeIcon.setSummary(radioTypeOne.isChecked() ? iconsText[0] :
-                        iconsText[1]);
-                alertDialog.dismiss();
-            }
-        });
-
+        dialog.show();
     }
 }

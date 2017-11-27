@@ -34,6 +34,11 @@ public class HourlyForecastVH extends BaseVH<Weather> {
 
     @Override
     public void onBindData(Weather data) {
+        if (data == null || data.hourly_forecast == null || data.hourly_forecast.isEmpty()){
+            itemView.setVisibility(View.GONE);
+            return;
+        }
+
         mTitle.setText("24小时内天气");
         mAdapter = new Adapter(data.hourly_forecast);
         mRecycler.setAdapter(mAdapter);

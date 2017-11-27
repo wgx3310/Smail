@@ -11,7 +11,8 @@ import android.widget.TextView;
 import com.reid.smail.R;
 import com.reid.smail.adapter.holder.BaseVH;
 import com.reid.smail.model.weather.Weather;
-import com.reid.smail.util.WeatherUtils;
+import com.reid.smail.util.Utils;
+import com.reid.smail.util.WeatherProps;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,11 @@ public class DailyForecastVH extends BaseVH<Weather> {
 
     @Override
     public void onBindData(Weather data) {
+        if (data == null || data.daily_forecast == null || data.daily_forecast.isEmpty()){
+            itemView.setVisibility(View.GONE);
+            return;
+        }
+
         mTitle.setText("一周内天气");
         mAdapter = new Adapter(data.daily_forecast);
         mRecycler.setAdapter(mAdapter);
@@ -87,7 +93,7 @@ public class DailyForecastVH extends BaseVH<Weather> {
 
             public void onBindData(Weather.DailyForecast forecast){
                 mDate.setText(forecast.date);
-                mIcon.setImageResource(WeatherUtils.getState(forecast.cond.txt_d));
+                mIcon.setImageResource(WeatherProps.getState(Utils.parseInt(forecast.cond.code_d)));
                 mTemp.setText(String.format("%s℃ - %s℃", forecast.tmp.min, forecast.tmp.max));
                 mText.setText(
                         String.format("%s。 %s %s %s km/h。 降水几率 %s%%。",

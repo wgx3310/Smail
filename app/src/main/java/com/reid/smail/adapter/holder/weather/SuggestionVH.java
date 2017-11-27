@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.reid.smail.R;
 import com.reid.smail.adapter.holder.BaseVH;
 import com.reid.smail.model.weather.Weather;
-import com.reid.smail.util.WeatherUtils;
+import com.reid.smail.util.WeatherProps;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +37,11 @@ public class SuggestionVH extends BaseVH<Weather> {
 
     @Override
     public void onBindData(Weather data) {
+        if (data == null || data.suggestion == null || data.suggestion.isEmpty()){
+            itemView.setVisibility(View.GONE);
+            return;
+        }
+
         mTitle.setText("生活指数");
         mAdapter = new SuggestionAdapter(data.suggestion);
         mRecycler.setAdapter(mAdapter);
@@ -89,9 +94,9 @@ public class SuggestionVH extends BaseVH<Weather> {
             }
 
             public void onBindData(String key, Weather.Suggestion suggestion){
-//                GlideApp.with(itemView.getContext()).load(WeatherUtils.getSuggestionIcon(key)).into(mIcon);
-                mIcon.setImageResource(WeatherUtils.getSuggestionIcon(key));
-                mBrief.setText(WeatherUtils.getSuggestionBrief(key) + suggestion.brf);
+//                GlideApp.with(itemView.getContext()).load(WeatherProps.getSuggestionIcon(key)).into(mIcon);
+                mIcon.setImageResource(WeatherProps.getSuggestionIcon(key));
+                mBrief.setText(WeatherProps.getSuggestionBrief(key) + suggestion.brf);
                 mTxt.setText(suggestion.txt);
             }
         }

@@ -1,8 +1,5 @@
 package com.reid.smail.model.weather;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,7 +13,7 @@ public class WeatherInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "WeatherInfo{" +
+        return "WeatherProps{" +
                 "HeWeather5=" + HeWeather5 +
                 '}';
     }

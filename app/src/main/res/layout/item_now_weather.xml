@@ -22,7 +22,7 @@
             android:layout_height="80dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            tools:src="@mipmap/type_one_sunny"/>
+            tools:src="@drawable/ic_sunny_1"/>
 
         <LinearLayout
             android:id="@+id/linear_temp"

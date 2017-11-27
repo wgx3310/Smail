@@ -10,7 +10,6 @@ import com.reid.smail.R;
 import com.reid.smail.adapter.WeatherAdapter;
 import com.reid.smail.model.weather.Weather;
 import com.reid.smail.net.loader.WeatherLoader;
-import com.reid.smail.util.WeatherUtils;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;

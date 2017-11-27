@@ -7,7 +7,8 @@ import android.widget.TextView;
 import com.reid.smail.R;
 import com.reid.smail.adapter.holder.BaseVH;
 import com.reid.smail.model.weather.Weather;
-import com.reid.smail.util.WeatherUtils;
+import com.reid.smail.util.Utils;
+import com.reid.smail.util.WeatherProps;
 
 import reid.utils.Logger;
 
@@ -49,7 +50,7 @@ public class NowWeatherVH extends BaseVH<Weather> {
 
             tempPm.setText(String.format("PM2.5: %s μg/m³", data.aqi.city.pm25));
             tempQuality.setText(String.format("空气质量：%s", data.aqi.city.qlty));
-            mWeatherIcon.setImageResource(WeatherUtils.getState(data.now.cond.txt));
+            mWeatherIcon.setImageResource(WeatherProps.getState(Utils.parseInt(data.now.cond.code)));
         } catch (Exception e) {
             Logger.e(TAG, e.toString());
         }

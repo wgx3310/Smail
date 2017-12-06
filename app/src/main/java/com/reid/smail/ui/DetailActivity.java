@@ -5,9 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -19,10 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.reid.smail.R;
 import com.reid.smail.adapter.DetailAdapter;
@@ -37,8 +31,7 @@ import com.reid.smail.model.shot.Shot;
 import com.reid.smail.net.loader.ShotLoader;
 import com.reid.smail.util.IntentUtils;
 import com.reid.smail.view.glide.GlideApp;
-import com.reid.smail.view.glide.GlideProgress;
-import com.reid.smail.view.glide.GlideProgressListener;
+import com.reid.smail.view.glide.ProgressRequestListener;
 import com.reid.smail.view.widget.ProgressImageView;
 
 import java.io.File;
@@ -204,22 +197,12 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         if (mShot.images != null){
             String postUrl = mShot.images.hidpi != null? mShot.images.hidpi:mShot.images.normal;
             if (!TextUtils.isEmpty(postUrl)){
-                GlideProgress.addListener(postUrl, new GlideProgressListener() {
+                GlideApp.with(this).load(postUrl).thumbnail(0.1f)
+                        .placeholder(R.drawable.loading_icon)
+                        .listener(new ProgressRequestListener(postUrl) {
                     @Override
-                    public void onProgress(String url, int progress) {
+                    public void onProgressChanged(int progress) {
                         mPoster.setProgress(progress);
-                    }
-                });
-                GlideApp.with(this).load(postUrl).thumbnail(0.1f).placeholder(R.drawable.loading_icon).listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        mPoster.setProgress(100);
-                        return false;
                     }
                 }).into(mPoster);
             }

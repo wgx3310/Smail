@@ -32,7 +32,7 @@ public abstract class ProgressRequestListener implements RequestListener<Drawabl
 
     @Override
     public final boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-        onProgressChanged(100);
+        onProgressChanged(-1);
         GlideProgress.removeListener(mUrl);
         return false;
     }

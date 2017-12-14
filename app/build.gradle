@@ -45,6 +45,7 @@ dependencies {
     implementation 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    compile 'com.github.markzhai:blockcanary-android:1.5.0'
     implementation project(':list')
     implementation project(':utils')
 }

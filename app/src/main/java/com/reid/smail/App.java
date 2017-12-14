@@ -2,6 +2,8 @@ package com.reid.smail;
 
 import android.app.Application;
 
+import com.github.moduth.blockcanary.BlockCanary;
+import com.github.moduth.blockcanary.BlockCanaryContext;
 import com.liulishuo.filedownloader.FileDownloader;
 import com.liulishuo.filedownloader.services.DownloadMgrInitialParams;
 import com.reid.smail.content.Constant;
@@ -37,6 +39,7 @@ public class App extends Application {
                 return;
             }
             LeakCanary.install(this);
+            BlockCanary.install(this, new BlockCanaryContext()).start();
 
             Schedulers.io().createWorker().schedule(new Runnable() {
                 @Override

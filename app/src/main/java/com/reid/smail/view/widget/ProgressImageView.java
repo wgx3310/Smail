@@ -1,14 +1,15 @@
 package com.reid.smail.view.widget;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+
+import com.reid.smail.R;
 
 /**
  * Created by reid on 2017/12/6.
@@ -16,20 +17,7 @@ import android.util.AttributeSet;
 
 public class ProgressImageView extends AppCompatImageView {
 
-    public static final int FONT_SIZE = 14;
-    public static final int ROUND_WIDTH = 50;
-    public static final int STROKE_WIDTH = 7;
-    private int mFontSize;
-    private int mRoundWidth;
-    private int mStrokeWidth;
     private Paint mPaint;
-    private boolean mShowProgress;
-    private int mProgress;
-    private float mTextY;
-    private int mCenterX;
-    private int mCenterY;
-    private int mRadius;
-    private RectF mOval;
 
     public ProgressImageView(Context context) {
         this(context, null);
@@ -45,75 +33,27 @@ public class ProgressImageView extends AppCompatImageView {
     }
 
     private void init() {
-        float scale = getResources().getDisplayMetrics().density;
-
-        mFontSize = (int) (FONT_SIZE * scale);
-        mRoundWidth = (int) (ROUND_WIDTH * scale);
-        mStrokeWidth = (int) (STROKE_WIDTH * scale);
-
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setTextSize(mFontSize);
-
-        mCenterX = getWidth() / 2;
-        mCenterY = getHeight() / 2;
-        mRadius = mRoundWidth / 2;
-
-        mTextY = mCenterY + mFontSize * 11.0f / 28;
-
-        mOval = new RectF(mCenterX - mRadius, mCenterY - mRadius, mCenterX
-                + mRadius, mCenterY + mRadius);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (!mShowProgress || mProgress == 100){
-            return;
-        }
 
-        if (mCenterX == 0 || mCenterY == 0) {
+        if (getDrawable() != null) return;
+
+        if (mPaint == null) {
             init();
         }
-        // 画最外层的大圆环
-        mPaint.setColor(Color.DKGRAY);
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeWidth(mStrokeWidth);
-        canvas.drawCircle(mCenterX, mCenterY, mRadius, mPaint);
 
-        // 画进度百分比
-        mPaint.setStrokeWidth(0);
-        mPaint.setColor(Color.BLACK);
-        mPaint.setTypeface(Typeface.MONOSPACE);
-        mPaint.setTextAlign(Paint.Align.CENTER);
-        String progressStr = mProgress + "%";
-        canvas.drawText(progressStr, mCenterX, mTextY, mPaint);
-
-        // 画圆环的进度
-        mPaint.setStrokeWidth(mStrokeWidth);
-        mPaint.setColor(Color.WHITE);
-        canvas.drawArc(mOval, 0, 360 * mProgress / 100, false, mPaint);
-    }
-
-    public void setProgress(int progress) {
-        if (mShowProgress){
-            if (progress >= 0 && progress <= 100){
-                if (mProgress != progress){
-                    mProgress = progress;
-                    postInvalidate();
-                }
-
-                if (mProgress == 100){
-                    mShowProgress = false;
-                }
-            }else {
-                mShowProgress = false;
-            }
-        }
-    }
-
-    public void showProgress(boolean show){
-        mShowProgress = show;
+        mPaint.setColor(getResources().getColor(R.color.icon));
+        canvas.drawRect(0,0,getWidth(), getHeight(), mPaint);
+        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.mipmap.ic_drawer_shot);
+        Bitmap bitmap = drawable.getBitmap();
+        int left = getWidth() / 2- bitmap.getWidth()/2;
+        int top = getHeight() /2 - bitmap.getHeight() /2;
+        canvas.drawBitmap(bitmap, left, top, mPaint);
     }
 
 }

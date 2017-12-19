@@ -94,7 +94,6 @@ public class SuggestionVH extends BaseVH<Weather> {
             }
 
             public void onBindData(String key, Weather.Suggestion suggestion){
-//                GlideApp.with(itemView.getContext()).load(WeatherProps.getSuggestionIcon(key)).into(mIcon);
                 mIcon.setImageResource(WeatherProps.getSuggestionIcon(key));
                 mBrief.setText(WeatherProps.getSuggestionBrief(key) + suggestion.brf);
                 mTxt.setText(suggestion.txt);

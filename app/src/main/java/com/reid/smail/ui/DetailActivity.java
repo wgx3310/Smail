@@ -22,6 +22,7 @@ import com.reid.smail.R;
 import com.reid.smail.adapter.DetailAdapter;
 import com.reid.smail.content.AccountManager;
 import com.reid.smail.content.FavoriteManager;
+import com.reid.smail.content.ImageLoader;
 import com.reid.smail.content.Tips;
 import com.reid.smail.content.SettingKey;
 import com.reid.smail.adapter.holder.DetailHeaderView;
@@ -30,8 +31,6 @@ import com.reid.smail.model.shot.Comment;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.net.loader.ShotLoader;
 import com.reid.smail.util.IntentUtils;
-import com.reid.smail.view.glide.GlideApp;
-import com.reid.smail.view.glide.ProgressRequestListener;
 import com.reid.smail.view.widget.ProgressImageView;
 
 import java.io.File;
@@ -85,7 +84,6 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     private void initView() {
         mPoster = findViewById(R.id.post_img);
-        mPoster.showProgress(true);
         mFavBtn = findViewById(R.id.fav_btn);
         mFavBtn.setOnClickListener(this);
 
@@ -197,19 +195,14 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         if (mShot.images != null){
             String postUrl = mShot.images.hidpi != null? mShot.images.hidpi:mShot.images.normal;
             if (!TextUtils.isEmpty(postUrl)){
-                GlideApp.with(this).load(postUrl).thumbnail(0.1f)
-                        .placeholder(R.drawable.loading_icon)
-                        .listener(new ProgressRequestListener(postUrl) {
-                    @Override
-                    public void onProgressChanged(int progress) {
-                        mPoster.setProgress(progress);
-                    }
-                }).into(mPoster);
+                ImageLoader.load(this, mPoster, postUrl,
+                        ImageLoader.Options.create().thumbnail(0.1f));
             }
         }
 
         if (AccountManager.get().isLogin()){
-            GlideApp.with(this).load(AccountManager.get().getUser().avatar_url).circleCrop().into(mAvatar);
+            ImageLoader.load(this, mAvatar, AccountManager.get().getUser().avatar_url,
+                    ImageLoader.Options.create().circleCrop());
             checkShotLiked();
         }
 

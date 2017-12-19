@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.reid.smail.R;
 import com.reid.smail.content.AccountManager;
+import com.reid.smail.content.ImageLoader;
 import com.reid.smail.fragment.BaseFragment;
 import com.reid.smail.fragment.BucketsFragment;
 import com.reid.smail.fragment.DesignFragment;
@@ -24,7 +25,6 @@ import com.reid.smail.fragment.HomeFragment;
 import com.reid.smail.fragment.LikesFragment;
 import com.reid.smail.model.shot.User;
 import com.reid.smail.util.IntentUtils;
-import com.reid.smail.view.glide.GlideApp;
 
 import java.util.List;
 
@@ -211,7 +211,7 @@ public class HomeActivity extends BaseActivity
         if (user == null || isDestroyed() || isFinishing()) return;
 
         if (!TextUtils.isEmpty(user.avatar_url)){
-            GlideApp.with(this).load(user.avatar_url).circleCrop().into(mAvatar);
+            ImageLoader.load(this, mAvatar, user.avatar_url, ImageLoader.Options.create().circleCrop());
         }
 
         mName.setText(user.name);

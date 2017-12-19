@@ -5,10 +5,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.reid.smail.R;
+import com.reid.smail.content.ImageLoader;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.model.shot.User;
 import com.reid.smail.util.IntentUtils;
-import com.reid.smail.view.glide.GlideApp;
 
 /**
  * Created by reid on 2017/9/1.
@@ -32,7 +32,7 @@ public class UserShotVH extends BaseVH<Shot> {
         }
 
         if (mData != null && mData.images != null && !TextUtils.isEmpty(mData.images.teaser)){
-            GlideApp.with(context).load(mData.images.teaser).centerCrop().into(mImg);
+            ImageLoader.load(context, mImg, mData.images.teaser, ImageLoader.Options.create().centerCrop());
         }
 
         mImg.setOnClickListener(new View.OnClickListener() {

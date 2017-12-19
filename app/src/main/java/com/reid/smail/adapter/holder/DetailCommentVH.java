@@ -9,10 +9,10 @@ import android.widget.TextView;
 
 import com.reid.smail.R;
 import com.reid.smail.content.CommentManager;
+import com.reid.smail.content.ImageLoader;
 import com.reid.smail.model.shot.Comment;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.util.DateUtils;
-import com.reid.smail.view.glide.GlideApp;
 
 /**
  * Created by reid on 2017/9/1.
@@ -48,7 +48,8 @@ public class DetailCommentVH extends BaseVH<Comment> implements CommentManager.O
         if (mData == null) return;
 
         if (mData.user != null) {
-            GlideApp.with(context).load(mData.user.avatar_url).placeholder(R.drawable.ic_user_placeholder).circleCrop().into(mAvatar);
+            ImageLoader.load(context, mAvatar, mData.user.avatar_url,
+                    ImageLoader.Options.create().circleCrop().placeholder(R.drawable.ic_user_placeholder));
             mName.setText(mData.user.name);
         }
 

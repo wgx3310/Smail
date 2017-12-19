@@ -15,13 +15,13 @@ import android.widget.TextView;
 
 import com.reid.smail.R;
 import com.reid.smail.adapter.UserShotAdapter;
+import com.reid.smail.content.ImageLoader;
 import com.reid.smail.content.Tips;
 import com.reid.smail.content.SettingKey;
 import com.reid.smail.adapter.holder.UserHeaderView;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.model.shot.User;
 import com.reid.smail.net.loader.ShotLoader;
-import com.reid.smail.view.glide.GlideApp;
 
 import java.util.List;
 
@@ -164,7 +164,8 @@ public class UserActivity extends BaseActivity {
     private void bindData() {
         if (mUser == null) return;
 
-        GlideApp.with(this).load(mUser.avatar_url).circleCrop().into(mAvatar);
+        ImageLoader.load(this, mAvatar, mUser.avatar_url,
+                ImageLoader.Options.create().circleCrop());
         if (!TextUtils.isEmpty(mUser.location)){
             mLocation.setText(mUser.location);
         }

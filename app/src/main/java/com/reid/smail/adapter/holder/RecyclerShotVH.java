@@ -7,9 +7,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.reid.smail.R;
+import com.reid.smail.content.ImageLoader;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.util.IntentUtils;
-import com.reid.smail.view.glide.GlideApp;
 
 /**
  * Created by reid on 2017/8/30.
@@ -44,7 +44,7 @@ public class RecyclerShotVH extends BaseVH<Shot> implements View.OnClickListener
         }
 
         if (shot.user!= null && !TextUtils.isEmpty(shot.user.avatar_url)){
-            GlideApp.with(context).load(shot.user.avatar_url).circleCrop().into(mAvatar);
+            ImageLoader.load(context, mAvatar, shot.user.avatar_url, ImageLoader.Options.create().circleCrop());
         }
 
         String postUrl = null;
@@ -55,7 +55,8 @@ public class RecyclerShotVH extends BaseVH<Shot> implements View.OnClickListener
             postUrl = shot.images.teaser;
         }
         if (postUrl != null){
-            GlideApp.with(context).asBitmap().load(postUrl).placeholder(R.drawable.loading_icon).into(mPostImg);
+            ImageLoader.load(context, mPostImg, postUrl,
+                    ImageLoader.Options.create().placeholder(R.drawable.loading_icon).asBitmap());
         }
 
         mTopLayout.setOnClickListener(this);

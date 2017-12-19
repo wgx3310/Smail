@@ -8,13 +8,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.reid.smail.R;
+import com.reid.smail.content.ImageLoader;
 import com.reid.smail.content.SettingKey;
 import com.reid.smail.content.Tips;
 import com.reid.smail.io.ACache;
 import com.reid.smail.io.Prefs;
 import com.reid.smail.setting.ChangeIconDialog;
 import com.reid.smail.util.WeatherProps;
-import com.reid.smail.view.glide.GlideApp;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -108,7 +108,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(ObservableEmitter<Void> e) throws Exception {
-                GlideApp.get(getActivity()).clearDiskCache();
+                ImageLoader.clearDiskCache();
                 e.onComplete();
             }
         }).subscribeOn(Schedulers.io())

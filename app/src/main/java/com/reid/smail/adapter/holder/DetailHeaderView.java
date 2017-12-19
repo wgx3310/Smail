@@ -12,9 +12,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.reid.smail.R;
+import com.reid.smail.content.ImageLoader;
 import com.reid.smail.model.shot.Shot;
 import com.reid.smail.util.IntentUtils;
-import com.reid.smail.view.glide.GlideApp;
 
 import reid.list.DecorativeView;
 
@@ -92,7 +92,7 @@ public class DetailHeaderView implements DecorativeView, View.OnClickListener {
         }
 
         if (mShot.user != null && !TextUtils.isEmpty(mShot.user.avatar_url)){
-            GlideApp.with(mContext).load(mShot.user.avatar_url).circleCrop().into(mAvatar);
+            ImageLoader.load(mContext, mAvatar, mShot.user.avatar_url, ImageLoader.Options.create().circleCrop());
         }
 
         mLikeCount.setText(String.valueOf(mShot.likes_count));

@@ -9,6 +9,7 @@ import com.liulishuo.filedownloader.services.DownloadMgrInitialParams;
 import com.reid.smail.content.Constant;
 import com.reid.smail.io.offline.OkHttpConnection;
 import com.reid.smail.net.client.ApiClient;
+import com.reid.smail.service.AutoUpdateService;
 import com.reid.smail.util.WeatherProps;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -46,6 +47,8 @@ public class App extends Application {
                 public void run() {
                     WeatherProps.initWeatherState();
                     WeatherProps.initSuggestion();
+
+                    AutoUpdateService.startAutoUpdateService(getApplicationContext());
                 }
             });
         }

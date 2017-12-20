@@ -68,6 +68,8 @@
         <activity
             android:name=".ui.WeatherActivity"
             android:screenOrientation="portrait"/>
+
+        <service android:name=".service.AutoUpdateService"/>
     </application>
 
 </manifest>

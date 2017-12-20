@@ -1,12 +1,10 @@
 package com.reid.smail.fragment.setting;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
-import android.view.View;
 
 import com.reid.smail.R;
 import com.reid.smail.content.ImageLoader;

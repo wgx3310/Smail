@@ -18,7 +18,7 @@ import com.reid.smail.io.Prefs;
 
 public class ChangeIconDialog extends AlertDialog {
 
-    public ChangeIconDialog(Context context, View.OnClickListener listener) {
+    public ChangeIconDialog(Context context, OnChangeListener listener) {
         super(context);
         mListener = listener;
     }
@@ -30,7 +30,7 @@ public class ChangeIconDialog extends AlertDialog {
     private TextView doneBtn;
 
     private int newType = 0;
-    private View.OnClickListener mListener;
+    private OnChangeListener mListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +80,8 @@ public class ChangeIconDialog extends AlertDialog {
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.setTag(newType);
                 if (mListener != null){
-                    mListener.onClick(v);
+                    mListener.onChanged(newType);
                 }
                 dismiss();
             }

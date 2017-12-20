@@ -21,4 +21,5 @@ public class SettingKey {
     public static final String KEY_BUCKET = "bucket";
 
     public static final String TYPE_WEATHER_ICON = "type_weather_icon";
+    public static final String PERIOD_AUTO_UPDATE = "period_auto_update";
 }

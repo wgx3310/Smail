@@ -6,6 +6,9 @@
             android:key="change_icons"
             android:title="更换天气图标"/>
 
+        <Preference
+            android:key="update_period"
+            android:title="自动刷新频率"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="缓存">

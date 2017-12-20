@@ -1,5 +1,6 @@
 package com.reid.smail.fragment.setting;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -13,7 +14,9 @@ import com.reid.smail.content.SettingKey;
 import com.reid.smail.content.Tips;
 import com.reid.smail.io.ACache;
 import com.reid.smail.io.Prefs;
+import com.reid.smail.setting.AutoUpdateDialog;
 import com.reid.smail.setting.ChangeIconDialog;
+import com.reid.smail.setting.OnChangeListener;
 import com.reid.smail.util.WeatherProps;
 
 import io.reactivex.Observable;
@@ -32,11 +35,13 @@ import reid.utils.AppHelper;
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
 
     private static final String KEY_CHANGE_ICON = "change_icons";
+    private static final String KEY_UPDATE_PERIOD = "update_period";
     private static final String KEY_CLEAR_IMAGE_CACHE = "clear_image_cache";
     private static final String KEY_CLEAR_DATA_CACHE = "clear_data_cache";
     private static final String KEY_APP_VERSION = "app_version";
 
     private Preference mChangeIcon;
+    private Preference mUpdatePeriod;
     private PreferenceScreen mClearImageCache;
     private PreferenceScreen mClearDataCache;
     private PreferenceScreen mVersionScreen;
@@ -56,6 +61,11 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mChangeIcon.setSummary(types[index]);
         mChangeIcon.setOnPreferenceClickListener(this);
 
+        mUpdatePeriod = findPreference(KEY_UPDATE_PERIOD);
+        int period = Prefs.getInt(SettingKey.PERIOD_AUTO_UPDATE, 3);
+        mUpdatePeriod.setSummary("每"+period+"小时更新天气信息");
+        mUpdatePeriod.setOnPreferenceClickListener(this);
+
         mClearImageCache = (PreferenceScreen) findPreference(KEY_CLEAR_IMAGE_CACHE);
         mClearImageCache.setOnPreferenceClickListener(this);
 
@@ -74,6 +84,9 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             case KEY_CHANGE_ICON:
                 showChangeIconDialog();
                 break;
+            case KEY_UPDATE_PERIOD:
+                showUpdateDialog();
+                break;
             case KEY_CLEAR_IMAGE_CACHE:
                 clearImageCache();
                 break;
@@ -85,6 +98,17 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
                 break;
         }
         return false;
+    }
+
+    private void showUpdateDialog() {
+        final AutoUpdateDialog dialog = new AutoUpdateDialog(getActivity(), new OnChangeListener(){
+            @Override
+            public void onChanged(int value) {
+                Prefs.putInt(SettingKey.PERIOD_AUTO_UPDATE, value);
+                mUpdatePeriod.setSummary("每"+value+"小时更新天气信息");
+            }
+        });
+        dialog.show();
     }
 
     private void clearDataCache() {
@@ -123,13 +147,12 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
     private void showChangeIconDialog() {
 
-        final ChangeIconDialog dialog = new ChangeIconDialog(getActivity(), new View.OnClickListener(){
+        final ChangeIconDialog dialog = new ChangeIconDialog(getActivity(), new OnChangeListener() {
             @Override
-            public void onClick(View v) {
-                int type = (Integer) v.getTag();
-                WeatherProps.updateStateMap(type);
+            public void onChanged(int value) {
+                WeatherProps.updateStateMap(value);
                 String[] iconsText = getResources().getStringArray(R.array.weather_change_icon);
-                mChangeIcon.setSummary(iconsText[type]);
+                mChangeIcon.setSummary(iconsText[value]);
             }
         });
 

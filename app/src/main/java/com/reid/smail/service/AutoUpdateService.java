@@ -10,6 +10,7 @@ import com.reid.smail.content.SettingKey;
 import com.reid.smail.io.Prefs;
 import com.reid.smail.model.weather.Weather;
 import com.reid.smail.net.loader.WeatherLoader;
+import com.reid.smail.util.NotificationHelper;
 
 import java.util.concurrent.TimeUnit;
 
@@ -74,7 +75,7 @@ public class AutoUpdateService extends Service {
         WeatherLoader.get().getWeather("beijing").subscribe(new Consumer<Weather>() {
             @Override
             public void accept(Weather weather) throws Exception {
-                Logger.e("AutoUpdateService", "fetchCityWeather " + weather);
+                NotificationHelper.showWeatherNotification(AutoUpdateService.this, weather);
             }
         });
     }

@@ -1,6 +1,7 @@
 package com.reid.smail.fragment.setting;
 
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
@@ -30,16 +31,18 @@ import reid.utils.AppHelper;
  * Created by reid on 2017/9/11.
  */
 
-public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
+public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
 
     private static final String KEY_CHANGE_ICON = "change_icons";
     private static final String KEY_UPDATE_PERIOD = "update_period";
+    private static final String KEY_NOTIFICATION_MODEL = "notification_model";
     private static final String KEY_CLEAR_IMAGE_CACHE = "clear_image_cache";
     private static final String KEY_CLEAR_DATA_CACHE = "clear_data_cache";
     private static final String KEY_APP_VERSION = "app_version";
 
     private Preference mChangeIcon;
     private Preference mUpdatePeriod;
+    private CheckBoxPreference mNotificationModel;
     private PreferenceScreen mClearImageCache;
     private PreferenceScreen mClearDataCache;
     private PreferenceScreen mVersionScreen;
@@ -64,6 +67,11 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mUpdatePeriod.setSummary("每"+period+"小时更新天气信息");
         mUpdatePeriod.setOnPreferenceClickListener(this);
 
+        mNotificationModel = (CheckBoxPreference) findPreference(KEY_NOTIFICATION_MODEL);
+        boolean model = Prefs.getBoolean(SettingKey.MODEL_WEATHER_NOTIFICATION, true);
+        mNotificationModel.setChecked(model);
+        mNotificationModel.setOnPreferenceChangeListener(this);
+
         mClearImageCache = (PreferenceScreen) findPreference(KEY_CLEAR_IMAGE_CACHE);
         mClearImageCache.setOnPreferenceClickListener(this);
 
@@ -73,6 +81,19 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mVersionScreen = (PreferenceScreen) findPreference(KEY_APP_VERSION);
         mVersionScreen.setSummary(AppHelper.getAppVerName());
         mVersionScreen.setOnPreferenceClickListener(this);
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        String key = preference.getKey();
+        switch (key){
+            case KEY_NOTIFICATION_MODEL:
+                boolean checked = (Boolean) newValue;
+                Prefs.putBoolean(SettingKey.MODEL_WEATHER_NOTIFICATION, checked);
+                mNotificationModel.setChecked(checked);
+                break;
+        }
+        return false;
     }
 
     @Override

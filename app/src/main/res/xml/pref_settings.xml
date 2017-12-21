@@ -9,6 +9,10 @@
         <Preference
             android:key="update_period"
             android:title="自动刷新频率"/>
+
+        <CheckBoxPreference
+            android:key="notification_model"
+            android:title="通知栏常驻"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="缓存">

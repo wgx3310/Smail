@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ImageAssetSettings">
+    <option name="children">
+      <map>
+        <entry key="imageAssetPanel">
+          <value>
+            <PersistentState>
+              <option name="children">
+                <map>
+                  <entry key="launcher">
+                    <value>
+                      <PersistentState>
+                        <option name="children">
+                          <map>
+                            <entry key="foregroundText">
+                              <value>
+                                <PersistentState>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="color" value="f7fdff" />
+                                      <entry key="scalingPercent" value="86" />
+                                      <entry key="trimmed" value="true" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                            <entry key="foregroundTextAsset">
+                              <value>
+                                <PersistentState>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="fontFamily" value="仿宋" />
+                                      <entry key="text" value="S" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                        <option name="values">
+                          <map>
+                            <entry key="foregroundAssetType" value="TEXT" />
+                          </map>
+                        </option>
+                      </PersistentState>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </PersistentState>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

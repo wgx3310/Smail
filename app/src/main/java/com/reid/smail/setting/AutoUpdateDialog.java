@@ -48,7 +48,7 @@ public class AutoUpdateDialog extends AlertDialog {
         RxSeekBar.changes(mTimeSeekBar).subscribe(new Consumer<Integer>() {
             @Override
             public void accept(Integer progress) throws Exception {
-                mProgress = progress;
+                mProgress = progress + 1;
                 mPeriod.setText(mProgress + "小时");
             }
         });

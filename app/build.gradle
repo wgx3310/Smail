@@ -47,4 +47,5 @@ dependencies {
     compile 'com.github.markzhai:blockcanary-android:1.5.0'
     implementation project(':list')
     implementation project(':utils')
+    implementation 'com.android.support:palette-v7:27.0.2'
 }

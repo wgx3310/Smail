@@ -22,5 +22,6 @@ public class SettingKey {
 
     public static final String TYPE_WEATHER_ICON = "type_weather_icon";
     public static final String PERIOD_AUTO_UPDATE = "period_auto_update";
+    public static final String SHOW_WEATHER_NOTIFICATION = "show_weather_notification";
     public static final String MODEL_WEATHER_NOTIFICATION = "weather_notification_model";
 }

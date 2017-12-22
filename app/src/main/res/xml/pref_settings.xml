@@ -11,6 +11,11 @@
             android:title="自动刷新频率"/>
 
         <CheckBoxPreference
+            android:key="notification_show"
+            android:title="显示实时天气信息"/>
+
+        <CheckBoxPreference
+            android:dependency="notification_show"
             android:key="notification_model"
             android:title="通知栏常驻"/>
     </PreferenceCategory>

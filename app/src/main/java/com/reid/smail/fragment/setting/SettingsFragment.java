@@ -16,6 +16,7 @@ import com.reid.smail.io.Prefs;
 import com.reid.smail.setting.AutoUpdateDialog;
 import com.reid.smail.setting.ChangeIconDialog;
 import com.reid.smail.setting.OnChangeListener;
+import com.reid.smail.util.NotificationHelper;
 import com.reid.smail.util.WeatherProps;
 
 import io.reactivex.Observable;
@@ -35,6 +36,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
     private static final String KEY_CHANGE_ICON = "change_icons";
     private static final String KEY_UPDATE_PERIOD = "update_period";
+    private static final String KEY_NOTIFICATION_SHOW = "notification_show";
     private static final String KEY_NOTIFICATION_MODEL = "notification_model";
     private static final String KEY_CLEAR_IMAGE_CACHE = "clear_image_cache";
     private static final String KEY_CLEAR_DATA_CACHE = "clear_data_cache";
@@ -42,6 +44,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
     private Preference mChangeIcon;
     private Preference mUpdatePeriod;
+    private CheckBoxPreference mNotificationShow;
     private CheckBoxPreference mNotificationModel;
     private PreferenceScreen mClearImageCache;
     private PreferenceScreen mClearDataCache;
@@ -67,6 +70,11 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mUpdatePeriod.setSummary("每"+period+"小时更新天气信息");
         mUpdatePeriod.setOnPreferenceClickListener(this);
 
+        mNotificationShow = (CheckBoxPreference) findPreference(KEY_NOTIFICATION_SHOW);
+        boolean show = Prefs.getBoolean(SettingKey.SHOW_WEATHER_NOTIFICATION, true);
+        mNotificationShow.setChecked(show);
+        mNotificationShow.setOnPreferenceChangeListener(this);
+
         mNotificationModel = (CheckBoxPreference) findPreference(KEY_NOTIFICATION_MODEL);
         boolean model = Prefs.getBoolean(SettingKey.MODEL_WEATHER_NOTIFICATION, true);
         mNotificationModel.setChecked(model);
@@ -87,6 +95,14 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String key = preference.getKey();
         switch (key){
+            case KEY_NOTIFICATION_SHOW:
+                boolean show = (Boolean) newValue;
+                Prefs.putBoolean(SettingKey.SHOW_WEATHER_NOTIFICATION, show);
+                mNotificationShow.setChecked(show);
+                if (!show){
+                    NotificationHelper.clearWeatherNotification(getActivity());
+                }
+                break;
             case KEY_NOTIFICATION_MODEL:
                 boolean checked = (Boolean) newValue;
                 Prefs.putBoolean(SettingKey.MODEL_WEATHER_NOTIFICATION, checked);

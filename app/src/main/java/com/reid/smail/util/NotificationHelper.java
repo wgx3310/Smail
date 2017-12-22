@@ -34,6 +34,9 @@ public class NotificationHelper {
             return;
         }
 
+        boolean show = Prefs.getBoolean(SettingKey.SHOW_WEATHER_NOTIFICATION, true);
+        if (!show) return;
+
         Notification.Builder builder = new Notification.Builder(context);
         Intent intent = new Intent(context, WeatherActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -47,5 +50,16 @@ public class NotificationHelper {
 
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(NOTIFICATION_ID, notification);
+    }
+
+    public static void clearWeatherNotification(Context context){
+        if (context == null){
+            context = AppCompat.getContext();
+        }
+        if (context == null){
+            return;
+        }
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(NOTIFICATION_ID);
     }
 }

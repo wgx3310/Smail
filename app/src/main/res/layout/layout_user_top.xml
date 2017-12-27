@@ -239,7 +239,8 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="8dp"
-                android:paddingBottom="8dp">
+                android:paddingBottom="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/projects_text"
@@ -267,7 +268,8 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="8dp"
-                android:paddingBottom="8dp">
+                android:paddingBottom="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/teams_text"

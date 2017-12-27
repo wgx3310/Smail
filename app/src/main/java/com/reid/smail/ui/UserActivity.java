@@ -31,7 +31,7 @@ import reid.list.load.OnMoreListener;
 import reid.list.PlasticAdapter;
 import reid.list.PlasticView;
 
-public class UserActivity extends BaseActivity {
+public class UserActivity extends BaseActivity implements View.OnClickListener {
 
     private static final int EXPANDED = 0x02;
     private static final int COLLAPSED = 0x03;
@@ -100,6 +100,14 @@ public class UserActivity extends BaseActivity {
         mGetLikedBtn = findViewById(R.id.get_liked_btn);
         mProjectsBtn = findViewById(R.id.projects_btn);
         mTeamsBtn = findViewById(R.id.teams_btn);
+        mShotsBtn.setOnClickListener(this);
+        mBucketsBtn.setOnClickListener(this);
+        mFollowersBtn.setOnClickListener(this);
+        mFollowingsBtn.setOnClickListener(this);
+        mLikesBtn.setOnClickListener(this);
+        mGetLikedBtn.setOnClickListener(this);
+        mProjectsBtn.setOnClickListener(this);
+        mTeamsBtn.setOnClickListener(this);
         mLocationLayout = findViewById(R.id.location_layout);
         mShotsText = findViewById(R.id.shots_text);
         mBucketsText = findViewById(R.id.buckets_text);
@@ -231,6 +239,11 @@ public class UserActivity extends BaseActivity {
                     }
                 });
         addDisposable(subscribe);
+
+    }
+
+    @Override
+    public void onClick(View v) {
 
     }
 }

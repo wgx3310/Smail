@@ -41,28 +41,32 @@ public class ImageLoader {
             builder.thumbnail(options.thumbnail);
         }
         builder.apply(buildRequestOptions(options));
-        SimpleTarget target = new SimpleTarget() {
+        if (listener != null){
+            SimpleTarget target = new SimpleTarget() {
 
-            @Override
-            public void onLoadFailed(@Nullable Drawable errorDrawable) {
-                if (listener != null){
-                    listener.onLoadFailed();
+                @Override
+                public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                    if (listener != null){
+                        listener.onLoadFailed();
+                    }
                 }
-            }
 
-            @Override
-            public void onResourceReady(Object resource, Transition transition) {
-                if (resource instanceof Drawable){
-                    iv.setImageDrawable((Drawable) resource);
-                } else if (resource instanceof Bitmap){
-                    iv.setImageBitmap((Bitmap) resource);
+                @Override
+                public void onResourceReady(Object resource, Transition transition) {
+                    if (resource instanceof Drawable){
+                        iv.setImageDrawable((Drawable) resource);
+                    } else if (resource instanceof Bitmap){
+                        iv.setImageBitmap((Bitmap) resource);
+                    }
+                    if (listener != null){
+                        listener.onLoadSuccess();
+                    }
                 }
-                if (listener != null){
-                    listener.onLoadSuccess();
-                }
-            }
-        };
-        builder.into(target);
+            };
+            builder.into(target);
+        }else {
+            builder.into(iv);
+        }
     }
 
     private static RequestOptions buildRequestOptions(Options opt){
